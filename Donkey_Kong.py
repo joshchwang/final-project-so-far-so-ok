@@ -1,12 +1,19 @@
 import arcade
 import random
 
+# Screen Variables
 screen_width = 500
 screen_height = 700
 screen_title = "Donkey Kong"
+
+# Physic Variables
 gravity = 5
 player_movement_speed = 5
 player_jump_speed = 0.01
+normal_barrel_movement_speed = 7
+ladder_barrel_movement_speed = 7
+
+# Player Variables
 player_x = 50
 player_y = 55
 player_up_pressed = False
@@ -15,26 +22,28 @@ player_left_pressed = False
 player_right_pressed = False
 player_on_ladder = False
 touching_platform = True
-normal_barrel_movement_speed = 7
-ladder_barrel_movement_speed = 7
+
+# Game Aspect Variables
+lives = 3
+points_score = 0
 
 
 def on_update(delta_time):
     global player_up_pressed, player_down_pressed, player_left_pressed, player_right_pressed, player_y, player_x, touching_platform
     if player_up_pressed and touching_platform or player_up_pressed and player_on_ladder:
-        player_y += 5
+        player_y += 2
     if player_down_pressed:
-        player_y -= 5
+        player_y -= 2
     if player_right_pressed:
-        player_x += 5
+        player_x += 2
     if player_left_pressed:
-        player_x -= 5
+        player_x -= 2
 
     collision()
 
 
 def normal_barrel():
-    arcade.draw_circle_filled(50, 50, 50, arcade.color.BISTRE_BROWN)
+    arcade.draw_rectangle_outline(50, 595, 10, 10, arcade.color.FRENCH_BEIGE)
 
 
 def ladder_barrel():
@@ -74,7 +83,7 @@ def collision():
         player_x = 400
 
     # Platform 2 (from bottom) Bottom Collision
-    if (150 <= player_y + 1 <= 155) and player_x - 1 >= 100:
+    if (145 <= player_y + 1 <= 155) and player_x - 1 >= 100:
         player_y = 145
 
     # Platform 2 (from bottom) Top Collision
@@ -183,7 +192,7 @@ def on_draw():
     arcade.start_render()
 
     # The player
-    arcade.draw_rectangle_filled(player_x, player_y, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(player_x, player_y, 10, 10, arcade.color.WHITE)
 
     # Left and Right Walls
     arcade.draw_rectangle_outline(20, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
@@ -217,6 +226,8 @@ def on_draw():
 
     # Platform 9 (from bottom)
     arcade.draw_rectangle_outline(20, 580, 750, 20, arcade.color.RUSTY_RED)
+
+    normal_barrel()
 
 
 def on_key_press(key, modifiers):
