@@ -77,115 +77,116 @@ def collision():
         mario_player_y = 55
 
     # Platform 1 (from bottom) Bottom Collision
-#    if (85 <= player_y + 1 <= 105) and player_x + 1 <= 400:
- #       player_y = 85
+    if (85 <= mario_player_y + 1 <= 105) and mario_player_x + 1 <= 400:
+        mario_player_y = 85
 
     # Platform 1 (from bottom) Top Collision
-  #  if (85 <= player_y - 1 <= 115) and player_x + 1 <= 400:
-   #     player_y = 115
+    if (85 <= mario_player_y - 1 <= 115) and mario_player_x + 1 <= 400:
+        mario_player_y = 115
 
     # Platform 1 (from bottom) Right Side Collision
-    #if (85 <= player_y - 1 <= 110) and player_x - 1 <= 400:
-     #   player_x = 400
+    if (85 <= mario_player_y - 1 <= 110) and mario_player_x - 1 <= 400:
+        mario_player_x = 400
 
     # Platform 2 (from bottom) Bottom Collision
-#    if (145 <= player_y + 1 <= 155) and player_x - 1 >= 100:
- #       player_y = 145
+    if (145 <= mario_player_y + 1 <= 155) and mario_player_x - 1 >= 100:
+        mario_player_y = 145
 
     # Platform 2 (from bottom) Top Collision
-  #  if (150 <= player_y - 1 <= 175) and player_x - 1 >= 100:
-   #     player_y = 175
+    if (150 <= mario_player_y - 1 <= 175) and mario_player_x - 1 >= 100:
+        mario_player_y = 175
 
     # Platform 2 (from bottom) Side Collision
-    #if (150 <= player_y - 1 <= 165) and player_x + 1 >= 100:
-     #   player_x = 100
+    if (150 <= mario_player_y - 1 <= 165) and mario_player_x + 1 >= 100:
+        mario_player_x = 100
 
     # Platform 3 (from bottom) Bottom Collision
-#    if (205 <= player_y + 1 <= 215) and player_x + 1 <= 400:
- #       player_y = 205
+    if (205 <= mario_player_y + 1 <= 215) and mario_player_x + 1 <= 400:
+        mario_player_y = 205
 
     # Platform 3 (from bottom) Top Collision
-  #  if (205 <= player_y - 1 <= 235) and player_x + 1 <= 400:
-   #     player_y = 235
+    if (205 <= mario_player_y - 1 <= 235) and mario_player_x + 1 <= 400:
+        mario_player_y = 235
 
     # Platform 3 (from bottom) Right Side Collision
-    #if (205 <= player_y - 1 <= 220) and player_x - 1 <= 400:
-     #   player_x = 400
+    if (205 <= mario_player_y - 1 <= 220) and mario_player_x - 1 <= 400:
+        mario_player_x = 400
 
     # Platform 4 (from bottom) Bottom Collision
-#    if (265 <= player_y + 1 <= 275) and player_x - 1 >= 100:
- #       player_y = 265
+    if (265 <= mario_player_y + 1 <= 275) and mario_player_x - 1 >= 100:
+        mario_player_y = 265
 
     # Platform 4 (from bottom) Top Collision
-  #  if (265 <= player_y - 1 <= 295) and player_x - 1 >= 100:
-   #     player_y = 295
+    if (265 <= mario_player_y - 1 <= 295) and mario_player_x - 1 >= 100:
+        mario_player_y = 295
 
     # Platform 4 (from bottom) Side Collision
-    #if (265 <= player_y - 1 <= 285) and player_x + 1 >= 100:
-     #   player_x = 100
+    if (265 <= mario_player_y - 1 <= 285) and mario_player_x + 1 >= 100:
+        mario_player_x = 100
 
     # Platform 5 (from bottom) Bottom Collision
-#    if (325 <= player_y + 1 <= 340) and player_x + 1 <= 400:
- #       player_y = 325
+    if (325 <= mario_player_y + 1 <= 340) and mario_player_x + 1 <= 400:
+        mario_player_y = 325
 
     # Platform 5 (from bottom) Top Collision
-  #  if (325 <= player_y - 1 <= 355) and player_x + 1 <= 400:
-   #     player_y = 355
+    if (325 <= mario_player_y - 1 <= 355) and mario_player_x + 1 <= 400:
+        mario_player_y = 355
 
     # Platform 5 (from bottom) Right Side Collision
-    #if (325 <= player_y - 1 <= 350) and player_x - 1 <= 400:
-     #   player_x = 400
+    if (325 <= mario_player_y - 1 <= 350) and mario_player_x - 1 <= 400:
+        mario_player_x = 400
 
     # Platform 6 (from bottom) Bottom Collision
-#    if (385 <= player_y + 1 <= 395) and player_x - 1 >= 100:
- #       player_y = 385
+    if (385 <= mario_player_y + 1 <= 395) and mario_player_x - 1 >= 100:
+        mario_player_y = 385
 
     # Platform 6 (from bottom) Top Collision
-  #  if (385 <= player_y - 1 <= 415) and player_x - 1 >= 100:
-   #     player_y = 415
+    if (385 <= mario_player_y - 1 <= 415) and mario_player_x - 1 >= 100:
+        mario_player_y = 415
 
     # Platform 6 (from bottom) Side Collision
-    #if (385 <= player_y - 1 <= 405) and player_x + 1 >= 100:
-     #   player_x = 100
+    if (385 <= mario_player_y - 1 <= 405) and mario_player_x + 1 >= 100:
+        mario_player_x = 100
 
     # Platform 7 (from bottom) Bottom Collision
-#    if (445 <= player_y + 1 <= 460) and player_x + 1 <= 400:
- #       player_y = 445
+    if (445 <= mario_player_y + 1 <= 460) and mario_player_x + 1 <= 400:
+        mario_player_y = 445
 
     # Platform 7 (from bottom) Top Collision
-  #  if (445 <= player_y - 1 <= 475) and player_x + 1 <= 400:
-   #     player_y = 475
+    if (445 <= mario_player_y - 1 <= 475) and mario_player_x + 1 <= 400:
+        mario_player_y = 475
 
     # Platform 7 (from bottom) Right Side Collision
-    #if (445 <= player_y - 1 <= 465) and player_x - 1 <= 400:
-     #   player_x = 400
+    if (445 <= mario_player_y - 1 <= 465) and mario_player_x - 1 <= 400:
+        mario_player_x = 400
 
     # Platform 8 (from bottom) Bottom Collision
-#    if (505 <= player_y + 1 <= 520) and player_x - 1 >= 100:
- #       player_y = 505
+    if (505 <= mario_player_y + 1 <= 520) and mario_player_x - 1 >= 100:
+        mario_player_y = 505
 
     # Platform 8 (from bottom) Top Collision
-  #  if (505 <= player_y - 1 <= 535) and player_x - 1 >= 100:
-   #     player_y = 535
+    if (505 <= mario_player_y - 1 <= 535) and mario_player_x - 1 >= 100:
+        mario_player_y = 535
 
     # Platform 8 (from bottom) Side Collision
-    #if (505 <= player_y - 1 <= 525) and player_x + 1 >= 100:
-     #   player_x = 100
+    if (505 <= mario_player_y - 1 <= 525) and mario_player_x + 1 >= 100:
+        mario_player_x = 100
 
     # Platform 9 (from bottom) Bottom Collision
-#    if (565 <= player_y + 1 <= 575) and player_x + 1 <= 400:
- #       player_y = 565
+    if (565 <= mario_player_y + 1 <= 575) and mario_player_x + 1 <= 400:
+        mario_player_y = 565
 
     # Platform 9 (from bottom) Top Collision
-  #  if (565 <= player_y - 1 <= 595) and player_x + 1 <= 400:
-   #     player_y = 595
+    if (565 <= mario_player_y - 1 <= 595) and mario_player_x + 1 <= 400:
+        mario_player_y = 595
 
     # Platform 9 (from bottom) Right Side Collision
-    #if (565 <= player_y - 1 <= 585) and player_x - 1 <= 400:
-     #   player_x = 400
+    if (565 <= mario_player_y - 1 <= 585) and mario_player_x - 1 <= 400:
+        mario_player_x = 400
 
     # Player Collision With Normal Barrels
-    if mario_player_x == normal_barrel_x and mario_player_y == normal_barrel_y:
+    if mario_player_x - 5 <= normal_barrel_x + 5 and mario_player_y - 5 <= normal_barrel_y + 5 and \
+            mario_player_x + 5 >= normal_barrel_x - 5 and mario_player_y + 5 >= normal_barrel_y - 5:
         mario_player_alive = False
 
 
@@ -200,12 +201,12 @@ def win_condition():
 def player():
     global mario_player_x, mario_player_y, mario_player_alive, normal_barrel_x, normal_barrel_y
     # The player
-    arcade.draw_rectangle_outline(mario_player_x, mario_player_y, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(mario_player_x, mario_player_y, 10, 10, arcade.color.RED)
 
     # Player State
     if not mario_player_alive:
-        mario_player_x = normal_barrel_x
-        mario_player_y = normal_barrel_y
+        mario_player_x = mario_player_x
+        mario_player_y = mario_player_y
 
 
 def on_draw():
