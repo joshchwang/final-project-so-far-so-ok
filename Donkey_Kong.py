@@ -113,15 +113,15 @@ def collision():
     global mario_player_x, mario_player_y, mario_player_alive, normal_barrel_x, normal_barrel_y, \
         luigi_player_x, luigi_player_y, luigi_player_alive
 
-    # Mario Collision For The Two Walls And The Bottom Floor
+    # Mario Collision
+
+    # Two Walls And Bottom Floor
     if mario_player_x - 1 <= 50:
         mario_player_x = 50
     if mario_player_x + 1 >= 450:
         mario_player_x = 450
     if mario_player_y <= 55:
         mario_player_y = 55
-
-    # Mario Platform Collision
 
     # Platform 1 (from bottom) Bottom Collision
     if (85 <= mario_player_y + 1 <= 105) and mario_player_x + 1 <= 400:
@@ -236,15 +236,15 @@ def collision():
             mario_player_x + 5 >= normal_barrel_x - 5 and mario_player_y + 5 >= normal_barrel_y - 5:
         mario_player_alive = False
 
-    # Luigi Collision For The Two Walls And The Bottom Floor
+    # Luigi Collision
+
+    # Side Walls And Bottom Floor
     if luigi_player_x - 1 <= 50:
         luigi_player_x = 50
     if luigi_player_x + 1 >= 450:
         luigi_player_x = 450
     if luigi_player_y <= 55:
         luigi_player_y = 55
-
-    # Luigi Platform Collision
 
     # Platform 1 (from bottom) Bottom Collision
     if (85 <= luigi_player_y + 1 <= 105) and luigi_player_x + 1 <= 400:
@@ -360,8 +360,8 @@ def collision():
         luigi_player_alive = False
     # Barrel Collision
 
-    if normal_barrel_x >= 400:
-        normal_barrel_x = normal_barrel_x
+    if normal_barrel_x >= 450:
+        normal_barrel_x = 450
 
 
 def donkey_kong():
