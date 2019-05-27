@@ -36,9 +36,28 @@ luigi_player_right_pressed = False
 luigi_player_on_ladder = False
 luigi_player_touching_platform = True
 
+# Donkey Kong Variables
+donkey_kong_x = 70
+donkey_kong_y = 615
+donkey_kong_random_barrel = random.randint(0, 1)
+donkey_kong_alive = True
+
 # Normal Barrel Variables
-normal_barrel_x = 50
-normal_barrel_y = 595
+normal_barrel_x = 55
+normal_barrel_y = 600
+
+# Ladder Barrel Variables
+ladder_barrel_random_barrel = random.randint(0, 1)
+
+mario_ladder_barrel_x = 55
+mario_ladder_barrel_y = 600
+
+luigi_ladder_barrel_x = 55
+luigi_ladder_barrel_y = 600
+
+# Ladder Variables
+ladder_type_mario = False
+ladder_type_luigi = False
 
 # Game Aspect Variables
 mario_player_lives = 3
@@ -51,8 +70,8 @@ luigi_player_alive = True
 def on_update(delta_time):
     global mario_player_up_pressed, mario_player_down_pressed, mario_player_left_pressed, mario_player_right_pressed, \
         mario_player_y, mario_player_x, mario_player_touching_platform, mario_player_alive, \
-        luigi_player_x, luigi_player_y, luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_right_pressed, \
-        luigi_player_left_pressed, luigi_player_touching_platform, luigi_player_alive
+        luigi_player_x, luigi_player_y, luigi_player_up_pressed, luigi_player_down_pressed, \
+        luigi_player_right_pressed, luigi_player_left_pressed, luigi_player_touching_platform, luigi_player_alive
 
     # Mario Conditions
     if mario_player_up_pressed and mario_player_touching_platform and mario_player_alive or mario_player_up_pressed \
@@ -88,16 +107,20 @@ def on_update(delta_time):
 
     collision()
     normal_barrel()
+    ladder_barrel()
+    donkey_kong()
 
 
 def normal_barrel():
     global normal_barrel_x, normal_barrel_y
-    arcade.draw_rectangle_outline(normal_barrel_x, normal_barrel_y, 10, 10, arcade.color.FRENCH_BEIGE)
+    arcade.draw_rectangle_outline(normal_barrel_x, normal_barrel_y, 15, 15, arcade.color.FRENCH_BEIGE)
     normal_barrel_x += 1
 
 
 def ladder_barrel():
-    pass
+    global mario_ladder_barrel_x, mario_ladder_barrel_y, luigi_ladder_barrel_x, luigi_ladder_barrel_y
+    arcade.draw_rectangle_outline(mario_ladder_barrel_x, mario_ladder_barrel_y, 15, 15, arcade.color.RED_VIOLET)
+    arcade.draw_rectangle_outline(luigi_ladder_barrel_x, luigi_ladder_barrel_y, 15, 15, arcade.color.GUPPIE_GREEN)
 
 
 def ladder():
@@ -232,8 +255,8 @@ def collision():
         mario_player_x = 400
 
     # Mario Collision With Normal Barrels
-    if mario_player_x - 5 <= normal_barrel_x + 5 and mario_player_y - 5 <= normal_barrel_y + 5 and \
-            mario_player_x + 5 >= normal_barrel_x - 5 and mario_player_y + 5 >= normal_barrel_y - 5:
+    if mario_player_x - 5 <= normal_barrel_x + 8 and mario_player_y - 5 <= normal_barrel_y + 8 and \
+            mario_player_x + 5 >= normal_barrel_x - 8 and mario_player_y + 5 >= normal_barrel_y - 8:
         mario_player_alive = False
 
     # Luigi Collision
@@ -355,17 +378,17 @@ def collision():
         luigi_player_x = 400
 
     # Luigi Collision WIth Normal Barrels
-    if luigi_player_x - 5 <= normal_barrel_x + 5 and luigi_player_y - 5 <= normal_barrel_y + 5 and \
-            luigi_player_x + 5 >= normal_barrel_x - 5 and luigi_player_y + 5 >= normal_barrel_y - 5:
+    if luigi_player_x - 5 <= normal_barrel_x + 8 and luigi_player_y - 5 <= normal_barrel_y + 8 and \
+            luigi_player_x + 5 >= normal_barrel_x - 8 and luigi_player_y + 5 >= normal_barrel_y - 8:
         luigi_player_alive = False
     # Barrel Collision
 
-    if normal_barrel_x >= 450:
-        normal_barrel_x = 450
+    if normal_barrel_x >= 445:
+        normal_barrel_x = 445
 
 
 def donkey_kong():
-    pass
+    arcade.draw_rectangle_outline(donkey_kong_x, donkey_kong_y, 50, 50, arcade.color.CERULEAN)
 
 
 def win_condition():
@@ -455,7 +478,7 @@ def on_key_press(key, modifiers):
 
 def on_key_release(key, modifiers):
     global mario_player_up_pressed, mario_player_down_pressed, mario_player_left_pressed, mario_player_right_pressed, \
-        luigi_player_up_pressed, luigi_player_down_pressed,luigi_player_left_pressed, luigi_player_right_pressed
+        luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_left_pressed, luigi_player_right_pressed
 
     # To Stop Mario's Controls When They Let Go Of The Key
     if key == arcade.key.W:
