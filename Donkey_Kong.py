@@ -7,7 +7,9 @@ screen_height = 700
 screen_title = "Donkey Kong"
 
 # Physic Variables
-gravity = 5
+mario_player_gravity = 0
+mario_player_is_jump = False
+mario_player_jump_counter = 15
 velocity = 0.1
 player_movement_speed = 5
 player_jump_speed = 0.01
@@ -60,6 +62,9 @@ donkey_kong_player_normal_barrel_y = 600
 donkey_kong_player_invisible_barrel_pressed = False
 donkey_kong_player_invisible_barrel_cool_down = 7
 
+donkey_kong_player_invisible_barrel_x = 55
+donkey_kong_player_invisible_barrel_y = 600
+
 # Mario Ladder Barrels Variables (affects mario)
 donkey_kong_player_mario_ladder_barrel_pressed = False
 donkey_kong_player_mario_ladder_barrel_cool_down = 5
@@ -80,9 +85,15 @@ donkey_kong_player_luigi_ladder_barrel_y = 600
 donkey_kong_player_big_barrel_pressed = False
 donkey_kong_player_big_barrel_cool_down = 10
 
+donkey_kong_player_big_barrel_x = 55
+donkey_kong_player_big_barrel_y = 600
+
 # Small Barrels Variables (fast but little bois)
 donkey_kong_player_small_barrel_pressed = False
 donkey_kong_player_small_barrel_cool_down = 10
+
+donkey_kong_player_small_barrel_x = 55
+donkey_kong_player_small_barrel_y = 600
 
 # Random Variables
 ladder_barrel_random_barrel = random.randint(0, 1)
@@ -91,27 +102,49 @@ donkey_kong_random_barrel = random.randint(0, 1)
 # Game Aspect Variables
 mario_player_lives = 3
 luigi_player_lives = 3
-total_points_score = 0
+points_score_total = 0
+points_normal_barrel = 100
+points_invisible_barrel = 500
+points_mario_ladder_barrel = 250
+points_luigi_ladder_barrel = 250
+points_big_barrel = 500
+points_small_barrel = 50
 
 
 def on_update(delta_time):
+    """
+    Updates the code constantly
+
+    :param delta_time:
+    :return:
+    """
     global mario_player_up_pressed, mario_player_down_pressed, mario_player_left_pressed, mario_player_right_pressed, \
-        mario_player_y, mario_player_x, mario_player_touching_platform, mario_player_alive, \
-        luigi_player_x, luigi_player_y, luigi_player_up_pressed, luigi_player_down_pressed, \
-        luigi_player_right_pressed, luigi_player_left_pressed, luigi_player_touching_platform, luigi_player_alive, \
-        donkey_kong_player_normal_barrel_pressed, donkey_kong_player_mario_ladder_barrel_pressed, donkey_kong_player_luigi_ladder_barrel_pressed, \
-        donkey_kong_player_big_barrel_pressed, donkey_kong_player_big_barrel_pressed, donkey_kong_player_alive
+        mario_player_y, mario_player_x, mario_player_touching_platform, mario_player_alive, mario_player_is_jump
+
+    global luigi_player_x, luigi_player_y, luigi_player_up_pressed, luigi_player_down_pressed, \
+        luigi_player_right_pressed, luigi_player_left_pressed, luigi_player_touching_platform, luigi_player_alive
+
+    global donkey_kong_player_normal_barrel_pressed, donkey_kong_player_mario_ladder_barrel_pressed, \
+        donkey_kong_player_luigi_ladder_barrel_pressed, donkey_kong_player_big_barrel_pressed, \
+        donkey_kong_player_big_barrel_pressed, donkey_kong_player_alive
+
+    global velocity
 
     # Mario Conditions
-    if mario_player_up_pressed and mario_player_touching_platform and mario_player_alive or mario_player_up_pressed \
-            and mario_player_on_ladder and mario_player_alive:
+    if mario_player_up_pressed and mario_player_touching_platform and mario_player_alive:
+        jump()
+        mario_player_touching_platform = True
+        mario_player_is_jump = False
+    elif mario_player_up_pressed and mario_player_on_ladder and mario_player_alive:
         mario_player_y += 2
-    if mario_player_down_pressed and mario_player_alive:
+    if mario_player_down_pressed and mario_player_on_ladder and mario_player_alive:
         mario_player_y -= 2
     if mario_player_right_pressed and mario_player_alive:
-        mario_player_x += 2
+        mario_player_x += 2 + velocity
+        velocity += 0.03
     if mario_player_left_pressed and mario_player_alive:
-        mario_player_x -= 2
+        mario_player_x -= 2 - velocity
+        velocity -= 0.03
 
     # Mario State Condition
     if not mario_player_alive:
@@ -153,7 +186,14 @@ def on_update(delta_time):
 
 
 def player():
-    global mario_player_x, mario_player_y, luigi_player_x, luigi_player_y
+    """
+    Drawing the players Mario and Luigi
+
+    :return:
+    """
+    global mario_player_x, mario_player_y
+
+    global luigi_player_x, luigi_player_y
 
     # Mario
     arcade.draw_rectangle_outline(mario_player_x, mario_player_y, 10, 10, arcade.color.RED)
@@ -163,51 +203,137 @@ def player():
 
 
 def normal_barrel():
+    """
+    Drawing the normal barrel
+
+    :return:
+    """
     global donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y
-    arcade.draw_rectangle_outline(donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, 15, 15, arcade.color.FRENCH_BEIGE)
+    arcade.draw_rectangle_outline(donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, 15, 15,
+                                  arcade.color.FRENCH_BEIGE)
     donkey_kong_player_normal_barrel_x += 2
 
 
 def invisible_barrel():
-    pass
+    """
+    Drawing the invisible barrel
+
+    :return:
+    """
+    global donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y
+    arcade.draw_rectangle_outline(donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y, 15, 15,
+                                  arcade.color.GHOST_WHITE)
+    donkey_kong_player_invisible_barrel_x += 2
 
 
 def big_barrel():
-    pass
+    """
+    Drawing the big barrel
+
+    :return:
+    """
+    global donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y
+    arcade.draw_rectangle_outline(donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y, 20, 20,
+                                  arcade.color.YELLOW)
+    donkey_kong_player_big_barrel_x += 1
 
 
 def small_barrel():
-    pass
+    """
+    Drawing the small barrel
+
+    :return:
+    """
+    global donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y
+    arcade.draw_rectangle_outline(donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y, 10, 10,
+                                  arcade.color.BLUE)
+    donkey_kong_player_small_barrel_x += 5
 
 
 def ladder_barrel_mario():
+    """
+    Drawing the Mario ladder barrel
+
+    :return:
+    """
     global donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y
 
     # Mario Ladder Barrels
-    arcade.draw_rectangle_outline(donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y, 15, 15, arcade.color.RED_VIOLET)
+    arcade.draw_rectangle_outline(donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y,
+                                  15, 15, arcade.color.RED_VIOLET)
     donkey_kong_ladder_mario_ladder_barrel_x += 2
 
 
 def ladder_barrel_luigi():
+    """
+    Drawing the Luigi ladder barrel
+
+    :return:
+    """
     global donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y
 
     # Luigi Ladder Barrels
-    arcade.draw_rectangle_outline(donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y, 15, 15, arcade.color.GUPPIE_GREEN)
+    arcade.draw_rectangle_outline(donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y,
+                                  15, 15, arcade.color.GUPPIE_GREEN)
     donkey_kong_player_luigi_ladder_barrel_x += 2
 
 
 def donkey_kong():
-    global donkey_kong_random_barrel, ladder_barrel_random_barrel
+    """
+    Drawing Donkey Kong
+
+    :return:
+    """
+    global donkey_kong_player_x, donkey_kong_player_y
 
     arcade.draw_rectangle_outline(donkey_kong_player_x, donkey_kong_player_y, 50, 50, arcade.color.CERULEAN)
 
+    normal_barrel()
+    invisible_barrel()
+    ladder_barrel_mario()
+    ladder_barrel_luigi()
+    big_barrel()
+    small_barrel()
+
 
 def ladder():
-    pass
+    """
+    Drawing the ladders
+
+    :return:
+    """
+    # Mario Ladder (bottom floor - platform 1)
+    arcade.draw_rectangle_outline(180, 80, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (bottom floor - platform 1)
+    arcade.draw_rectangle_outline(320, 80, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 1 - platform 2)
+    arcade.draw_rectangle_outline(370, 140, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 1 - platform 2)
+    arcade.draw_rectangle_outline(250, 140, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 2 - platform 3)
+    arcade.draw_rectangle_outline(320, 200, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 2 - platform 3)
+    arcade.draw_rectangle_outline(180, 200, 25, 60, arcade.color.APPLE_GREEN)
+
+    # The Winning Ladder (purple)
+    arcade.draw_rectangle_outline(200, 623, 25, 65, arcade.color.PURPLE_HEART)
 
 
 def on_draw():
-    global mario_player_x, mario_player_y, luigi_player_x, luigi_player_y
+    """
+    Drawing everything
+
+    :return:
+    """
+    global mario_player_x, mario_player_y
+
+    global luigi_player_x, luigi_player_y
+
     arcade.start_render()
 
     # Left and Right Walls
@@ -246,11 +372,25 @@ def on_draw():
     player()
     ladder()
     donkey_kong()
+    win_condition()
 
 
 def collision():
-    global mario_player_x, mario_player_y, mario_player_alive, donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, \
-        luigi_player_x, luigi_player_y, luigi_player_alive
+    """
+    Collision
+
+    :return:
+    """
+    global mario_player_x, mario_player_y, mario_player_alive
+
+    global donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, \
+        donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y, \
+        donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y, \
+        donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y, \
+        donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y, \
+        donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y
+
+    global luigi_player_x, luigi_player_y, luigi_player_alive
 
     # Mario Collision
 
@@ -371,8 +511,10 @@ def collision():
         mario_player_x = 400
 
     # Mario Collision With Normal Barrels
-    if mario_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and mario_player_y - 5 <= donkey_kong_player_normal_barrel_y + 8 and \
-            mario_player_x + 5 >= donkey_kong_player_normal_barrel_x - 8 and mario_player_y + 5 >= donkey_kong_player_normal_barrel_y - 8:
+    if mario_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and mario_player_y - 5 <= \
+            donkey_kong_player_normal_barrel_y + 8 and \
+            mario_player_x + 5 >= donkey_kong_player_normal_barrel_x - 8 and mario_player_y + 5 >= \
+            donkey_kong_player_normal_barrel_y - 8:
         mario_player_alive = False
 
     # Luigi Collision
@@ -494,29 +636,68 @@ def collision():
         luigi_player_x = 400
 
     # Luigi Collision WIth Normal Barrels
-    if luigi_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and luigi_player_y - 5 <= donkey_kong_player_normal_barrel_y + 8 and \
-            luigi_player_x + 5 >= donkey_kong_player_normal_barrel_x - 8 and luigi_player_y + 5 >= donkey_kong_player_normal_barrel_y - 8:
+    if luigi_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and \
+            luigi_player_y - 5 <= donkey_kong_player_normal_barrel_y + 8 and \
+            luigi_player_x + 5 >= donkey_kong_player_normal_barrel_x - 8 and luigi_player_y + 5 >= \
+            donkey_kong_player_normal_barrel_y - 8:
         luigi_player_alive = False
-    # Barrel Collision
 
+    # Barrel Collision
     if donkey_kong_player_normal_barrel_x >= 445:
         donkey_kong_player_normal_barrel_x = 445
 
 
 def jump():
-    global mario_player_touching_platform, mario_player_x, mario_player_y, player_jump_speed, gravity
+    """
+    Jump for the players
+
+    :return:
+    """
+    global mario_player_touching_platform, mario_player_x, mario_player_y, mario_player_gravity, \
+        mario_player_is_jump, mario_player_jump_counter
+
+    global player_jump_speed
+
     mario_player_touching_platform = False
+    mario_player_is_jump = True
+
+    if mario_player_is_jump and mario_player_jump_counter >= -5:
+        mario_player_gravity = 1
+        if mario_player_jump_counter < 0:
+            mario_player_gravity = -1
+        mario_player_y -= mario_player_jump_counter ** 2 * 0.5 * mario_player_gravity
+        mario_player_jump_counter -= 1
+        print(mario_player_y)
+    else:
+        mario_player_is_jump = False
+        mario_player_jump_counter = 5
 
 
 def win_condition():
-    pass
+    """
+    The win condition must be fulfilled to win
+
+    :return:
+    """
+    arcade.draw_rectangle_outline(200, 650, 100, 10, arcade.color.NEON_CARROT)
 
 
 def on_key_press(key, modifiers):
+    """
+    Checking for key presses
+
+    :param key:
+    :param modifiers:
+    :return:
+    """
     global mario_player_up_pressed, mario_player_down_pressed, mario_player_right_pressed, mario_player_left_pressed, \
-        mario_player_alive, luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_right_pressed, \
-        luigi_player_left_pressed, luigi_player_alive, donkey_kong_player_normal_barrel_pressed, \
-        donkey_kong_player_invisible_barrel_pressed, donkey_kong_player_mario_ladder_barrel_pressed, donkey_kong_player_luigi_ladder_barrel_pressed, \
+        mario_player_alive
+
+    global luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_right_pressed, luigi_player_left_pressed, \
+        luigi_player_alive
+
+    global donkey_kong_player_normal_barrel_pressed, donkey_kong_player_invisible_barrel_pressed, \
+        donkey_kong_player_mario_ladder_barrel_pressed, donkey_kong_player_luigi_ladder_barrel_pressed, \
         donkey_kong_player_big_barrel_pressed, donkey_kong_player_small_barrel_pressed, donkey_kong_player_alive
 
     # Mario Controls
@@ -557,19 +738,32 @@ def on_key_press(key, modifiers):
 
 
 def on_key_release(key, modifiers):
-    global mario_player_up_pressed, mario_player_down_pressed, mario_player_left_pressed, mario_player_right_pressed, \
-        luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_left_pressed, luigi_player_right_pressed, \
-        donkey_kong_player_normal_barrel_pressed, donkey_kong_player_mario_ladder_barrel_pressed, \
+    """
+    Checking for key releases
+
+    :param key:
+    :param modifiers:
+    :return:
+    """
+    global mario_player_up_pressed, mario_player_down_pressed, mario_player_left_pressed, mario_player_right_pressed
+
+    global luigi_player_up_pressed, luigi_player_down_pressed, luigi_player_left_pressed, luigi_player_right_pressed
+
+    global donkey_kong_player_normal_barrel_pressed, donkey_kong_player_mario_ladder_barrel_pressed, \
         donkey_kong_player_luigi_ladder_barrel_pressed, donkey_kong_player_big_barrel_pressed, \
         donkey_kong_player_small_barrel_pressed, donkey_kong_player_invisible_barrel_pressed
+
+    global velocity
 
     # To Stop Mario's Controls When The Player Lets Go Of The Key
     if key == arcade.key.W:
         mario_player_up_pressed = False
     if key == arcade.key.D:
         mario_player_right_pressed = False
+        velocity = 0
     if key == arcade.key.A:
         mario_player_left_pressed = False
+        velocity = 0
     if key == arcade.key.S:
         mario_player_down_pressed = False
 
@@ -599,6 +793,11 @@ def on_key_release(key, modifiers):
 
 
 def setup():
+    """
+    The final setup before the code is run
+
+    :return:
+    """
 
     arcade.open_window(screen_width, screen_height, screen_title)
     arcade.set_background_color(arcade.color.BLACK)
