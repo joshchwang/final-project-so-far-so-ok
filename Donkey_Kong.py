@@ -1,5 +1,4 @@
 import arcade
-import random
 
 # Screen Variables
 screen_width = 500
@@ -58,7 +57,7 @@ donkey_kong_player_normal_barrel_cool_down = 3
 donkey_kong_player_normal_barrel_x = 55
 donkey_kong_player_normal_barrel_y = 600
 
-# Invisible Barrels Variables (outline rectangle not filled)
+# Invisible Barrels Variables (filled rectangle not filled)
 donkey_kong_player_invisible_barrel_pressed = False
 donkey_kong_player_invisible_barrel_cool_down = 7
 
@@ -95,10 +94,6 @@ donkey_kong_player_small_barrel_cool_down = 10
 donkey_kong_player_small_barrel_x = 55
 donkey_kong_player_small_barrel_y = 600
 
-# Random Variables
-ladder_barrel_random_barrel = random.randint(0, 1)
-donkey_kong_random_barrel = random.randint(0, 1)
-
 # Game Aspect Variables
 mario_player_lives = 3
 luigi_player_lives = 3
@@ -131,11 +126,11 @@ def on_update(delta_time):
     global velocity
 
     # Mario Conditions
-    if mario_player_up_pressed and mario_player_touching_platform and mario_player_alive:
-        jump()
-        mario_player_touching_platform = True
-        mario_player_is_jump = False
-    elif mario_player_up_pressed and mario_player_on_ladder and mario_player_alive:
+    # if mario_player_up_pressed and mario_player_touching_platform and mario_player_alive:
+    #    jump()
+    #    mario_player_touching_platform = True
+    #    mario_player_is_jump = False
+    if mario_player_up_pressed and mario_player_on_ladder and mario_player_alive:
         mario_player_y += 2
     if mario_player_down_pressed and mario_player_on_ladder and mario_player_alive:
         mario_player_y -= 2
@@ -288,13 +283,6 @@ def donkey_kong():
 
     arcade.draw_rectangle_outline(donkey_kong_player_x, donkey_kong_player_y, 50, 50, arcade.color.CERULEAN)
 
-    normal_barrel()
-    invisible_barrel()
-    ladder_barrel_mario()
-    ladder_barrel_luigi()
-    big_barrel()
-    small_barrel()
-
 
 def ladder():
     """
@@ -320,6 +308,42 @@ def ladder():
     # Luigi Ladder (platform 2 - platform 3)
     arcade.draw_rectangle_outline(180, 200, 25, 60, arcade.color.APPLE_GREEN)
 
+    # Mario Ladder (platform 3 - platform 4)
+    arcade.draw_rectangle_outline(250, 260, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 3 - platform 4)
+    arcade.draw_rectangle_outline(370, 260, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 4 - platform 5)
+    arcade.draw_rectangle_outline(180, 320, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 4 - platform 5)
+    arcade.draw_rectangle_outline(320, 320, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 5 - platform 6)
+    arcade.draw_rectangle_outline(370, 380, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 5 - platform 6)
+    arcade.draw_rectangle_outline(250, 380, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 6 - platform 7)
+    arcade.draw_rectangle_outline(320, 440, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 6 - platform 7)
+    arcade.draw_rectangle_outline(180, 440, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 7 - platform 8)
+    arcade.draw_rectangle_outline(250, 500, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 7 - platform 8)
+    arcade.draw_rectangle_outline(370, 500, 25, 60, arcade.color.APPLE_GREEN)
+
+    # Mario Ladder (platform 8 - platform 9)
+    arcade.draw_rectangle_outline(180, 560, 25, 60, arcade.color.RED_ORANGE)
+
+    # Luigi Ladder (platform 8 - platform 9)
+    arcade.draw_rectangle_outline(320, 560, 25, 60, arcade.color.APPLE_GREEN)
+
     # The Winning Ladder (purple)
     arcade.draw_rectangle_outline(200, 623, 25, 65, arcade.color.PURPLE_HEART)
 
@@ -339,8 +363,12 @@ def on_draw():
     # Left and Right Walls
     arcade.draw_rectangle_outline(20, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
     arcade.draw_rectangle_outline(480, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
+
     # Bottom Floor
     arcade.draw_rectangle_outline(screen_width / 2, 25, 500, 50, arcade.color.RUSTY_RED)
+
+    # Top Ceiling
+    arcade.draw_rectangle_outline(screen_width / 2, 690, 500, 50, arcade.color.RUSTY_RED)
 
     # Platform 1 (from bottom)
     arcade.draw_rectangle_outline(20, 100, 750, 20, arcade.color.RUSTY_RED)
@@ -369,10 +397,10 @@ def on_draw():
     # Platform 9 (from bottom)
     arcade.draw_rectangle_outline(20, 580, 750, 20, arcade.color.RUSTY_RED)
 
-    player()
     ladder()
     donkey_kong()
     win_condition()
+    player()
 
 
 def collision():
@@ -381,7 +409,7 @@ def collision():
 
     :return:
     """
-    global mario_player_x, mario_player_y, mario_player_alive
+    global mario_player_x, mario_player_y, mario_player_alive, mario_player_on_ladder
 
     global donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, \
         donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y, \
@@ -390,7 +418,7 @@ def collision():
         donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y, \
         donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y
 
-    global luigi_player_x, luigi_player_y, luigi_player_alive
+    global luigi_player_x, luigi_player_y, luigi_player_alive, luigi_player_on_ladder
 
     # Mario Collision
 
@@ -509,6 +537,28 @@ def collision():
     # Platform 9 (from bottom) Right Side Collision
     if (565 <= mario_player_y - 1 <= 585) and mario_player_x - 1 <= 400:
         mario_player_x = 400
+
+    # Mario Ladder Collision
+
+    # Collision Check (bottom floor - platform 1)
+    if (167.5 <= mario_player_x <= 192.5) and (50 <= mario_player_y <= 110):
+        mario_player_on_ladder = True
+
+    # Off Check (bottom floor - platform 1)
+    if (192.5 < mario_player_x) or (mario_player_x < 167.5):
+        mario_player_on_ladder = False
+        if 50 < mario_player_y < 110:
+            mario_player_y = 55
+
+    # Collision Check (platform 1 - platform 2)
+    if (157.5 <= mario_player_x <= 382.5) and (110 <= mario_player_y <= 170):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 1 - platform 2)
+    if (382.5 < mario_player_x) or (mario_player_x < 157.5):
+        mario_player_on_ladder = False
+        if 115 < mario_player_y < 170:
+            mario_player_y = 115
 
     # Mario Collision With Normal Barrels
     if mario_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and mario_player_y - 5 <= \
