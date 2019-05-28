@@ -560,6 +560,16 @@ def collision():
         if 115 < mario_player_y < 170:
             mario_player_y = 115
 
+    # Collision Check (platform 2 - platform 3)
+    if (307.5 <= mario_player_x <= 332.5) and (170 <= mario_player_y <= 230):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 2 - platform 3)
+    if (332.5 < mario_player_x) or (mario_player_x < 307.5):
+        mario_player_on_ladder = False
+        if 175 < mario_player_y < 230:
+            mario_player_y = 175
+
     # Mario Collision With Normal Barrels
     if mario_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and mario_player_y - 5 <= \
             donkey_kong_player_normal_barrel_y + 8 and \
