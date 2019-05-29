@@ -439,8 +439,8 @@ def collision():
         mario_player_y = 115
 
     # Platform 1 (from bottom) Right Side Collision
-    if (85 <= mario_player_y - 1 <= 110) and mario_player_x - 1 <= 400:
-        mario_player_x = 400
+    # if (85 <= mario_player_y - 1 <= 110) and mario_player_x - 1 <= 400:
+        # mario_player_x = 400
 
     # Platform 2 (from bottom) Bottom Collision
     if (145 <= mario_player_y + 1 <= 155) and mario_player_x - 1 >= 100:
@@ -451,8 +451,8 @@ def collision():
         mario_player_y = 175
 
     # Platform 2 (from bottom) Side Collision
-    if (150 <= mario_player_y - 1 <= 165) and mario_player_x + 1 >= 100:
-        mario_player_x = 100
+    # if (150 <= mario_player_y - 1 <= 165) and mario_player_x + 1 >= 100:
+        # mario_player_x = 100
 
     # Platform 3 (from bottom) Bottom Collision
     if (205 <= mario_player_y + 1 <= 215) and mario_player_x + 1 <= 400:
@@ -463,8 +463,8 @@ def collision():
         mario_player_y = 235
 
     # Platform 3 (from bottom) Right Side Collision
-    if (205 <= mario_player_y - 1 <= 220) and mario_player_x - 1 <= 400:
-        mario_player_x = 400
+    # if (205 <= mario_player_y - 1 <= 220) and mario_player_x - 1 <= 400:
+        # mario_player_x = 400
 
     # Platform 4 (from bottom) Bottom Collision
     if (265 <= mario_player_y + 1 <= 275) and mario_player_x - 1 >= 100:
@@ -475,8 +475,8 @@ def collision():
         mario_player_y = 295
 
     # Platform 4 (from bottom) Side Collision
-    if (265 <= mario_player_y - 1 <= 285) and mario_player_x + 1 >= 100:
-        mario_player_x = 100
+    # if (265 <= mario_player_y - 1 <= 285) and mario_player_x + 1 >= 100:
+        # mario_player_x = 100
 
     # Platform 5 (from bottom) Bottom Collision
     if (325 <= mario_player_y + 1 <= 340) and mario_player_x + 1 <= 400:
@@ -487,8 +487,8 @@ def collision():
         mario_player_y = 355
 
     # Platform 5 (from bottom) Right Side Collision
-    if (325 <= mario_player_y - 1 <= 350) and mario_player_x - 1 <= 400:
-        mario_player_x = 400
+    # if (325 <= mario_player_y - 1 <= 350) and mario_player_x - 1 <= 400:
+        # mario_player_x = 400
 
     # Platform 6 (from bottom) Bottom Collision
     if (385 <= mario_player_y + 1 <= 395) and mario_player_x - 1 >= 100:
@@ -499,8 +499,8 @@ def collision():
         mario_player_y = 415
 
     # Platform 6 (from bottom) Side Collision
-    if (385 <= mario_player_y - 1 <= 405) and mario_player_x + 1 >= 100:
-        mario_player_x = 100
+    # if (385 <= mario_player_y - 1 <= 405) and mario_player_x + 1 >= 100:
+        # mario_player_x = 100
 
     # Platform 7 (from bottom) Bottom Collision
     if (445 <= mario_player_y + 1 <= 460) and mario_player_x + 1 <= 400:
@@ -511,8 +511,8 @@ def collision():
         mario_player_y = 475
 
     # Platform 7 (from bottom) Right Side Collision
-    if (445 <= mario_player_y - 1 <= 465) and mario_player_x - 1 <= 400:
-        mario_player_x = 400
+    # if (445 <= mario_player_y - 1 <= 465) and mario_player_x - 1 <= 400:
+        # mario_player_x = 400
 
     # Platform 8 (from bottom) Bottom Collision
     if (505 <= mario_player_y + 1 <= 520) and mario_player_x - 1 >= 100:
@@ -523,8 +523,8 @@ def collision():
         mario_player_y = 535
 
     # Platform 8 (from bottom) Side Collision
-    if (505 <= mario_player_y - 1 <= 525) and mario_player_x + 1 >= 100:
-        mario_player_x = 100
+    # if (505 <= mario_player_y - 1 <= 525) and mario_player_x + 1 >= 100:
+        # mario_player_x = 100
 
     # Platform 9 (from bottom) Bottom Collision
     if (565 <= mario_player_y + 1 <= 575) and mario_player_x + 1 <= 400:
@@ -535,8 +535,8 @@ def collision():
         mario_player_y = 595
 
     # Platform 9 (from bottom) Right Side Collision
-    if (565 <= mario_player_y - 1 <= 585) and mario_player_x - 1 <= 400:
-        mario_player_x = 400
+    # if (565 <= mario_player_y - 1 <= 585) and mario_player_x - 1 <= 400:
+        # mario_player_x = 400
 
     # Mario Ladder Collision
 
@@ -545,30 +545,90 @@ def collision():
         mario_player_on_ladder = True
 
     # Off Check (bottom floor - platform 1)
-    if (192.5 < mario_player_x) or (mario_player_x < 167.5):
+    if (192.5 < mario_player_x) and (50 < mario_player_y < 110) or (mario_player_x < 167.5) and \
+            (50 < mario_player_y < 110):
         mario_player_on_ladder = False
-        if 50 < mario_player_y < 110:
-            mario_player_y = 55
+        mario_player_y = 55
 
     # Collision Check (platform 1 - platform 2)
     if (157.5 <= mario_player_x <= 382.5) and (110 <= mario_player_y <= 170):
         mario_player_on_ladder = True
 
     # Off Check (platform 1 - platform 2)
-    if (382.5 < mario_player_x) or (mario_player_x < 157.5):
+    if (382.5 < mario_player_x) and (110 < mario_player_y < 170) or (mario_player_x < 157.5) and \
+            (110 < mario_player_y < 170):
         mario_player_on_ladder = False
-        if 115 < mario_player_y < 170:
-            mario_player_y = 115
+        mario_player_y = 115
 
     # Collision Check (platform 2 - platform 3)
     if (307.5 <= mario_player_x <= 332.5) and (170 <= mario_player_y <= 230):
         mario_player_on_ladder = True
 
     # Off Check (platform 2 - platform 3)
-    if (332.5 < mario_player_x) or (mario_player_x < 307.5):
+    if (332.5 < mario_player_x) and (170 < mario_player_y < 230) or (mario_player_x < 307.5) and \
+            (170 < mario_player_y < 230):
         mario_player_on_ladder = False
-        if 175 < mario_player_y < 230:
-            mario_player_y = 175
+        mario_player_y = 175
+
+    # Collision Check (platform 3 - platform 4)
+    if (237.5 <= mario_player_x <= 262.5) and (230 <= mario_player_y <= 290):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 3 - platform 4)
+    if (262.5 < mario_player_x) and (230 < mario_player_y < 290) or (mario_player_x < 237.5) and \
+            (230 < mario_player_y < 290):
+        mario_player_on_ladder = False
+        mario_player_y = 235
+
+    # Collision Check (platform 4 - platform 5)
+    if(167.5 <= mario_player_x <= 192.5) and (290 <= mario_player_y <= 350):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 4 - platform 5)
+    if (192.5 < mario_player_x) and (290 < mario_player_y < 350) or (mario_player_x < 167.5) and \
+            (290 < mario_player_y < 350):
+        mario_player_on_ladder = False
+        mario_player_y = 295
+
+    # Collision Check (platform 5 - platform 6)
+    if (357.5 <= mario_player_x <= 382.5) and (350 <= mario_player_y <= 410):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 5 - platform 6)
+    if (382.5 < mario_player_x) and (350 < mario_player_y < 410) or (mario_player_x < 357.5) and \
+            (350 < mario_player_y < 410):
+        mario_player_on_ladder = False
+        mario_player_y = 355
+
+    # Collision Check (platform 6 - platform 7)
+    if (307.5 <= mario_player_x <= 332.5) and (410 <= mario_player_y <= 470):
+        mario_player_on_ladder = False
+
+    # Off Check (platform 6 - platform 7)
+    if (332.5 < mario_player_x) and (410 < mario_player_y < 470) or (mario_player_x < 307.5) and \
+            (410 < mario_player_y < 470):
+        mario_player_on_ladder = False
+        mario_player_y = 415
+
+    # Collision Check (platform 7 - platform 8)
+    if (237.5 <= mario_player_x <= 262.5) and (470 <= mario_player_y <= 530):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 7 - platform 8)
+    if (262.5 < mario_player_x) and (470 < mario_player_y < 530) or (mario_player_x < 237.5) and \
+            (470 < mario_player_y < 530):
+        mario_player_on_ladder = False
+        mario_player_y = 475
+
+    # Collision Check (platform 8 - platform 9)
+    if (167.5 <= mario_player_x <= 192.5) and (530 <= mario_player_y <= 590):
+        mario_player_on_ladder = True
+
+    # Off Check (platform 8 - platform 9)
+    if (192.5 < mario_player_x) and (530 < mario_player_y < 590) or (mario_player_x < 167.5) and \
+            (530 < mario_player_y < 590):
+        mario_player_on_ladder = False
+        mario_player_y = 535
 
     # Mario Collision With Normal Barrels
     if mario_player_x - 5 <= donkey_kong_player_normal_barrel_x + 8 and mario_player_y - 5 <= \
