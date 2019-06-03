@@ -191,10 +191,10 @@ def player():
     global luigi_player_x, luigi_player_y
 
     # Mario
-    arcade.draw_rectangle_filled(mario_player_x, mario_player_y, 10, 10, arcade.color.RED)
+    arcade.draw_rectangle_outline(mario_player_x, mario_player_y, 10, 10, arcade.color.RED)
 
     # Luigi
-    arcade.draw_rectangle_filled(luigi_player_x, luigi_player_y, 10, 10, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(luigi_player_x, luigi_player_y, 10, 10, arcade.color.GREEN)
 
 
 def normal_barrel():
@@ -204,7 +204,7 @@ def normal_barrel():
     :return:
     """
     global donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y
-    arcade.draw_rectangle_filled(donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, 15, 15,
+    arcade.draw_rectangle_outline(donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, 15, 15,
                                   arcade.color.FRENCH_BEIGE)
     donkey_kong_player_normal_barrel_x += 2
 
@@ -216,7 +216,7 @@ def invisible_barrel():
     :return:
     """
     global donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y
-    arcade.draw_rectangle_filled(donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y, 15, 15,
+    arcade.draw_rectangle_outline(donkey_kong_player_invisible_barrel_x, donkey_kong_player_invisible_barrel_y, 15, 15,
                                   arcade.color.GHOST_WHITE)
     donkey_kong_player_invisible_barrel_x += 2
 
@@ -228,7 +228,7 @@ def big_barrel():
     :return:
     """
     global donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y
-    arcade.draw_rectangle_filled(donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y, 20, 20,
+    arcade.draw_rectangle_outline(donkey_kong_player_big_barrel_x, donkey_kong_player_big_barrel_y, 20, 20,
                                   arcade.color.YELLOW)
     donkey_kong_player_big_barrel_x += 1
 
@@ -240,7 +240,7 @@ def small_barrel():
     :return:
     """
     global donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y
-    arcade.draw_rectangle_filled(donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y, 10, 10,
+    arcade.draw_rectangle_outline(donkey_kong_player_small_barrel_x, donkey_kong_player_small_barrel_y, 10, 10,
                                   arcade.color.BLUE)
     donkey_kong_player_small_barrel_x += 5
 
@@ -254,7 +254,7 @@ def ladder_barrel_mario():
     global donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y
 
     # Mario Ladder Barrels
-    arcade.draw_rectangle_filled(donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y,
+    arcade.draw_rectangle_outline(donkey_kong_ladder_mario_ladder_barrel_x, donkey_kong_player_mario_ladder_barrel_y,
                                   15, 15, arcade.color.RED_VIOLET)
     donkey_kong_ladder_mario_ladder_barrel_x += 2
 
@@ -268,7 +268,7 @@ def ladder_barrel_luigi():
     global donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y
 
     # Luigi Ladder Barrels
-    arcade.draw_rectangle_filled(donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y,
+    arcade.draw_rectangle_outline(donkey_kong_player_luigi_ladder_barrel_x, donkey_kong_player_luigi_ladder_barrel_y,
                                   15, 15, arcade.color.GUPPIE_GREEN)
     donkey_kong_player_luigi_ladder_barrel_x += 2
 
@@ -281,7 +281,7 @@ def donkey_kong():
     """
     global donkey_kong_player_x, donkey_kong_player_y
 
-    arcade.draw_rectangle_filled(donkey_kong_player_x, donkey_kong_player_y, 50, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(donkey_kong_player_x, donkey_kong_player_y, 50, 50, arcade.color.CERULEAN)
 
 
 def ladder():
@@ -291,61 +291,61 @@ def ladder():
     :return:
     """
     # Mario Ladder (bottom floor - platform 1)
-    arcade.draw_rectangle_filled(180, 80, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(180, 80, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (bottom floor - platform 1)
-    arcade.draw_rectangle_filled(320, 80, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(320, 80, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 1 - platform 2)
-    arcade.draw_rectangle_filled(370, 140, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(370, 140, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 1 - platform 2)
-    arcade.draw_rectangle_filled(250, 140, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(250, 140, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 2 - platform 3)
-    arcade.draw_rectangle_filled(320, 200, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(320, 200, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 2 - platform 3)
-    arcade.draw_rectangle_filled(180, 200, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(180, 200, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 3 - platform 4)
-    arcade.draw_rectangle_filled(250, 260, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(250, 260, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 3 - platform 4)
-    arcade.draw_rectangle_filled(370, 260, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(370, 260, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 4 - platform 5)
-    arcade.draw_rectangle_filled(180, 320, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(180, 320, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 4 - platform 5)
-    arcade.draw_rectangle_filled(320, 320, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(320, 320, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 5 - platform 6)
-    arcade.draw_rectangle_filled(370, 380, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(370, 380, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 5 - platform 6)
-    arcade.draw_rectangle_filled(250, 380, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(250, 380, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 6 - platform 7)
-    arcade.draw_rectangle_filled(320, 440, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(320, 440, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 6 - platform 7)
-    arcade.draw_rectangle_filled(180, 440, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(180, 440, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 7 - platform 8)
-    arcade.draw_rectangle_filled(250, 500, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(250, 500, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 7 - platform 8)
-    arcade.draw_rectangle_filled(370, 500, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(370, 500, 25, 60, arcade.color.APPLE_GREEN)
 
     # Mario Ladder (platform 8 - platform 9)
-    arcade.draw_rectangle_filled(180, 560, 25, 60, arcade.color.RED_ORANGE)
+    arcade.draw_rectangle_outline(180, 560, 25, 60, arcade.color.RED_ORANGE)
 
     # Luigi Ladder (platform 8 - platform 9)
-    arcade.draw_rectangle_filled(320, 560, 25, 60, arcade.color.APPLE_GREEN)
+    arcade.draw_rectangle_outline(320, 560, 25, 60, arcade.color.APPLE_GREEN)
 
     # The Winning Ladder (purple)
-    arcade.draw_rectangle_filled(200, 623, 25, 65, arcade.color.PURPLE_HEART)
+    arcade.draw_rectangle_outline(200, 623, 25, 65, arcade.color.PURPLE_HEART)
 
 
 def on_draw():
@@ -361,68 +361,68 @@ def on_draw():
     arcade.start_render()
 
     # Left and Right Walls
-    arcade.draw_rectangle_filled(20, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
-    arcade.draw_rectangle_filled(480, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(480, screen_height / 2, 50, 700, arcade.color.RUSTY_RED)
 
     # Bottom Floor
-    arcade.draw_rectangle_filled(screen_width / 2, 25, 500, 50, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(screen_width / 2, 25, 500, 50, arcade.color.RUSTY_RED)
 
     # Top Ceiling
-    arcade.draw_rectangle_filled(screen_width / 2, 690, 500, 50, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(screen_width / 2, 690, 500, 50, arcade.color.RUSTY_RED)
 
     # Platform 1 (from bottom)
-    arcade.draw_rectangle_filled(20, 100, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, 100, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 1 (from bottom)
-    arcade.draw_rectangle_filled(425, 100, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(425, 100, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 2 (from bottom)
-    arcade.draw_rectangle_filled(480, 160, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(480, 160, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 2 (from bottom)
-    arcade.draw_rectangle_filled(75, 160, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(75, 160, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 3 (from bottom)
-    arcade.draw_rectangle_filled(20, 220, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, 220, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 3 (from bottom)
-    arcade.draw_rectangle_filled(425, 220, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(425, 220, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 4 (from bottom)
-    arcade.draw_rectangle_filled(480, 280, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(480, 280, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 4 (from bottom)
-    arcade.draw_rectangle_filled(75, 280, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(75, 280, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 5 (from bottom)
-    arcade.draw_rectangle_filled(20, 340, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, 340, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 5 (from bottom)
-    arcade.draw_rectangle_filled(425, 340, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(425, 340, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 6 (from bottom)
-    arcade.draw_rectangle_filled(480, 400, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(480, 400, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 6 (from bottom)
-    arcade.draw_rectangle_filled(75, 400, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(75, 400, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 7 (from bottom)
-    arcade.draw_rectangle_filled(20, 460, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, 460, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 7 (from bottom)
-    arcade.draw_rectangle_filled(425, 460, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(425, 460, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 8 (from bottom)
-    arcade.draw_rectangle_filled(480, 520, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(480, 520, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 8 (from bottom)
-    arcade.draw_rectangle_filled(75, 520, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(75, 520, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 9 (from bottom)
-    arcade.draw_rectangle_filled(20, 580, 750, 20, arcade.color.RUSTY_RED)
+    arcade.draw_rectangle_outline(20, 580, 750, 20, arcade.color.RUSTY_RED)
 
     # Transparent Platform 9 (from bottom)
-    arcade.draw_rectangle_filled(425, 580, 60, 20, arcade.color.BLUE_SAPPHIRE)
+    arcade.draw_rectangle_outline(425, 580, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     ladder()
     donkey_kong()
@@ -536,7 +536,7 @@ def collision():
     # Platform 6 (from bottom) Top Collision
     if (385 <= mario_player_y - 1 <= 415) and mario_player_x - 1 >= 382.5 or (385 <= mario_player_y - 1 <= 415) and \
             357.5 >= mario_player_x - 1:
-        mario_player_y = 420
+        mario_player_y = 415
 
     # Platform 6 (from bottom) Side Collision
     # if (385 <= mario_player_y - 1 <= 405) and mario_player_x + 1 >= 100:
@@ -544,11 +544,11 @@ def collision():
 
     # Platform 7 (from bottom) Bottom Collision
     if (445 <= mario_player_y + 1 <= 460) and mario_player_x + 1 <= 237.5 or (445 <= mario_player_y + 1 <= 460) and \
-            262.5 <= mario_player_x + 1:
+            262.5 >= mario_player_x + 1:
         mario_player_y = 445
 
     # Platform 7 (from bottom) Top Collision
-    if (445 <= mario_player_y - 1 <= 475) and mario_player_x + 1 <= 237.5 or (445 <= mario_player_y - 1 <= 475) and \
+    if (465 <= mario_player_y - 1 <= 475) and mario_player_x + 1 <= 237.5 or (445 <= mario_player_y - 1 <= 475) and \
             262.5 <= mario_player_x + 1:
         mario_player_y = 475
 
@@ -571,11 +571,13 @@ def collision():
         # mario_player_x = 100
 
     # Platform 9 (from bottom) Bottom Collision
-    if (565 <= mario_player_y + 1 <= 575) and mario_player_x + 1 <= 400:
+    if (565 <= mario_player_y + 1 <= 575) and mario_player_x + 1 <= 167.5 or (565 <= mario_player_y + 1 <= 575) and \
+            192.5 <= mario_player_x + 1:
         mario_player_y = 565
 
     # Platform 9 (from bottom) Top Collision
-    if (565 <= mario_player_y - 1 <= 595) and mario_player_x + 1 <= 400:
+    if (565 <= mario_player_y - 1 <= 595) and mario_player_x + 1 <= 167.5 or (565 <= mario_player_y - 1 <= 595) and \
+            192.5 <= mario_player_x:
         mario_player_y = 595
 
     # Platform 9 (from bottom) Side Collision
@@ -657,7 +659,7 @@ def collision():
 
     # Collision Check (platform 6 - platform 7)
     if (307.5 <= mario_player_x <= 332.5) and (410 <= mario_player_y <= 470):
-        mario_player_on_ladder = False
+        mario_player_on_ladder = True
 
     # Off Check (platform 6 - platform 7)
     if (332.5 < mario_player_x) and (410 < mario_player_y < 470) or (mario_player_x < 307.5) and \
@@ -670,8 +672,8 @@ def collision():
         mario_player_on_ladder = True
 
     # Off Check (platform 7 - platform 8)
-    if (262.5 < mario_player_x) and (470 < mario_player_y < 530) or (mario_player_x < 237.5) and \
-            (470 < mario_player_y < 530):
+    if (262.5 < mario_player_x) and (465 < mario_player_y < 530) or (mario_player_x < 237.5) and \
+            (465 < mario_player_y < 530):
         mario_player_on_ladder = False
         mario_player_y = 475
 
@@ -858,7 +860,7 @@ def win_condition():
 
     :return:
     """
-    arcade.draw_rectangle_filled(200, 650, 100, 10, arcade.color.NEON_CARROT)
+    arcade.draw_rectangle_outline(200, 650, 100, 10, arcade.color.NEON_CARROT)
 
 
 def on_key_press(key, modifiers):
