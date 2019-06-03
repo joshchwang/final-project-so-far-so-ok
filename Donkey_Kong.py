@@ -851,6 +851,11 @@ def jump():
 
 
 def die():
+    """
+    Dies
+
+    :return:
+    """
     pass
 
 
