@@ -203,10 +203,21 @@ def normal_barrel():
 
     :return:
     """
+
     global donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y
     arcade.draw_rectangle_outline(donkey_kong_player_normal_barrel_x, donkey_kong_player_normal_barrel_y, 15, 15,
                                   arcade.color.FRENCH_BEIGE)
-    donkey_kong_player_normal_barrel_x += 2
+
+    # Changing the platform variable
+    if donkey_kong_player_normal_barrel_y
+    platform = 0
+
+    # Odd Platforms (moving left to right)
+    if platform == 0 and 50 < donkey_kong_player_normal_barrel_x < 455:
+        donkey_kong_player_normal_barrel_x += 2
+    if 400 < donkey_kong_player_normal_barrel_x < 455 and donkey_kong_player_normal_barrel_x:
+        donkey_kong_player_normal_barrel_y-= 2
+    # if donkey_kong_player_x
 
 
 def invisible_barrel():
@@ -371,63 +382,91 @@ def on_draw():
     arcade.draw_rectangle_outline(screen_width / 2, 690, 500, 50, arcade.color.RUSTY_RED)
 
     # Platform 1 (from bottom)
+    # (Platform Value Is 0)
     arcade.draw_rectangle_outline(20, 100, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 110
+    # Bottom Value is 90
 
     # Transparent Platform 1 (from bottom)
     arcade.draw_rectangle_outline(425, 100, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 2 (from bottom)
+    # (Platform Value Is 1)
     arcade.draw_rectangle_outline(480, 160, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 170
+    # Bottom Value is 150
 
     # Transparent Platform 2 (from bottom)
     arcade.draw_rectangle_outline(75, 160, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 3 (from bottom)
+    # (Platform Value Is 0)
     arcade.draw_rectangle_outline(20, 220, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 230
+    # Bottom Value is 210
 
     # Transparent Platform 3 (from bottom)
     arcade.draw_rectangle_outline(425, 220, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 4 (from bottom)
+    # (Platform Value is 1)
     arcade.draw_rectangle_outline(480, 280, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 290
+    # Bottom Value is 270
 
     # Transparent Platform 4 (from bottom)
     arcade.draw_rectangle_outline(75, 280, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 5 (from bottom)
+    # (Platform Value Is 0)
     arcade.draw_rectangle_outline(20, 340, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 350
+    # Bottom Value is 330
 
     # Transparent Platform 5 (from bottom)
     arcade.draw_rectangle_outline(425, 340, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 6 (from bottom)
+    # (Platform Value Is 1)
     arcade.draw_rectangle_outline(480, 400, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 410
+    # Bottom Value is 390
 
     # Transparent Platform 6 (from bottom)
     arcade.draw_rectangle_outline(75, 400, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 7 (from bottom)
+    # (Platform Value Is 0)
     arcade.draw_rectangle_outline(20, 460, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 470
+    # Bottom Value is 450
 
     # Transparent Platform 7 (from bottom)
     arcade.draw_rectangle_outline(425, 460, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 8 (from bottom)
+    # (Platform Value Is 1)
     arcade.draw_rectangle_outline(480, 520, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 530
+    # Bottom Value is 510
 
     # Transparent Platform 8 (from bottom)
     arcade.draw_rectangle_outline(75, 520, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     # Platform 9 (from bottom)
+    # (Platform Value Is 0)
     arcade.draw_rectangle_outline(20, 580, 750, 20, arcade.color.RUSTY_RED)
+    # Top Value is 590
+    # Bottom Value is 570
 
     # Transparent Platform 9 (from bottom)
     arcade.draw_rectangle_outline(425, 580, 60, 20, arcade.color.BLUE_SAPPHIRE)
 
     ladder()
-    donkey_kong()
     win_condition()
     player()
+    donkey_kong()
+    normal_barrel()
 
 
 def collision():
@@ -548,7 +587,7 @@ def collision():
         mario_player_y = 445
 
     # Platform 7 (from bottom) Top Collision
-    if (465 <= mario_player_y - 1 <= 475) and mario_player_x + 1 <= 237.5 or (445 <= mario_player_y - 1 <= 475) and \
+    if (445 <= mario_player_y - 1 <= 480) and mario_player_x + 1 <= 237.5 or (445 <= mario_player_y - 1 <= 480) and \
             262.5 <= mario_player_x + 1:
         mario_player_y = 475
 
@@ -668,7 +707,7 @@ def collision():
         mario_player_y = 415
 
     # Collision Check (platform 7 - platform 8)
-    if (237.5 <= mario_player_x <= 262.5) and (470 <= mario_player_y <= 530):
+    if (237.5 <= mario_player_x <= 262.5) and (475 <= mario_player_y <= 530):
         mario_player_on_ladder = True
 
     # Off Check (platform 7 - platform 8)
