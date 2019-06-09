@@ -209,14 +209,14 @@ def normal_barrel():
                                   arcade.color.FRENCH_BEIGE)
 
     # Changing the platform variable
-    if donkey_kong_player_normal_barrel_y
-    platform = 0
+    if 570 < donkey_kong_player_normal_barrel_y < 590 or 450 < donkey_kong_player_normal_barrel_y < 470 or 330 < donkey_kong_player_normal_barrel_y < 350 or 210 < donkey_kong_player_normal_barrel_y < 230 or 90 < donkey_kong_player_normal_barrel_y < 110:
+        platform = 0
 
     # Odd Platforms (moving left to right)
     if platform == 0 and 50 < donkey_kong_player_normal_barrel_x < 455:
         donkey_kong_player_normal_barrel_x += 2
     if 400 < donkey_kong_player_normal_barrel_x < 455 and donkey_kong_player_normal_barrel_x:
-        donkey_kong_player_normal_barrel_y-= 2
+        donkey_kong_player_normal_barrel_y -= 2
     # if donkey_kong_player_x
 
 
