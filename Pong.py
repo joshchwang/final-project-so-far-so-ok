@@ -1,4 +1,5 @@
 import arcade
+import random
 
 # Screen Variables
 screen_width = 1000
@@ -18,21 +19,28 @@ player_2_up_pressed = False
 player_2_down_pressed = False
 
 # Ball Variables
+
+# If ball type is 1 its for player 1. 2 is for player 2.
+ball_type = random.randint(1, 2)
+
 ball_x = 500
 ball_y = 250
 
 # Velocity increases after hit
 ball_velocity = 1
 
-# If ball type is 0 it is neutral. 1 is for player 1. 2 is for player 2
-ball_type = 0
-
+if ball_type == 1:
+    ball_x = 250
+else:
+    ball_x = 750
 
 
 def on_update(delta_time):
     global player_1_up_pressed, player_1_down_pressed, player_1_y
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y
+
+    global ball_x, ball_y
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -45,6 +53,9 @@ def on_update(delta_time):
         player_2_y += 5
     if player_2_down_pressed and player_2_y - 50 >= 0:
         player_2_y -= 5
+
+    ball_x -= 1
+    ball_y += 1
 
 
 def on_draw():
@@ -105,6 +116,16 @@ def on_key_release(key, modifiers):
         player_2_down_pressed = False
 
 
+def collision():
+    global player_1_x, player_1_y
+
+    global player_2_x, player_2_y
+
+    global ball_x, ball_y
+
+    # Ball Collision With
+
+
 def setup():
 
     arcade.open_window(screen_width, screen_height, screen_title)
@@ -117,5 +138,6 @@ def setup():
     window.on_key_release = on_key_release
 
     arcade.run()
+
 
 setup()
