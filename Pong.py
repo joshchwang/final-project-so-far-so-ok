@@ -19,6 +19,8 @@ player_2_up_pressed = False
 player_2_down_pressed = False
 
 # Ball Variables
+ball_x = 500
+ball_y = 250
 
 # If ball type is 1 its for player 1. 2 is for player 2.
 if random.randint(0, 1) == 1:
@@ -26,8 +28,11 @@ if random.randint(0, 1) == 1:
 else:
     ball_type = True
 
-ball_x = 500
-ball_y = 250
+# Ball Starting Condition
+if ball_type:
+    ball_x = 250
+else:
+    ball_x = 750
 
 # Velocity increases after hit
 ball_velocity = 1
@@ -36,10 +41,8 @@ ball_velocity = 1
 ball_bounce_down = False
 ball_bounce_up = True
 
-if ball_type == 1:
-    ball_x = 250
-else:
-    ball_x = 750
+# Ball Condition Press
+ball_space_pressed = False
 
 
 def on_update(delta_time):
@@ -47,7 +50,7 @@ def on_update(delta_time):
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y
 
-    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity
+    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_space_pressed
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -74,7 +77,23 @@ def on_update(delta_time):
         ball_x -= 5
 
     # Checking if the Ball Bounces Off Screen
-
+    if ball_x > 1000:
+        if random.randint(0, 1) == 1:
+            ball_x = 750
+            ball_y = 250
+            ball_bounce_up = False
+            ball_bounce_down = False
+            if ball_space_pressed:
+                ball_type = False
+                ball_bounce_up = True
+        else:
+            ball_x = 250
+            ball_y = 250
+            ball_bounce_up = False
+            ball_bounce_down = False
+            if ball_space_pressed:
+                ball_type = True
+                ball_bounce_up = True
 
     collision()
 
@@ -106,6 +125,8 @@ def on_key_press(key, modifiers):
 
     global player_2_up_pressed, player_2_down_pressed
 
+    global ball_space_pressed
+
     # Player 1 Key Input
     if key == arcade.key.W:
         player_1_up_pressed = True
@@ -118,11 +139,17 @@ def on_key_press(key, modifiers):
     if key == arcade.key.DOWN:
         player_2_down_pressed = True
 
+    # Start Check
+    if key == arcade.key.SPACE:
+        ball_space_pressed = True
+
 
 def on_key_release(key, modifiers):
     global player_1_up_pressed, player_1_down_pressed
 
     global player_2_up_pressed, player_2_down_pressed
+
+    global ball_space_pressed
 
     # Player 1 Key Output
     if key == arcade.key.W:
@@ -135,6 +162,10 @@ def on_key_release(key, modifiers):
         player_2_up_pressed = False
     if key == arcade.key.DOWN:
         player_2_down_pressed = False
+
+    # Start Check
+    if key == arcade.key.SPACE:
+        ball_space_pressed = False
 
 
 def on_mouse_press(x, y, button, modifiers):
