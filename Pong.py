@@ -161,10 +161,10 @@ def collision():
         ball_bounce_up = True
 
     # Ball Collision With Player 1
-    if ball_x - 1 < player_1_x + 5 and (player_1_y - 50 <= ball_y <= player_1_y + 50):
+    if ball_x - 1 < player_1_x + 10 and (player_1_y - 50 <= ball_y <= player_1_y + 50):
         ball_type = True
     # Ball Collision With Player 2
-    if ball_x  + 1 > player_2_x - 5 and (player_2_y - 50 <= ball_y <= player_2_y + 50):
+    if ball_x  + 1 > player_2_x - 10 and (player_2_y - 50 <= ball_y <= player_2_y + 50):
         ball_type = False
 
 
