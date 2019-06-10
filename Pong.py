@@ -44,6 +44,8 @@ ball_bounce_up = True
 # Ball Condition Press
 ball_space_pressed = False
 
+# Score
+START THIS TOMORROW
 
 def on_update(delta_time):
     global player_1_up_pressed, player_1_down_pressed, player_1_y
