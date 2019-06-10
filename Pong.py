@@ -22,7 +22,7 @@ player_2_down_pressed = False
 ball_x = 500
 ball_y = 250
 
-# If ball type is 1 its for player 1. 2 is for player 2.
+# If ball type is False or 1 its for player 1. 2 or True is for player 2.
 if random.randint(0, 1) == 1:
     ball_type = False
 else:
@@ -42,17 +42,24 @@ ball_bounce_down = False
 ball_bounce_up = True
 
 # Ball Condition Press
-ball_space_pressed = False
+ball_pressed = False
 
 # Score
-START THIS TOMORROW
+score_player_1 = 0
+score_player_2 = 0
+score_endless = 0
+score_lives_player_1 = 0
+score_lives_player_2 = 0
+
 
 def on_update(delta_time):
     global player_1_up_pressed, player_1_down_pressed, player_1_y
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y
 
-    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_space_pressed
+    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_pressed
+
+    global score_player_1, score_player_2, score_lives_player_1, score_lives_player_2, score_endless
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -78,24 +85,23 @@ def on_update(delta_time):
     if not ball_type:
         ball_x -= 5
 
-    # Checking if the Ball Bounces Off Screen
+    # Check if the Ball Bounces Off Screen Player 1
+    if ball_x < 0:
+        ball_x = 250
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = True
+        score_player_2 += 1
+
+    # Checking if the Ball Bounces Off Screen Player 2
     if ball_x > 1000:
-        if random.randint(0, 1) == 1:
-            ball_x = 750
-            ball_y = 250
-            ball_bounce_up = False
-            ball_bounce_down = False
-            if ball_space_pressed:
-                ball_type = False
-                ball_bounce_up = True
-        else:
-            ball_x = 250
-            ball_y = 250
-            ball_bounce_up = False
-            ball_bounce_down = False
-            if ball_space_pressed:
-                ball_type = True
-                ball_bounce_up = True
+        ball_x = 750
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = False
+        score_player_1 += 1
 
     collision()
 
@@ -116,10 +122,24 @@ def on_draw():
     arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
 
     # Player 1 Text -------------------------- Replace string condition with variable for ability to choose name
-    arcade.draw_text("Player 1", 10, 580, arcade.color.CANDY_APPLE_RED, 12)
+    arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
 
     # Player 2 Text -------------------------- Replace string condition with variable for ability to choose name
-    arcade.draw_text("Player 2", 940, 580, arcade.color.APPLE_GREEN, 12)
+    arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
+
+    # Player 1 Score
+    if score_player_1 < 10:
+        arcade.draw_text(str(score_player_1), 450, 525, arcade.color.WHITE, 70)
+
+    if score_player_1 >= 10:
+        arcade.draw_text(str(score_player_1), 400, 525, arcade.color.WHITE, 70)
+
+    # Player 2 Score
+    arcade.draw_text(str(score_player_2), 550, 525, arcade.color.WHITE, 70)
+
+    # Colon
+    arcade.draw_rectangle_filled(520, 570, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_filled(520, 540, 10, 10, arcade.color.WHITE)
 
 
 def on_key_press(key, modifiers):
@@ -127,7 +147,7 @@ def on_key_press(key, modifiers):
 
     global player_2_up_pressed, player_2_down_pressed
 
-    global ball_space_pressed
+    global ball_pressed
 
     # Player 1 Key Input
     if key == arcade.key.W:
@@ -143,7 +163,7 @@ def on_key_press(key, modifiers):
 
     # Start Check
     if key == arcade.key.SPACE:
-        ball_space_pressed = True
+        ball_pressed = True
 
 
 def on_key_release(key, modifiers):
@@ -151,7 +171,7 @@ def on_key_release(key, modifiers):
 
     global player_2_up_pressed, player_2_down_pressed
 
-    global ball_space_pressed
+    global ball_pressed
 
     # Player 1 Key Output
     if key == arcade.key.W:
@@ -167,11 +187,7 @@ def on_key_release(key, modifiers):
 
     # Start Check
     if key == arcade.key.SPACE:
-        ball_space_pressed = False
-
-
-def on_mouse_press(x, y, button, modifiers):
-    pass
+        ball_pressed = False
 
 
 def collision():
@@ -194,11 +210,26 @@ def collision():
         ball_bounce_up = True
 
     # Ball Collision With Player 1
-    if ball_x - 1 < player_1_x + 10 and (player_1_y - 50 <= ball_y <= player_1_y + 50):
+    if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y):
         ball_type = True
+        ball_bounce_up = False
+        ball_bounce_down = True
+
+    if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50):
+        ball_type = True
+        ball_bounce_down = False
+        ball_bounce_up = True
+
     # Ball Collision With Player 2
-    if ball_x  + 1 > player_2_x - 10 and (player_2_y - 50 <= ball_y <= player_2_y + 50):
+    if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y):
         ball_type = False
+        ball_bounce_up = False
+        ball_bounce_down = True
+
+    if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y <= ball_y <= player_2_y + 50):
+        ball_type = False
+        ball_bounce_up = True
+        ball_bounce_down = False
 
 
 def setup():
