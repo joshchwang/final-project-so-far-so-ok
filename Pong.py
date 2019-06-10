@@ -21,13 +21,20 @@ player_2_down_pressed = False
 # Ball Variables
 
 # If ball type is 1 its for player 1. 2 is for player 2.
-ball_type = random.randint(1, 2)
+if random.randint(0, 1) == 1:
+    ball_type = False
+else:
+    ball_type = True
 
 ball_x = 500
 ball_y = 250
 
 # Velocity increases after hit
 ball_velocity = 1
+
+# Determines the bouncing
+ball_bounce_down = False
+ball_bounce_up = True
 
 if ball_type == 1:
     ball_x = 250
@@ -40,7 +47,7 @@ def on_update(delta_time):
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y
 
-    global ball_x, ball_y
+    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -54,8 +61,19 @@ def on_update(delta_time):
     if player_2_down_pressed and player_2_y - 50 >= 0:
         player_2_y -= 5
 
-    ball_x -= 1
-    ball_y += 1
+    # Ball Bouncing off of the Divider and the Bottom
+    if ball_bounce_up:
+        ball_y += 5
+    if ball_bounce_down:
+        ball_y -= 5
+
+    # Ball Bouncing off of the Players
+    if ball_type:
+        ball_x += 5
+    if not ball_type:
+        ball_x -= 5
+
+    collision()
 
 
 def on_draw():
@@ -70,7 +88,7 @@ def on_draw():
     # Ball
     arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
 
-    # Top Divider
+    # Divider
     arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
 
     # Player 1 Text -------------------------- Replace string condition with variable for ability to choose name
@@ -116,14 +134,35 @@ def on_key_release(key, modifiers):
         player_2_down_pressed = False
 
 
+def on_mouse_press(x, y, button, modifiers):
+    pass
+
+
 def collision():
     global player_1_x, player_1_y
 
     global player_2_x, player_2_y
 
-    global ball_x, ball_y
+    global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity
 
-    # Ball Collision With
+    # Ball Collision With Divider
+    if ball_y + 1 > 490:
+        ball_y = 490
+        ball_bounce_up = False
+        ball_bounce_down = True
+
+    # Ball Collision With Bottom Of Screen
+    if ball_y - 1 < 5:
+        ball_y = 5
+        ball_bounce_down = False
+        ball_bounce_up = True
+
+    # Ball Collision With Player 1
+    if ball_x - 1 < player_1_x + 5 and (player_1_y - 50 <= ball_y <= player_1_y + 50):
+        ball_type = True
+    # Ball Collision With Player 2
+    if ball_x  + 1 > player_2_x - 5 and (player_2_y - 50 <= ball_y <= player_2_y + 50):
+        ball_type = False
 
 
 def setup():
