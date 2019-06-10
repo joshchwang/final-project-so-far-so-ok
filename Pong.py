@@ -73,6 +73,9 @@ def on_update(delta_time):
     if not ball_type:
         ball_x -= 5
 
+    # Checking if the Ball Bounces Off Screen
+
+
     collision()
 
 
