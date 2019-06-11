@@ -198,6 +198,9 @@ def on_draw():
     if current_screen == 1:
         mode_screen()
 
+    if current_screen == 2:
+        instruction_screen()
+
     if current_screen == 3:
         # Player 1
         arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -397,11 +400,10 @@ def ai():
 
 
 def start_screen():
-    arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
-    arcade.draw_text("P O N G", 300, 500, arcade.color.GREEN, 100)
+    arcade.draw_text("P O N G", 300, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
 
-    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.BLUE)
-    arcade.draw_text("S T A R T", 420, 300, arcade.color.ORANGE, 40)
+    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.TURQUOISE)
+    arcade.draw_text("S T A R T", 420, 300, arcade.color.TURQUOISE, 40)
 
 
 def mode_screen():
@@ -432,7 +434,8 @@ def mode_screen():
 
 
 def instruction_screen():
-    arcade.draw_text("HOW TO PLAY")
+    arcade.draw_text("HOW TO PLAY", 100, 500, arcade.color.BRONZE, 100)
+    arcade.draw_text("Player 1:", 100, 400, arcade.color.PINK, 20)
 
 
 def setup():
