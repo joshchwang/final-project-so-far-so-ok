@@ -19,7 +19,7 @@ screens_list = [start_screen, instructions_screen,
                 game_survival, game_endless, game_over_screen]
 
 # States Booleans
-start_screen_ = True
+start_screen_bool = True
 
 # Player 1 Variables
 player_1_x = 50
@@ -91,7 +91,10 @@ def on_update(delta_time):
 
     global is_ai, ai_x, ai_y
 
-    global start_screen
+    global start_screen_bool
+
+    while start_screen_bool:
+        start_screen_function(start_screen_bool)
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -283,7 +286,7 @@ def collision():
         ball_velocity_check = True
         ball_velocity += 1
 
-    if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) :
+    if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50):
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
@@ -321,10 +324,10 @@ def collision():
         ball_velocity += 1
 
 
-def start_screen():
-
-    arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
-
+def start_screen_function(condition):
+    if condition:
+        arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
+        arcade.draw_text("P O N G", 500, 400, arcade.color.GREEN, 100)
 
 
 def setup():
