@@ -401,9 +401,6 @@ def start_screen():
     arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.BLUE)
     arcade.draw_text("S T A R T", 420, 300, arcade.color.ORANGE, 40)
 
-    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.ORANGE)
-    arcade.draw_text("S T A R T", 420, 300, arcade.color.BLUE, 40)
-
 
 def mode_screen():
     arcade.draw_rectangle_outline(360, 350, 100, 50, arcade.color.WHITE)
