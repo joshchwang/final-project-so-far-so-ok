@@ -405,17 +405,30 @@ def start_screen():
 
 
 def mode_screen():
+    # 2 player mode
     arcade.draw_rectangle_outline(360, 350, 100, 50, arcade.color.WHITE)
-    # arcade.draw_text()
+    arcade.draw_text("2 Players", 330, 345, arcade.color.WHITE)
+
+    # 1 player mode
     arcade.draw_rectangle_outline(360, 290, 100, 50, arcade.color.RED)
+    arcade.draw_text("1 Player", 332, 285, arcade.color.RED)
 
+    # Survival mode
     arcade.draw_rectangle_outline(660, 350, 100, 50, arcade.color.BLUE)
-    arcade.draw_rectangle_outline(660, 290, 100, 50, arcade.color.YELLOW)
+    arcade.draw_text("Survival", 632, 345, arcade.color.BLUE)
 
-    # How to play (instructions button)
-    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.BLUE)
-    arcade.draw_text("HOW TO", 855, 75, arcade.color.ORANGE, 20)
-    arcade.draw_text("PLAY", 875, 50, arcade.color.ORANGE, 20)
+    # Endless mode
+    arcade.draw_rectangle_outline(660, 290, 100, 50, arcade.color.YELLOW)
+    arcade.draw_text("Endless", 634, 285, arcade.color.YELLOW)
+
+    # How to play button
+    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.PURPLE)
+    arcade.draw_text("HOW TO", 855, 75, arcade.color.PURPLE, 20)
+    arcade.draw_text("PLAY", 875, 50, arcade.color.PURPLE, 20)
+
+    # Back button
+    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
 
 def instruction_screen():
