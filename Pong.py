@@ -65,9 +65,9 @@ ball_bounce_down = False
 ball_bounce_up = True
 
 # Score
-score_player_1 = 9
-score_player_2 = 9
-score_ai = 9
+score_player_1 = 0
+score_player_2 = 0
+score_ai = 0
 score_endless = 0
 score_lives_player_1 = 0
 score_lives_player_2 = 0
@@ -87,14 +87,9 @@ def on_update(delta_time):
 
     global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_velocity_check
 
-    global score_player_1, score_player_2, score_lives_player_1, score_lives_player_2, score_endless
+    global score_player_1, score_player_2, score_ai, score_lives_player_1, score_lives_player_2, score_endless
 
     global is_ai, ai_x, ai_y
-
-    global start_screen_bool
-
-    while start_screen_bool:
-        start_screen_function(start_screen_bool)
 
     # Player 1 Movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -131,7 +126,7 @@ def on_update(delta_time):
         ball_velocity_check = False
 
     # Check if the Ball Bounces Off Screen Player 1
-    if ball_x < 0:
+    if ball_x < 0 and not is_ai:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -142,7 +137,29 @@ def on_update(delta_time):
         score_player_2 += 1
 
     # Checking if the Ball Bounces Off Screen Player 2
-    if ball_x > 1000:
+    if ball_x > 1000 and not is_ai:
+        ball_x = 750
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = False
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_player_1 += 1
+
+    # Checking if the Ball Bounces Off Screen Player 1
+    if ball_x < 0 and is_ai:
+        ball_x = 250
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = True
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_ai += 1
+
+    # Checking if the Ball Bounces Off Screen AI
+    if ball_x > 1000 and is_ai:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -171,10 +188,13 @@ def on_draw():
         # Player 2
         arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
 
-    if is_ai:
+    if is_ai and 500 <= ball_x:
         # AI
-        arcade.draw_rectangle_outline(ai_x, ball_y, 10, 100, arcade.color.RED)
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
         ai_y = ball_y
+
+    if is_ai and 500 > ball_x:
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
 
     # Ball
     arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
@@ -324,10 +344,9 @@ def collision():
         ball_velocity += 1
 
 
-def start_screen_function(condition):
-    if condition:
-        arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
-        arcade.draw_text("P O N G", 500, 400, arcade.color.GREEN, 100)
+def start_screen_function():
+    arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
+    arcade.draw_text("P O N G", 500, 400, arcade.color.GREEN, 100)
 
 
 def setup():
