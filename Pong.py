@@ -7,18 +7,17 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-start_screen = 0
-instructions_screen = 1
-game_1_player_ai_screen = 2      # ------------- 1 player
-game_2_player_screen = 3       # --------------- 2 player
-game_survival = 4   # -------------------- 2 or 1 player
-game_endless = 5   # --------------- endless is 1 player
-game_over_screen = 6   # -------------- game over screen
-screens_list = [start_screen, instructions_screen,
-                game_1_player_ai_screen, game_2_player_screen,
-                game_survival, game_endless, game_over_screen]
-
 current_screen = 0
+# Current screen value determines what screen the game will go into
+# 0 is start screen
+# 1 is mode screen
+# 2 is how to play (instruction screen)
+# 3 is 2 player mode
+# 4 is 1 player mode against ai
+# 5 is survival mode (2 players)
+# 6 is survival mode (1 player against ai)
+# 7 is endless mode
+# 8 is game over screen
 
 # States Booleans
 start_screen_bool = True
@@ -77,6 +76,9 @@ score_cap_player_1 = 5
 score_cap_player_2 = 5
 score_cap_ai = 5
 
+# To change the score from 10 to 100 smoothly
+shift_pos = 0
+
 # Dotted Line Position List
 rectangle_list = [8, 24, 40, 56, 72, 88, 104,
                   120, 136, 152, 166, 182, 198,
@@ -84,7 +86,8 @@ rectangle_list = [8, 24, 40, 56, 72, 88, 104,
                   310, 326, 342, 358, 374, 390,
                   406, 422, 438, 454, 470, 486]
 
-shift_pos = 0
+# Button lists
+
 
 
 def on_update(delta_time):
@@ -191,7 +194,7 @@ def on_draw():
     arcade.start_render()
 
     if current_screen == 0:
-        start_screen_function()
+        start_screen()
 
     if current_screen == 3:
         # Player 1
@@ -294,6 +297,12 @@ def on_key_release(key, modifiers):
         player_2_down_pressed = False
 
 
+def on_mouse_press(x, y, button, modifiers):
+    global current_screen
+
+    # if current_screen == 0:
+
+
 def collision():
     global player_1_x, player_1_y
 
@@ -385,9 +394,26 @@ def ai():
         # return 3
 
 
-def start_screen_function():
+def start_screen():
     arcade.draw_rectangle_outline(500, 300, 1000, 600, arcade.color.RED)
     arcade.draw_text("P O N G", 300, 500, arcade.color.GREEN, 100)
+
+    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.BLUE)
+    arcade.draw_text("S T A R T", 420, 300, arcade.color.ORANGE, 40)
+
+    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.ORANGE)
+    arcade.draw_text("S T A R T", 420, 300, arcade.color.BLUE, 40)
+
+
+def mode_screen():
+    arcade.draw_rectangle_outline(360, 350, 100, 50, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(360, 290, 100, 50, arcade.color.RED)
+
+    arcade.draw_rectangle_outline(660, 350, 100, 50, arcade.color.BLUE)
+    arcade.draw_rectangle_outline(660, 290, 100, 50, arcade.color.YELLOW)
+
+    # How to play (instructions button)
+    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.BLUE)
 
 
 def setup():
@@ -400,6 +426,7 @@ def setup():
     window.on_draw = on_draw
     window.on_key_press = on_key_press
     window.on_key_release = on_key_release
+    window.on_mouse_press = on_mouse_press
 
     arcade.run()
 
