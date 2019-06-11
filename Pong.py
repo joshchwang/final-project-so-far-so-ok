@@ -103,10 +103,10 @@ def on_update(delta_time):
     if player_2_down_pressed and player_2_y - 50 >= 0 and not is_ai:
         player_2_y -= 5
 
-    if ai_y + 50 <= 490 and is_ai:
-        pass
-    if ai_y - 59 >= 0 and is_ai:
-        pass
+    if ai_y + 50 >= 500 and is_ai:
+        ai_y = 445
+    if ai_y - 59 <= 0 and is_ai:
+        ai_y = 50
 
     # Ball Bouncing off of the Divider and the Bottom
     if ball_bounce_up:
@@ -191,7 +191,7 @@ def on_draw():
     if is_ai and 500 <= ball_x:
         # AI
         arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
-        ai_y = ball_y
+        ai()
 
     if is_ai and 500 > ball_x:
         arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
@@ -342,6 +342,17 @@ def collision():
         ball_bounce_down = False
         ball_velocity_check = True
         ball_velocity += 1
+
+
+def ai():
+
+    global ai_y, ball_y
+
+    if ball_y >= ai_y:
+        ai_y += 5
+
+    if ball_y <= ai_y:
+        ai_y -= 5
 
 
 def start_screen_function():
