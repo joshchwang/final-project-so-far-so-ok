@@ -6,6 +6,18 @@ screen_width = 1000
 screen_height = 600
 screen_title = "Pong"
 
+# States
+start_screen = 0
+instructions_screen = 1
+game_1_player_ai_screen = 2      # ------------- 1 player
+game_2_player_screen = 3       # --------------- 2 player
+game_survival = 4   # -------------------- 2 or 1 player
+game_endless = 5   # --------------- endless is 1 player
+game_over_screen = 6   # -------------- game over screen
+screens_list = [start_screen, instructions_screen,
+                game_1_player_ai_screen, game_2_player_screen,
+                game_survival, game_endless, game_over_screen]
+
 # Player 1 Variables
 player_1_x = 50
 player_1_y = 250
@@ -50,7 +62,11 @@ score_lives_player_1 = 0
 score_lives_player_2 = 0
 
 # Dotted Line Position List
-rectangle_list = [10, 40, 70, 100, 130, 160, 190, 220, 250, 280, 310, 340, 370, 400, 430, 460, 490]
+rectangle_list = [8, 24, 40, 56, 72, 88, 104,
+                  120, 136, 152, 166, 182, 198,
+                  214, 230, 246, 262, 278, 294,
+                  310, 326, 342, 358, 374, 390,
+                  406, 422, 438, 454, 470, 486]
 
 
 def on_update(delta_time):
@@ -76,15 +92,15 @@ def on_update(delta_time):
 
     # Ball Bouncing off of the Divider and the Bottom
     if ball_bounce_up:
-        ball_y += 5 + ball_velocity * 0.1
+        ball_y += 5 + ball_velocity
     if ball_bounce_down:
-        ball_y -= 5 - ball_velocity * 0.1
+        ball_y -= 5 + ball_velocity
 
     # Ball Bouncing off of the Players
     if ball_type:
-        ball_x += 5 + ball_velocity * 0.1
+        ball_x += 5 + ball_velocity
     if not ball_type:
-        ball_x -= 5 - ball_velocity * 0.1
+        ball_x -= 5 + ball_velocity
 
     # Increasing Ball Velocity
     if ball_velocity_check:
@@ -135,7 +151,7 @@ def on_draw():
 
     # Dotted Line
     for i in rectangle_list:
-        arcade.draw_rectangle_outline(500, i, 10, 20, arcade.color.WHITE)
+        arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
 
     # Player 1 Text -------------------------- Replace string condition with variable for ability to choose name
     arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
@@ -219,14 +235,14 @@ def collision():
         ball_bounce_up = False
         ball_bounce_down = True
         ball_velocity_check = True
-        ball_velocity += 0.1
+        ball_velocity += 1
 
     if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50):
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
         ball_velocity_check = True
-        ball_velocity += 0.1
+        ball_velocity += 1
 
     # Ball Collision With Player 2
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y):
