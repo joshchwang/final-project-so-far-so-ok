@@ -1,47 +1,48 @@
 import arcade
 import random
 
-# Screen Variables
+# Screen variables
 screen_width = 1000
 screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 1
+current_screen = 3
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
 # 2 is how to play (instruction screen)
-# 3 is 2 player mode
-# 4 is 1 player mode against ai
-# 5 is survival mode (2 players)
-# 6 is survival mode (1 player against ai)
-# 7 is endless mode
-# 8 is game over screen
+# 3 is instruction screen
+# 4 is 2 player mode
+# 5 is 1 player mode against ai
+# 6 is survival mode (2 players)
+# 7 is survival mode (1 player against ai)
+# 8 is endless mode
+# 9 is game over screen
 
-# States Booleans
-start_screen_bool = True
+# States booleans
+# WORK IN PROGRESS -----------------------------------------------------------------------------------------------
 
-# Player 1 Variables
+# Player 1 variables
 player_1_x = 50
 player_1_y = 250
 player_1_up_pressed = False
 player_1_down_pressed = False
 
-# Player 2 Variables
+# Player 2 variables
 player_2_x = 950
 player_2_y = 250
 player_2_up_pressed = False
 player_2_down_pressed = False
 
-# Ai Variables
+# Ai variables
 is_ai = True
 ai_x = 950
 ai_y = 250
 ai_up = False
 ai_down = False
 
-# Ball Variables
+# Ball variables
 ball_x = 500
 ball_y = 250
 
@@ -51,7 +52,7 @@ if random.randint(0, 1) == 1:
 else:
     ball_type = True
 
-# Ball Starting Condition
+# Ball starting condition
 if ball_type:
     ball_x = 250
 else:
@@ -79,7 +80,7 @@ score_cap_ai = 5
 # To change the score from 10 to 100 smoothly
 shift_pos = 0
 
-# Dotted Line Position List
+# Dotted line position list
 rectangle_list = [8, 24, 40, 56, 72, 88, 104,
                   120, 136, 152, 166, 182, 198,
                   214, 230, 246, 262, 278, 294,
@@ -100,13 +101,13 @@ def on_update(delta_time):
 
     global is_ai, ai_x, ai_y
 
-    # Player 1 Movement
+    # Player 1 movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
         player_1_y += 5
     if player_1_down_pressed and player_1_y - 50 >= 0:
         player_1_y -= 5
 
-    # Player 2 Movement
+    # Player 2 movement
     if player_2_up_pressed and player_2_y + 50 <= 490 and not is_ai:
         player_2_y += 5
     if player_2_down_pressed and player_2_y - 50 >= 0 and not is_ai:
@@ -117,24 +118,24 @@ def on_update(delta_time):
     if ai_y - 50 <= 0 and is_ai:
         ai_y = 50
 
-    # Ball Bouncing off of the Divider and the Bottom
+    # Ball bouncing off of the divider and the bottom
     if ball_bounce_up:
         ball_y += 5 + ball_velocity
     if ball_bounce_down:
         ball_y -= 5 + ball_velocity
 
-    # Ball Bouncing off of the Players
+    # Ball bouncing off of the players
     if ball_type:
         ball_x += 5 + ball_velocity
     if not ball_type:
         ball_x -= 5 + ball_velocity
 
-    # Increasing Ball Velocity
+    # Increasing ball velocity
     if ball_velocity_check:
         ball_velocity_check += 1
         ball_velocity_check = False
 
-    # Check if the Ball Bounces Off Screen Player 1
+    # Check if the ball bounces off screen player 1
     if ball_x < 0 and not is_ai:
         ball_x = 250
         ball_y = 250
@@ -145,7 +146,7 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_2 += 1
 
-    # Checking if the Ball Bounces Off Screen Player 2
+    # Checking if the ball bounces off screen player 2
     if ball_x > 1000 and not is_ai:
         ball_x = 750
         ball_y = 250
@@ -156,7 +157,7 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_1 += 1
 
-    # Checking if the Ball Bounces Off Screen Player 1
+    # Checking if the ball bounces off screen player 1
     if ball_x < 0 and is_ai:
         ball_x = 250
         ball_y = 250
@@ -167,7 +168,7 @@ def on_update(delta_time):
         ball_velocity = 1
         score_ai += 1
 
-    # Checking if the Ball Bounces Off Screen AI
+    # Checking if the ball bounces off screen AI
     if ball_x > 1000 and is_ai:
         ball_x = 750
         ball_y = 250
@@ -199,9 +200,12 @@ def on_draw():
         mode_screen()
 
     if current_screen == 2:
-        instruction_screen()
+        how_to_play_screen()
 
     if current_screen == 3:
+        instruction_screen()
+
+    if current_screen == 4:
         # Player 1
         arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
 
@@ -223,22 +227,22 @@ def on_draw():
         # Divider
         arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
 
-        # Dotted Line
+        # Dotted line
         for i in rectangle_list:
             arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
 
-        # Player 1 Text -------------------------- Replace string condition with variable for ability to choose name
+        # Player 1 text -------------------------- Replace string condition with variable for ability to choose name
         arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
 
         if not is_ai:
-            # Player 2 Text -------------------------- Replace string condition with variable for ability to choose name
+            # Player 2 text -------------------------- Replace string condition with variable for ability to choose name
             arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
 
         if is_ai:
-            # AI Text
+            # AI text
             arcade.draw_text("AI", 980, 580, arcade.color.RED, 12)
 
-        # Player 1 Score
+        # Player 1 score
         if score_player_1 < 10:
             arcade.draw_text(str(score_player_1), 430, 525, arcade.color.WHITE, 70)
 
@@ -250,7 +254,7 @@ def on_draw():
             arcade.draw_text(str(score_player_1), 380 - shift_pos, 525, arcade.color.WHITE, 70)
 
         if not is_ai:
-            # Player 2 Score
+            # Player 2 Sc==score
             arcade.draw_text(str(score_player_2), 520, 525, arcade.color.WHITE, 70)
 
         if is_ai:
@@ -269,13 +273,13 @@ def on_key_press(key, modifiers):
 
     global is_ai
 
-    # Player 1 Key Input
+    # Player 1 key input
     if key == arcade.key.W:
         player_1_up_pressed = True
     if key == arcade.key.S:
         player_1_down_pressed = True
 
-    # Player 2 Key Input
+    # Player 2 key input
     if key == arcade.key.UP and not is_ai:
         player_2_up_pressed = True
     if key == arcade.key.DOWN and not is_ai:
@@ -289,13 +293,13 @@ def on_key_release(key, modifiers):
 
     global is_ai
 
-    # Player 1 Key Output
+    # Player 1 key output
     if key == arcade.key.W:
         player_1_up_pressed = False
     if key == arcade.key.S:
         player_1_down_pressed = False
 
-    # Player 2 Key Output
+    # Player 2 key output
     if key == arcade.key.UP and not is_ai:
         player_2_up_pressed = False
     if key == arcade.key.DOWN and not is_ai:
@@ -317,19 +321,19 @@ def collision():
 
     global is_ai, ai_x, ai_y
 
-    # Ball Collision With Divider
+    # Ball collision with divider
     if ball_y + 1 > 490:
         ball_y = 490
         ball_bounce_up = False
         ball_bounce_down = True
 
-    # Ball Collision With Bottom Of Screen
+    # Ball collision with bottom of screen
     if ball_y - 1 < 5:
         ball_y = 5
         ball_bounce_down = False
         ball_bounce_up = True
 
-    # Ball Collision With Player 1
+    # Ball collision with player 1
     if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y):
         ball_type = True
         ball_bounce_up = False
@@ -344,7 +348,7 @@ def collision():
         ball_velocity_check = True
         ball_velocity += 1
 
-    # Ball Collision With Player 2
+    # Ball collision with player 2
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y) and not is_ai:
         ball_type = False
         ball_bounce_up = False
@@ -359,7 +363,7 @@ def collision():
         ball_velocity_check = True
         ball_velocity += 1
 
-    # Ball Collision With AI
+    # Ball collision with AI
     if (ai_x - 10 <= ball_x + 1 <= ai_x + 10) and (ai_y - 50 <= ball_y <= ai_y) and is_ai:
         ball_type = False
         ball_bounce_up = False
@@ -408,20 +412,24 @@ def start_screen():
 
 def mode_screen():
     # 2 player mode
-    arcade.draw_rectangle_outline(360, 350, 100, 50, arcade.color.WHITE)
-    arcade.draw_text("2 Players", 330, 345, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(170, 480, 300, 200, arcade.color.WHITE)
+    arcade.draw_text("2 Players", 140, 480, arcade.color.WHITE)
 
     # 1 player mode
-    arcade.draw_rectangle_outline(360, 290, 100, 50, arcade.color.RED)
-    arcade.draw_text("1 Player", 332, 285, arcade.color.RED)
+    arcade.draw_rectangle_outline(170, 260, 300, 200, arcade.color.RED)
+    arcade.draw_text("1 Player", 140, 260, arcade.color.RED)
+
+    # Normal mode
+    arcade.draw_rectangle_outline(880, 530, 200, 100, arcade.color.ORANGE)
+    arcade.draw_text("Normal Mode", 805, 520, arcade.color.ORANGE, 20)
 
     # Survival mode
-    arcade.draw_rectangle_outline(660, 350, 100, 50, arcade.color.BLUE)
-    arcade.draw_text("Survival", 632, 345, arcade.color.BLUE)
+    arcade.draw_rectangle_outline(660, 530, 200, 100, arcade.color.BLUE)
+    arcade.draw_text("Survival Mode", 585, 520, arcade.color.BLUE, 20)
 
     # Endless mode
-    arcade.draw_rectangle_outline(660, 290, 100, 50, arcade.color.YELLOW)
-    arcade.draw_text("Endless", 634, 285, arcade.color.YELLOW)
+    arcade.draw_rectangle_outline(880, 410, 200, 100, arcade.color.YELLOW)
+    arcade.draw_text("Endless Mode", 805, 400, arcade.color.YELLOW, 20)
 
     # How to play button
     arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.PURPLE)
@@ -433,9 +441,53 @@ def mode_screen():
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
 
-def instruction_screen():
+def how_to_play_screen():
     arcade.draw_text("HOW TO PLAY", 100, 500, arcade.color.BRONZE, 100)
-    arcade.draw_text("Player 1:", 100, 400, arcade.color.PINK, 20)
+
+    arcade.draw_text("Player 1:", 100, 430, arcade.color.PINK, 20)
+
+    arcade.draw_text("Use the 'W' key to move up", 100, 400, arcade.color.PINK, 20)
+    arcade.draw_text("Use the 'S' key to move down", 100, 370, arcade.color.PINK, 20)
+
+    arcade.draw_text("Player 2:", 500, 430, arcade.color.PURPLE, 20)
+
+    arcade.draw_text("Use the up arrow to move up", 500, 400, arcade.color.PURPLE, 20)
+    arcade.draw_text("Use the down arrow to move down", 500, 370, arcade.color.PURPLE, 20)
+
+    # Back button
+    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
+
+    # Next button
+    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.BLUE)
+    arcade.draw_text("NEXT", 855, 60, arcade.color.BLUE, 30)
+
+
+def instruction_screen():
+    arcade.draw_text("THE DIFFERENT MODES", 50, 500, arcade.color.BRONZE, 70)
+    arcade.draw_text("1 Player Mode:", 50, 430, arcade.color.PINK, 20)
+
+    arcade.draw_text("This mode pits the", 50, 400, arcade.color.PINK, 20)
+    arcade.draw_text("player against an ai", 50, 370, arcade.color.PINK, 20)
+
+    arcade.draw_text("2 Player Mode:", 50, 240, arcade.color.PURPLE, 20)
+
+    arcade.draw_text("This mode pits two players", 50, 210, arcade.color.PURPLE, 20)
+    arcade.draw_text("against one another", 50, 180, arcade.color.PURPLE, 20)
+
+    arcade.draw_text("Survival Mode:", 650, 430, arcade.color.RED, 20)
+
+    arcade.draw_text("This mode is essentially", 650, 400, arcade.color.RED, 20)
+    arcade.draw_text("a survival of the fittest", 650, 370, arcade.color.RED, 20)
+
+    arcade.draw_text("Endless Mode", 650, 240, arcade.color.BLUE, 20)
+
+    arcade.draw_text("This mode pits the player", 650, 210, arcade.color.BLUE, 20)
+    arcade.draw_text("against an impossible ai", 650, 180, arcade.color.BLUE, 20)
+
+    # Back button
+    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
 
 def setup():
