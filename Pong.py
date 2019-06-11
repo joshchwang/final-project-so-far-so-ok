@@ -7,7 +7,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 0
+current_screen = 1
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -87,7 +87,6 @@ rectangle_list = [8, 24, 40, 56, 72, 88, 104,
                   406, 422, 438, 454, 470, 486]
 
 # Button lists
-
 
 
 def on_update(delta_time):
@@ -196,6 +195,9 @@ def on_draw():
     if current_screen == 0:
         start_screen()
 
+    if current_screen == 1:
+        mode_screen()
+
     if current_screen == 3:
         # Player 1
         arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -204,7 +206,7 @@ def on_draw():
             # Player 2
             arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
 
-        if is_ai and 500 <= ball_x:
+        if is_ai and 400 <= ball_x:
             # AI
             arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
             ai()
@@ -375,7 +377,7 @@ def ai():
     global ai_y, ball_y
 
     if ball_y >= ai_y:
-        ai_y += 5
+        ai_y += 15
 
     if ball_y <= ai_y:
         ai_y -= 5
@@ -404,6 +406,7 @@ def start_screen():
 
 def mode_screen():
     arcade.draw_rectangle_outline(360, 350, 100, 50, arcade.color.WHITE)
+    # arcade.draw_text()
     arcade.draw_rectangle_outline(360, 290, 100, 50, arcade.color.RED)
 
     arcade.draw_rectangle_outline(660, 350, 100, 50, arcade.color.BLUE)
@@ -411,6 +414,12 @@ def mode_screen():
 
     # How to play (instructions button)
     arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.BLUE)
+    arcade.draw_text("HOW TO", 855, 75, arcade.color.ORANGE, 20)
+    arcade.draw_text("PLAY", 875, 50, arcade.color.ORANGE, 20)
+
+
+def instruction_screen():
+    arcade.draw_text("HOW TO PLAY")
 
 
 def setup():
