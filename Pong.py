@@ -7,7 +7,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 1
+current_screen = 2
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -33,7 +33,7 @@ is_win = True
 is_playing = False
 
 # False is 1 player. True is 2 players.
-number_players = False
+number_players = bool
 
 count = 0
 
@@ -119,6 +119,11 @@ start_button = [510, 320, 200, 100]
 two_player_mode_button = [170, 480, 300, 200]
 one_player_mode_button = [170, 260, 300, 200]
 normal_mode_button = [880, 530, 200, 100]
+survival_mode_button = [660, 530, 200, 100]
+endless_mode_button = [880, 410, 200, 100]
+how_to_play_button = [900, 70, 150, 100]
+back_button = [100, 70, 150, 100]
+next_button = [900, 70, 150, 100]
 
 
 def on_update(delta_time):
@@ -466,9 +471,43 @@ def on_mouse_press(x, y, button, modifiers):
                 one_player_mode_button[1] - 100 < y < one_player_mode_button[1] + 100:
             current_button = 1
 
+        # Normal mode button
         if normal_mode_button[0] - 100 < x  < normal_mode_button[0] + 100 and \
                 normal_mode_button[1] - 50 < y < normal_mode_button[1] + 50:
             current_button = 2
+
+        # Survival mode button
+        if survival_mode_button[0] - 100 < x < survival_mode_button[0] + 100 and \
+                survival_mode_button[1] - 50 < y < survival_mode_button[1] + 50:
+            current_button = 3
+
+        # Endless mode button
+        if endless_mode_button[0] - 100 < x < endless_mode_button[0] + 100 and endless_mode_button[1] - 50 < y < endless_mode_button[1] + 50:
+            current_button = 4
+
+        # How to play button
+        if how_to_play_button[0] - 75 < x < how_to_play_button[0] + 75 and how_to_play_button[1] - 50 < y < how_to_play_button[1] + 50:
+            current_button = 5
+
+        # Back button
+        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
+            current_button = 0
+
+    if current_screen == 2:
+
+        # Back button
+        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
+            current_button = 0
+
+        # Next button
+        if next_button[0] - 75 < x < next_button[0] + 75 and next_button[1] - 50 < y < next_button[1] + 50:
+            current_button = 1
+
+    if current_screen == 3:
+
+        # Back button
+        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
+            current_button = 0
 
 
 def button_click_action(screen, button):
@@ -502,6 +541,7 @@ def button_click_action(screen, button):
                                           arcade.color.BLUE)
             number_players = False
 
+        # Normal mode button
         if button == 2:
             arcade.draw_rectangle_outline(normal_mode_button[0], normal_mode_button[1],
                                           normal_mode_button[2], normal_mode_button[3],
@@ -509,11 +549,74 @@ def button_click_action(screen, button):
             state_survival = False
             state_endless = False
 
+            # 2 player mode
             if number_players:
                 current_screen = 4
 
+            # 1 player mode
             if not number_players:
                 current_screen = 5
+
+        # Survival mode button
+        if button == 3:
+            arcade.draw_rectangle_outline(survival_mode_button[0], survival_mode_button[1],
+                                          survival_mode_button[2], survival_mode_button[3],
+                                          arcade.color.RED)
+
+            state_survival = True
+            state_endless = False
+
+            # 2 player mode
+            if number_players:
+                current_screen = 6
+
+            # 1 player mode
+            if not number_players:
+                current_screen = 7
+
+        # Endless mode button
+        if button == 4:
+            arcade.draw_rectangle_outline(endless_mode_button[0], endless_mode_button[1],
+                                          endless_mode_button[2], endless_mode_button[3],
+                                          arcade.color.PURPLE)
+
+        # How to play button
+        if button == 5:
+            arcade.draw_rectangle_outline(how_to_play_button[0], how_to_play_button[1],
+                                          how_to_play_button[2], how_to_play_button[3],
+                                          arcade.color.YELLOW)
+            current_screen = 2
+
+        # Back button
+        if button == 6:
+            arcade.draw_rectangle_outline(back_button[0], back_button[1],
+                                          back_button[2], back_button[3],
+                                          arcade.color.RED)
+            current_screen = 0
+
+    if screen == 2:
+
+        # Back button
+        if button == 0:
+            arcade.draw_rectangle_outline(back_button[0], back_button[1],
+                                          back_button[2], back_button[3],
+                                          arcade.color.RED)
+            current_screen = 1
+
+        # Next button
+        if button == 1:
+            arcade.draw_rectangle_outline(next_button[0], next_button[1],
+                                          next_button[2], next_button[3],
+                                          arcade.color.ORANGE)
+            current_screen = 3
+
+    if screen == 3:
+
+        # Back button
+        if button == 0:
+            arcade.draw_rectangle_outline()
+
+
 
 
 def collision():
