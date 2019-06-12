@@ -7,7 +7,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 3
+current_screen = 7
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -19,9 +19,18 @@ current_screen = 3
 # 7 is survival mode (1 player against ai)
 # 8 is endless mode
 # 9 is game over screen
+# 10 is win screen
+# 11 is pause screen
 
 # States booleans
 # WORK IN PROGRESS -----------------------------------------------------------------------------------------------
+state_survival = False
+player_win = False
+
+if state_survival and is_ai:
+    score_player_1 = 3
+    score_ai = 3
+
 
 # Player 1 variables
 player_1_x = 50
@@ -97,9 +106,12 @@ def on_update(delta_time):
 
     global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_velocity_check
 
-    global score_player_1, score_player_2, score_ai, score_lives_player_1, score_lives_player_2, score_endless
+    global score_player_1, score_player_2, score_ai, score_lives_player_1, score_lives_player_2, score_endless, \
+        score_cap_player_1, score_cap_player_2, score_cap_ai
 
     global is_ai, ai_x, ai_y
+
+    global current_screen, player_win
 
     # Player 1 movement
     if player_1_up_pressed and player_1_y + 50 <= 490:
@@ -136,7 +148,7 @@ def on_update(delta_time):
         ball_velocity_check = False
 
     # Check if the ball bounces off screen player 1
-    if ball_x < 0 and not is_ai:
+    if ball_x < 0 and not is_ai and not state_survival:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -146,8 +158,12 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_2 += 1
 
+        if score_player_2 == score_cap_player_2:
+            current_screen = 10
+            player_win = True
+
     # Checking if the ball bounces off screen player 2
-    if ball_x > 1000 and not is_ai:
+    if ball_x > 1000 and not is_ai and not state_survival:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -157,8 +173,12 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_1 += 1
 
+        if score_player_1 == score_cap_player_1:
+            current_screen = 10
+            player_win = False
+
     # Checking if the ball bounces off screen player 1
-    if ball_x < 0 and is_ai:
+    if ball_x < 0 and is_ai and not state_survival:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -168,8 +188,11 @@ def on_update(delta_time):
         ball_velocity = 1
         score_ai += 1
 
+        if score_ai == score_cap_ai:
+            current_screen = 9
+
     # Checking if the ball bounces off screen AI
-    if ball_x > 1000 and is_ai:
+    if ball_x > 1000 and is_ai and not state_survival:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -178,6 +201,69 @@ def on_update(delta_time):
         ball_velocity_check = False
         ball_velocity = 1
         score_player_1 += 1
+
+        if score_player_1 == score_cap_player_1:
+            current_screen = 10
+            player_win = False
+
+    # Checking if the ball bounces off screen player 1 survival
+    if ball_x < 0 and not is_ai and state_survival:
+        ball_x = 250
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = True
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_player_1 -= 1
+
+        if score_player_1 == 0:
+            current_screen = 10
+            player_win = True
+
+    # Checking if the ball bounces off screen player 2 survival
+    if ball_x > 1000 and not is_ai and state_survival:
+        ball_x = 750
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = False
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_player_2 -= 1
+
+        if score_player_2 == 0:
+            current_screen = 10
+            player_win = False
+
+    # Checking if the ball bounces off screen player 1 survival
+    if ball_x < 0 and is_ai and state_survival:
+        ball_x = 250
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = True
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_player_1 -= 1
+
+        if score_player_1 == 0:
+            current_screen = 9
+
+    # Checking if the ball bounces off screen AI survival
+    if ball_x > 1000 and is_ai and state_survival:
+        ball_x = 750
+        ball_y = 250
+        ball_bounce_up = False
+        ball_bounce_down = False
+        ball_type = False
+        ball_velocity_check = False
+        ball_velocity = 1
+        score_ai -= 1
+
+        if score_ai == 0:
+            current_screen = 10
+            player_win = False
 
     collision()
 
@@ -206,64 +292,28 @@ def on_draw():
         instruction_screen()
 
     if current_screen == 4:
-        # Player 1
-        arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
+        two_player_screen()
 
-        if not is_ai:
-            # Player 2
-            arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
+    if current_screen == 5:
+        one_player_screen()
 
-        if is_ai and 400 <= ball_x:
-            # AI
-            arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
-            ai()
+    if current_screen == 6:
+        survival_two_player_screen()
 
-        if is_ai and 500 > ball_x:
-            arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+    if current_screen == 7:
+        survival_one_player_screen()
 
-        # Ball
-        arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
+    if current_screen == 8:
+        endless_screen()
 
-        # Divider
-        arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
+    if current_screen == 9:
+        game_over_screen()
 
-        # Dotted line
-        for i in rectangle_list:
-            arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
+    if current_screen == 10:
+        win_screen(player_win)
 
-        # Player 1 text -------------------------- Replace string condition with variable for ability to choose name
-        arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
-
-        if not is_ai:
-            # Player 2 text -------------------------- Replace string condition with variable for ability to choose name
-            arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
-
-        if is_ai:
-            # AI text
-            arcade.draw_text("AI", 980, 580, arcade.color.RED, 12)
-
-        # Player 1 score
-        if score_player_1 < 10:
-            arcade.draw_text(str(score_player_1), 430, 525, arcade.color.WHITE, 70)
-
-        if score_player_1 >= 100:
-            arcade.draw_text(str(score_player_1), 330, 525, arcade.color.WHITE, 70)
-            shift_pos = 50
-
-        if score_player_1 >= 10:
-            arcade.draw_text(str(score_player_1), 380 - shift_pos, 525, arcade.color.WHITE, 70)
-
-        if not is_ai:
-            # Player 2 Sc==score
-            arcade.draw_text(str(score_player_2), 520, 525, arcade.color.WHITE, 70)
-
-        if is_ai:
-            # AI
-            arcade.draw_text(str(score_ai), 520, 525, arcade.color.RED, 70)
-
-        # Colon
-        arcade.draw_rectangle_filled(500, 570, 10, 10, arcade.color.WHITE)
-        arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
+    if current_screen == 11:
+        pause_screen()
 
 
 def on_key_press(key, modifiers):
@@ -339,14 +389,14 @@ def collision():
         ball_bounce_up = False
         ball_bounce_down = True
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
     if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50):
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
     # Ball collision with player 2
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y) and not is_ai:
@@ -354,14 +404,14 @@ def collision():
         ball_bounce_up = False
         ball_bounce_down = True
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y <= ball_y <= player_2_y + 50) and not is_ai:
         ball_type = False
         ball_bounce_up = True
         ball_bounce_down = False
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
     # Ball collision with AI
     if (ai_x - 10 <= ball_x + 1 <= ai_x + 10) and (ai_y - 50 <= ball_y <= ai_y) and is_ai:
@@ -369,14 +419,14 @@ def collision():
         ball_bounce_up = False
         ball_bounce_down = True
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
     if (ai_x - 10 <= ball_x + 1 <= ai_x + 10) and (ai_y <= ball_y <= ai_y + 50) and is_ai:
         ball_type = False
         ball_bounce_up = True
         ball_bounce_down = False
         ball_velocity_check = True
-        ball_velocity += 1
+        ball_velocity += 0.1
 
 
 def ai():
@@ -384,7 +434,7 @@ def ai():
     global ai_y, ball_y
 
     if ball_y >= ai_y:
-        ai_y += 15
+        ai_y += 5
 
     if ball_y <= ai_y:
         ai_y -= 5
@@ -488,6 +538,249 @@ def instruction_screen():
     # Back button
     arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
+
+
+def two_player_screen():
+
+    global shift_pos
+
+    global is_ai
+
+    is_ai = False
+
+    # Player 1
+    arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
+
+    if not is_ai:
+        # Player 2
+        arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
+
+    if is_ai and 400 <= ball_x:
+        # AI
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+        ai()
+
+    if is_ai and 500 > ball_x:
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+
+    # Ball
+    arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
+
+    # Divider
+    arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
+
+    # Dotted line
+    for i in rectangle_list:
+        arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
+
+    # Player 1 text -------------------------- Replace string condition with variable for ability to choose name
+    arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
+
+    if not is_ai:
+        # Player 2 text -------------------------- Replace string condition with variable for ability to choose name
+        arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
+
+    if is_ai:
+        # AI text
+        arcade.draw_text("AI", 980, 580, arcade.color.RED, 12)
+
+    # Player 1 score
+    if score_player_1 < 10:
+        arcade.draw_text(str(score_player_1), 430, 525, arcade.color.WHITE, 70)
+
+    if score_player_1 >= 100:
+        arcade.draw_text(str(score_player_1), 330, 525, arcade.color.WHITE, 70)
+        shift_pos = 50
+
+    if score_player_1 >= 10:
+        arcade.draw_text(str(score_player_1), 380 - shift_pos, 525, arcade.color.WHITE, 70)
+
+    if not is_ai:
+        # Player 2 Sc==score
+        arcade.draw_text(str(score_player_2), 520, 525, arcade.color.WHITE, 70)
+
+    if is_ai:
+        # AI
+        arcade.draw_text(str(score_ai), 520, 525, arcade.color.RED, 70)
+
+    # Colon
+    arcade.draw_rectangle_filled(500, 570, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
+
+    # Menu
+    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
+
+
+def one_player_screen():
+    global shift_pos
+
+    global is_ai
+
+    is_ai = True
+
+    # Player 1
+    arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
+
+    if not is_ai:
+        # Player 2
+        arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
+
+    if is_ai and 400 <= ball_x:
+        # AI
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+        ai()
+
+    if is_ai and 500 > ball_x:
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+
+    # Ball
+    arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
+
+    # Divider
+    arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
+
+    # Dotted line
+    for i in rectangle_list:
+        arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
+
+    # Player 1 text -------------------------- Replace string condition with variable for ability to choose name
+    arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
+
+    if not is_ai:
+        # Player 2 text -------------------------- Replace string condition with variable for ability to choose name
+        arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
+
+    if is_ai:
+        # AI text
+        arcade.draw_text("AI", 980, 580, arcade.color.RED, 12)
+
+    # Player 1 score
+    if score_player_1 < 10:
+        arcade.draw_text(str(score_player_1), 430, 525, arcade.color.WHITE, 70)
+
+    if score_player_1 >= 100:
+        arcade.draw_text(str(score_player_1), 330, 525, arcade.color.WHITE, 70)
+        shift_pos = 50
+
+    if score_player_1 >= 10:
+        arcade.draw_text(str(score_player_1), 380 - shift_pos, 525, arcade.color.WHITE, 70)
+
+    if not is_ai:
+        # Player 2 Sc==score
+        arcade.draw_text(str(score_player_2), 520, 525, arcade.color.WHITE, 70)
+
+    if is_ai:
+        # AI
+        arcade.draw_text(str(score_ai), 520, 525, arcade.color.RED, 70)
+
+    # Colon
+    arcade.draw_rectangle_filled(500, 570, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
+
+    # Menu
+    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
+
+
+def survival_two_player_screen():
+    pass
+
+
+def survival_one_player_screen():
+    global score_player_1, score_ai
+
+    global shift_pos, state_survival
+
+    global is_ai
+
+    is_ai = True
+    state_survival = True
+
+    # Player 1
+    arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
+
+    if not is_ai:
+        # Player 2
+        arcade.draw_rectangle_outline(player_2_x, player_2_y, 10, 100, arcade.color.WHITE)
+
+    if is_ai and 400 <= ball_x:
+        # AI
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+        ai()
+
+    if is_ai and 500 > ball_x:
+        arcade.draw_rectangle_outline(ai_x, ai_y, 10, 100, arcade.color.RED)
+
+    # Ball
+    arcade.draw_rectangle_outline(ball_x, ball_y, 10, 10, arcade.color.WHITE)
+
+    # Divider
+    arcade.draw_rectangle_outline(500, 500, 1000, 10, arcade.color.WHITE)
+
+    # Dotted line
+    for i in rectangle_list:
+        arcade.draw_rectangle_outline(500, i, 10, 15, arcade.color.WHITE)
+
+    # Player 1 text -------------------------- Replace string condition with variable for ability to choose name
+    arcade.draw_text("Player 1", 10, 580, arcade.color.WHITE, 12)
+
+    if not is_ai:
+        # Player 2 text -------------------------- Replace string condition with variable for ability to choose name
+        arcade.draw_text("Player 2", 940, 580, arcade.color.WHITE, 12)
+
+    if is_ai:
+        # AI text
+        arcade.draw_text("AI", 980, 580, arcade.color.RED, 12)
+
+    # Player 1 score
+    if score_player_1 < 10:
+        arcade.draw_text(str(score_player_1), 430, 525, arcade.color.WHITE, 70)
+
+    if score_player_1 >= 100:
+        arcade.draw_text(str(score_player_1), 330, 525, arcade.color.WHITE, 70)
+        shift_pos = 50
+
+    if score_player_1 >= 10:
+        arcade.draw_text(str(score_player_1), 380 - shift_pos, 525, arcade.color.WHITE, 70)
+
+    if not is_ai:
+        # Player 2 Sc==score
+        arcade.draw_text(str(score_player_2), 520, 525, arcade.color.WHITE, 70)
+
+    if is_ai:
+        # AI
+        arcade.draw_text(str(score_ai), 520, 525, arcade.color.RED, 70)
+
+    # Colon
+    arcade.draw_rectangle_filled(500, 570, 10, 10, arcade.color.WHITE)
+    arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
+
+    # Menu
+    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
+
+
+def endless_screen():
+    pass
+
+
+def game_over_screen():
+    pass
+
+
+def win_screen(winner):
+
+    # Player 1 win code
+    if not winner:
+        arcade.draw_text("PLAYER 1 WINS", 200, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
+
+    # Player 2 win code
+    # if winner:
+
+
+def pause_screen():
+    pass
 
 
 def setup():
