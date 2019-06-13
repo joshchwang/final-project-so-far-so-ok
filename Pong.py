@@ -7,7 +7,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 0
+current_screen = 11
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -22,12 +22,13 @@ current_screen = 0
 # 10 is win screen
 # 11 is pause screen
 
-current_button = -1
+current_button = -2
 
-# States booleans
-# WORK IN PROGRESS -----------------------------------------------------------------------------------------------
+# States of modes
 state_survival = False
 state_endless = False
+
+# Constant check conditions
 player_win = False
 is_win = True
 is_playing = False
@@ -36,6 +37,7 @@ is_reset = False
 # False is 1 player. True is 2 players.
 number_players = bool
 
+# Used to reset and set different modes
 count = 0
 
 # Player 1 variables
@@ -115,28 +117,16 @@ hold_player_2_score = 0
 hold_ball_x = 0
 hold_ball_y = 0
 
-# Button lists (x, y, width height)
-start_button = [510, 320, 200, 100]
-two_player_mode_button = [170, 480, 300, 200]
-one_player_mode_button = [170, 260, 300, 200]
-normal_mode_button = [880, 530, 200, 100]
-survival_mode_button = [660, 530, 200, 100]
-endless_mode_button = [880, 410, 200, 100]
-how_to_play_button = [900, 70, 150, 100]
-back_button = [100, 70, 150, 100]
-next_button = [900, 70, 150, 100]
-menu_button = [250, 555, 100, 50]
-resume_button = [500, 450, 1000, 300]
-exit_button = [500, 150, 1000, 300]
-yes_button = [250, 200, 200, 100]
-no_button = [750, 200, 200, 100]
+# Buttons list value explanation: [x, y, w, h]
+buttons = [[510, 320, 200, 100], [170, 480, 300, 200],
+           [170, 260, 300, 200], [880, 530, 200, 100],
+           [660, 530, 200, 100], [880, 410, 200, 100],
+           [900, 70, 150, 100], [100, 70, 150, 100],
+           [900, 70, 150, 100], [250, 555, 100, 50],
+           [500, 300, 1000, 600], [250, 200, 200, 100],
+           [750, 200, 200, 100]]
 
-buttons = [start_button, two_player_mode_button, one_player_mode_button,
-           normal_mode_button, survival_mode_button, endless_mode_button,
-           how_to_play_button, back_button, next_button, menu_button,
-           resume_button, exit_button, yes_button, no_button]
-
-# Button 2D list explanation
+# Button 2D list list
 # 0 start button
 # 1 two player mode button
 # 2 one player mode button
@@ -147,10 +137,9 @@ buttons = [start_button, two_player_mode_button, one_player_mode_button,
 # 7 back button
 # 8 next button
 # 9 menu button
-# 10 resume button
-# 11 exit button
-# 12 yes button
-# 13 no button
+# 10 exit button
+# 11 yes button
+# 12 no button
 
 
 def on_update(delta_time):
@@ -613,7 +602,7 @@ def on_mouse_press(x, y, button, modifiers):
         # Back button
         if buttons[7][0] - 75 < x < buttons[7][0] + 75 and \
                 buttons[7][1] - 50 < y < buttons[7][1] + 50:
-            current_button = 0
+            current_button = -1
 
     if current_screen == 4 or current_screen == 5 or current_screen == 6 \
             or current_screen == 7 or current_screen == 8:
@@ -626,26 +615,21 @@ def on_mouse_press(x, y, button, modifiers):
     if current_screen == 9 or current_screen == 10:
 
         # Yes button
-        if buttons[12][0] - 100 < x < buttons[12][0] + 100 and \
-                buttons[12][1] - 50 < y < buttons[12][1] + 50:
+        if buttons[11][0] - 100 < x < buttons[11][0] + 100 and \
+                buttons[11][1] - 50 < y < buttons[11][1] + 50:
             current_button = 0
 
         # No button
-        if buttons[13][0] - 100 < x < buttons[13][0] + 100 and \
-                buttons[13][1] - 50 and buttons[13][1] + 50:
+        if buttons[12][0] - 100 < x < buttons[12][0] + 100 and \
+                buttons[12][1] - 50 and buttons[12][1] + 50:
             current_button = 1
 
     if current_screen == 11:
 
-        # Resume button
-        if buttons[10][0] - 500 < x < buttons[10][0] + 500 and \
-                buttons[10][1] - 150 < y < buttons[10][1] + 150:
-            current_button = 0
-
         # Exit button
-        if buttons[11][0] - 500 < x < buttons[11][0] + 500 and \
-                buttons[11][1] - 150 < y < buttons[11][1] + 150:
-            current_button = 1
+        if buttons[10][0] - 500 < x < buttons[10][0] + 500 and \
+                buttons[10][1] - 300 < y < buttons[10][1] + 300:
+            current_button = -1
 
 
 def button_click_action(screen, button):
@@ -755,7 +739,7 @@ def button_click_action(screen, button):
     if screen == 3:
 
         # Back button
-        if button == 0:
+        if button == -1:
             arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1],
                                           buttons[7][2], buttons[7][3],
                                           arcade.color.RED)
@@ -774,66 +758,23 @@ def button_click_action(screen, button):
 
         # Yes button
         if button == 0:
-            arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1],
-                                          buttons[12][2], buttons[12][3],
+            arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1],
+                                          buttons[11][2], buttons[11][3],
                                           arcade.color.PINK)
-            current_screen = 1
 
         # No button
         if button == 1:
-            arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1],
-                                          buttons[13][2], buttons[13][3],
+            arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1],
+                                          buttons[12][2], buttons[12][3],
                                           arcade.color.GO_GREEN)
-            current_screen = 0
+            current_screen = 1
 
     if screen == 11:
 
-        # Resume button
-        if button == 0:
+        # Exit button
+        if button == -1:
             arcade.draw_rectangle_outline(buttons[10][0], buttons[10][1],
                                           buttons[10][2], buttons[10][3],
-                                          arcade.color.CORDOVAN)
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
-        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
-        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
-        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
-
-        # Exit button
-        if button == 1:
-            arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1],
-                                          buttons[11][2], buttons[11][3],
                                           arcade.color.COSMIC_LATTE)
             current_screen = 1
 
@@ -964,18 +905,6 @@ def ai():
 
     if ball_y <= ai_y and not state_survival and not state_endless:
         ai_y -= 6
-
-# def score_caps(score_1, score_2, condition):
-    # global score_cap_player_1, score_cap_player_2, score_cap_ai
-
-    # if score_1 == score_cap_player_1:
-        # return 1
-
-    # if score_2 == score_cap_player_2 and not condition:
-        # return 2
-
-    # if score_2 == score_cap_ai and condition:
-        # return 3
 
 
 def start_screen():
@@ -1553,13 +1482,13 @@ def game_over_screen():
     arcade.draw_text("PLAY AGAIN?", 330, 400, arcade.color.SAPPHIRE, 50)
 
     # Yes button
-    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
-                                  buttons[12][3], arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1], buttons[11][2],
+                                  buttons[11][3], arcade.color.GREEN)
     arcade.draw_text("YES", 230, 190, arcade.color.GREEN, 20)
 
     # No button
-    arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1], buttons[13][2],
-                                  buttons[13][3], arcade.color.RED)
+    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
+                                  buttons[12][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
     is_reset = True
@@ -1587,13 +1516,13 @@ def win_screen(winner):
         arcade.draw_text("PLAY AGAIN?", 330, 400, arcade.color.RED_DEVIL, 50)
 
     # Yes button
-    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
-                                  buttons[12][3], arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1], buttons[11][2],
+                                  buttons[11][3], arcade.color.GREEN)
     arcade.draw_text("YES", 230, 190, arcade.color.GREEN, 20)
 
     # No button
-    arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1], buttons[13][2],
-                                  buttons[13][3], arcade.color.RED)
+    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
+                                  buttons[12][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
     is_reset = True
@@ -1604,17 +1533,18 @@ def pause_screen():
 
     global buttons
 
+    global hold_ball_x, hold_ball_y, ball_x, ball_y
+
+    global hold_player_1_x, hold_player_1_y, hold_player_1_score, player_1_x, player_1_y, score_player_1
+
+    global hold_player_2_x, hold_player_2_y, hold_player_2_score, player_2_x, player_2_y, score_player_2
+
     is_playing = False
 
-    # Resume button
+    # Exit button
     arcade.draw_rectangle_outline(buttons[10][0], buttons[10][1], buttons[10][2],
                                   buttons[10][3], arcade.color.GHOST_WHITE)
-    arcade.draw_text("RESUME", 40, 370, arcade.color.GHOST_WHITE, 200)
-
-    # Exit button
-    arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1], buttons[11][2],
-                                  buttons[11][3], arcade.color.GHOST_WHITE)
-    arcade.draw_text("EXIT", 275, 70, arcade.color.GHOST_WHITE, 200)
+    arcade.draw_text("EXIT", 275, 240, arcade.color.GHOST_WHITE, 200)
 
 
 def setup():
