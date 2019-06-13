@@ -154,25 +154,97 @@ buttons = [start_button, two_player_mode_button, one_player_mode_button,
 
 
 def on_update(delta_time):
-    global player_1_up_pressed, player_1_down_pressed, player_1_y
+    global player_1_up_pressed, player_1_down_pressed, player_1_y, player_1_x
 
-    global player_2_up_pressed, player_2_down_pressed, player_2_y
+    global player_2_up_pressed, player_2_down_pressed, player_2_y, player_2_x
 
     global ball_x, ball_y, ball_bounce_up, ball_bounce_down, ball_type, ball_velocity, ball_velocity_check
 
     global score_player_1, score_player_2, score_ai, score_lives_player_1, score_lives_player_2, score_endless, \
         score_cap_player_1, score_cap_player_2, score_cap_ai, score_high_score
 
-    global is_ai, ai_x, ai_y
+    global is_ai, ai_x, ai_y, ai_up, ai_down
 
     global current_screen, player_win
 
-    global count
+    global count, shift_pos
 
     global is_win, is_playing, is_reset
 
-    if is_reset:
+    global state_survival, state_endless
 
+    global hold_player_1_x, hold_player_1_y, hold_player_1_score, hold_player_2_x, hold_player_2_y, \
+        hold_player_2_score, hold_ball_x, hold_ball_y
+
+    # Resetting everything to their original booleans / positions
+    if is_reset:
+        count = 0
+        state_survival = False
+        state_endless = False
+        player_win = False
+        is_win = True
+        is_playing = False
+
+        player_1_x = 50
+        player_1_y = 250
+        player_1_up_pressed = False
+        player_1_down_pressed = False
+
+        player_2_x = 950
+        player_2_y = 250
+        player_2_up_pressed = False
+        player_2_down_pressed = False
+
+        is_ai = True
+        ai_x = 950
+        ai_y = 250
+        ai_up = False
+        ai_down = False
+
+        ball_x = 500
+        ball_y = 250
+
+        if random.randint(0, 1) == 1:
+            ball_type = False
+        else:
+            ball_type = True
+
+        if ball_type:
+            ball_x = 250
+        else:
+            ball_x = 750
+
+        ball_velocity = 1
+        ball_velocity_check = False
+
+        ball_bounce_down = False
+        ball_bounce_up = True
+
+        score_player_1 = 0
+        score_player_2 = 0
+        score_ai = 0
+        score_endless = 0
+        score_lives_player_1 = 0
+        score_lives_player_2 = 0
+        score_cap_player_1 = 5
+        score_cap_player_2 = 5
+        score_cap_ai = 5
+        score_high_score = 0
+
+        shift_pos = 0
+
+        hold_player_1_x = 0
+        hold_player_1_y = 0
+        hold_player_1_score = 0
+
+        hold_player_2_x = 0
+        hold_player_2_y = 0
+        hold_player_2_score = 0
+
+        hold_ball_x = 0
+        hold_ball_y = 0
+
+        is_reset = False
 
     # Player 1 movement
     if player_1_up_pressed and player_1_y + 50 <= 490 and is_playing:
@@ -374,11 +446,10 @@ def on_update(delta_time):
 
         score_player_1 += 1
 
-    if state_endless and not state_survival and is_ai and count == 1 and is_playing \
-            or state_endless and not state_survival and is_ai and count == 0 and is_playing:
+    if state_endless and not state_survival and is_ai and count == 0 and is_playing:
         score_player_1 = 0
         score_ai = 0
-        count = 0
+        count = 3
 
     collision()
 
@@ -521,49 +592,59 @@ def on_mouse_press(x, y, button, modifiers):
             current_button = 5
 
         # Back button
-        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and \
+                buttons[7][1] - 50 < y < buttons[7][1] + 50:
             current_button = 6
 
     if current_screen == 2:
 
         # Back button
-        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and \
+                buttons[7][1] - 50 < y < buttons[7][1] + 50:
             current_button = 0
 
         # Next button
-        if buttons[8][0] - 75 < x < buttons[8][0] + 75 and buttons[8][1] - 50 < y < buttons[8][1] + 50:
+        if buttons[8][0] - 75 < x < buttons[8][0] + 75 and \
+                buttons[8][1] - 50 < y < buttons[8][1] + 50:
             current_button = 1
 
     if current_screen == 3:
 
         # Back button
-        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and \
+                buttons[7][1] - 50 < y < buttons[7][1] + 50:
             current_button = 0
 
-    if current_screen == 4 or current_screen == 5 or current_screen == 6 or current_screen == 7 or current_screen == 8:
+    if current_screen == 4 or current_screen == 5 or current_screen == 6 \
+            or current_screen == 7 or current_screen == 8:
 
         # Menu Button
-        if buttons[9][0] - 50 < x < buttons[9][0] + 50 and buttons[9][1] - 25 < y < buttons[9][1] + 25:
+        if buttons[9][0] - 50 < x < buttons[9][0] + 50 and \
+                buttons[9][1] - 25 < y < buttons[9][1] + 25:
             current_button = 0
 
     if current_screen == 9 or current_screen == 10:
 
         # Yes button
-        if buttons[12][0] - 100 < x < buttons[12][0] + 100 and buttons[12][1] - 50 < y < buttons[12][1] + 50:
+        if buttons[12][0] - 100 < x < buttons[12][0] + 100 and \
+                buttons[12][1] - 50 < y < buttons[12][1] + 50:
             current_button = 0
 
         # No button
-        if buttons[13][0] - 100 < x < buttons[13][0] + 100 and buttons[13][1] - 50 and buttons[13][1] + 50:
+        if buttons[13][0] - 100 < x < buttons[13][0] + 100 and \
+                buttons[13][1] - 50 and buttons[13][1] + 50:
             current_button = 1
 
     if current_screen == 11:
 
         # Resume button
-        if buttons[10][0] - 500 < x < buttons[10][0] + 500 and buttons[10][1] - 150 < y < buttons[10][1] + 150:
+        if buttons[10][0] - 500 < x < buttons[10][0] + 500 and \
+                buttons[10][1] - 150 < y < buttons[10][1] + 150:
             current_button = 0
 
         # Exit button
-        if buttons[11][0] - 500 < x < buttons[11][0] + 500 and buttons[11][1] - 150 < y < buttons[11][1] + 150:
+        if buttons[11][0] - 500 < x < buttons[11][0] + 500 and \
+                buttons[11][1] - 150 < y < buttons[11][1] + 150:
             current_button = 1
 
 
@@ -581,7 +662,8 @@ def button_click_action(screen, button):
         # Start button
         if button == 0:
             arcade.draw_rectangle_outline(buttons[0][0], buttons[0][1],
-                                          buttons[0][2], buttons[0][3], arcade.color.YELLOW)
+                                          buttons[0][2], buttons[0][3],
+                                          arcade.color.YELLOW)
             current_screen = 1
 
     if screen == 1:
@@ -702,6 +784,7 @@ def button_click_action(screen, button):
             arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1],
                                           buttons[13][2], buttons[13][3],
                                           arcade.color.GO_GREEN)
+            current_screen = 0
 
     if screen == 11:
 
@@ -860,7 +943,6 @@ def collision():
 
 
 def ai():
-
     global ai_y, ball_y
 
     global state_survival, state_endless
@@ -909,10 +991,16 @@ def start_screen():
 
     arcade.draw_text("P O N G", 300, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
 
-    arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.TURQUOISE)
     arcade.draw_rectangle_outline(buttons[0][0], buttons[0][1], buttons[0][2],
                                   buttons[0][3], arcade.color.TURQUOISE)
     arcade.draw_text("S T A R T", 420, 300, arcade.color.TURQUOISE, 40)
+
+    # The players
+    arcade.draw_rectangle_outline(100, 200, 25, 200, arcade.color.GUPPIE_GREEN, 1, 15)
+    arcade.draw_rectangle_outline(900, 400, 25, 200, arcade.color.REDWOOD, 1, 15)
+
+    # The ball
+    arcade.draw_rectangle_filled(510, 315, 40, 40, arcade.color.BLUE_SAPPHIRE, 15)
 
 
 def mode_screen():
@@ -920,7 +1008,7 @@ def mode_screen():
 
     global state_survival, state_endless
 
-    global buttons
+    global buttons, is_reset
 
     is_playing = False
     state_survival = False
@@ -961,6 +1049,17 @@ def mode_screen():
     arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1], buttons[7][2],
                                   buttons[7][3], arcade.color.GREEN)
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
+
+    # Small pong game
+
+    # The players
+    arcade.draw_rectangle_outline(400, 450, 10, 100, arcade.color.ELECTRIC_YELLOW, 1, -15)
+    arcade.draw_rectangle_outline(850, 260, 10, 100, arcade.color.INTERNATIONAL_ORANGE, 1, -15)
+
+    # The ball
+    arcade.draw_rectangle_outline(600, 350, 10, 10, arcade.color.VIVID_VIOLET)
+
+    is_reset = True
 
 
 def how_to_play_screen():
@@ -1444,7 +1543,7 @@ def game_over_screen():
 
     global state_survival, state_endless
 
-    global buttons
+    global buttons, is_reset
 
     is_playing = False
     state_survival = False
@@ -1463,13 +1562,15 @@ def game_over_screen():
                                   buttons[13][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
+    is_reset = True
+
 
 def win_screen(winner):
     global is_playing
 
     global state_survival, state_endless
 
-    global buttons
+    global buttons, is_reset
 
     is_playing = False
     state_survival = False
@@ -1494,6 +1595,8 @@ def win_screen(winner):
     arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1], buttons[13][2],
                                   buttons[13][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
+
+    is_reset = True
 
 
 def pause_screen():
