@@ -7,7 +7,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 2
+current_screen = 0
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -31,6 +31,7 @@ state_endless = False
 player_win = False
 is_win = True
 is_playing = False
+is_reset = False
 
 # False is 1 player. True is 2 players.
 number_players = bool
@@ -124,6 +125,32 @@ endless_mode_button = [880, 410, 200, 100]
 how_to_play_button = [900, 70, 150, 100]
 back_button = [100, 70, 150, 100]
 next_button = [900, 70, 150, 100]
+menu_button = [250, 555, 100, 50]
+resume_button = [500, 450, 1000, 300]
+exit_button = [500, 150, 1000, 300]
+yes_button = [250, 200, 200, 100]
+no_button = [750, 200, 200, 100]
+
+buttons = [start_button, two_player_mode_button, one_player_mode_button,
+           normal_mode_button, survival_mode_button, endless_mode_button,
+           how_to_play_button, back_button, next_button, menu_button,
+           resume_button, exit_button, yes_button, no_button]
+
+# Button 2D list explanation
+# 0 start button
+# 1 two player mode button
+# 2 one player mode button
+# 3 normal mode button
+# 4 survival mode button
+# 5 endless mode button
+# 6 how to play button
+# 7 back button
+# 8 next button
+# 9 menu button
+# 10 resume button
+# 11 exit button
+# 12 yes button
+# 13 no button
 
 
 def on_update(delta_time):
@@ -142,7 +169,10 @@ def on_update(delta_time):
 
     global count
 
-    global is_win, is_playing
+    global is_win, is_playing, is_reset
+
+    if is_reset:
+
 
     # Player 1 movement
     if player_1_up_pressed and player_1_y + 50 <= 490 and is_playing:
@@ -330,6 +360,8 @@ def on_update(delta_time):
         if score_player_1 >= score_high_score:
             score_high_score = score_player_1
 
+        current_screen = 9
+
     # Checking if the ball bounces off screen AI endless
     if ball_x > 1000 and is_ai and state_endless and not state_survival and is_playing:
         ball_x = 750
@@ -342,14 +374,11 @@ def on_update(delta_time):
 
         score_player_1 += 1
 
-    if score_ai == 1 and state_endless and not state_survival and is_playing:
-        current_screen = 9
-
     if state_endless and not state_survival and is_ai and count == 1 and is_playing \
             or state_endless and not state_survival and is_ai and count == 0 and is_playing:
         score_player_1 = 0
         score_ai = 0
-        count = 3
+        count = 0
 
     collision()
 
@@ -451,63 +480,91 @@ def on_key_release(key, modifiers):
 def on_mouse_press(x, y, button, modifiers):
     global current_screen, current_button
 
-    global start_button, two_player_mode_button, one_player_mode_button, normal_mode_button
+    global buttons
 
     if current_screen == 0:
 
         # Start button
-        if start_button[0] - 100 < x < start_button[0] + 100 and start_button[1] - 50 < y < start_button[1] + 50:
+        if buttons[0][0] - 100 < x < buttons[0][0] + 100 and buttons[0][1] - 50 < y < buttons[0][1] + 50:
             current_button = 0
 
     if current_screen == 1:
 
         # Two player mode button
-        if two_player_mode_button[0] - 150 < x < two_player_mode_button[0] + 150 \
-                and two_player_mode_button[1] - 100 < y < two_player_mode_button[1] + 100:
+        if buttons[1][0] - 150 < x < buttons[1][0] + 150 \
+                and buttons[1][1] - 100 < y < buttons[1][1] + 100:
             current_button = 0
 
         # One player mode button
-        if one_player_mode_button[0] - 150 < x < one_player_mode_button[0] + 150 and \
-                one_player_mode_button[1] - 100 < y < one_player_mode_button[1] + 100:
+        if buttons[2][0] - 150 < x < buttons[2][0] + 150 and \
+                buttons[2][1] - 100 < y < buttons[2][1] + 100:
             current_button = 1
 
         # Normal mode button
-        if normal_mode_button[0] - 100 < x  < normal_mode_button[0] + 100 and \
-                normal_mode_button[1] - 50 < y < normal_mode_button[1] + 50:
+        if buttons[3][0] - 100 < x < buttons[3][0] + 100 and \
+                buttons[3][1] - 50 < y < buttons[3][1] + 50:
             current_button = 2
 
         # Survival mode button
-        if survival_mode_button[0] - 100 < x < survival_mode_button[0] + 100 and \
-                survival_mode_button[1] - 50 < y < survival_mode_button[1] + 50:
+        if buttons[4][0] - 100 < x < buttons[4][0] + 100 and \
+                buttons[4][1] - 50 < y < buttons[4][1] + 50:
             current_button = 3
 
         # Endless mode button
-        if endless_mode_button[0] - 100 < x < endless_mode_button[0] + 100 and endless_mode_button[1] - 50 < y < endless_mode_button[1] + 50:
+        if buttons[5][0] - 100 < x < buttons[5][0] + 100 and \
+                buttons[5][1] - 50 < y < buttons[5][1] + 50:
             current_button = 4
 
         # How to play button
-        if how_to_play_button[0] - 75 < x < how_to_play_button[0] + 75 and how_to_play_button[1] - 50 < y < how_to_play_button[1] + 50:
+        if buttons[6][0] - 75 < x < buttons[6][0] + 75 and \
+                buttons[6][1] - 50 < y < buttons[6][1] + 50:
             current_button = 5
 
         # Back button
-        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
-            current_button = 0
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
+            current_button = 6
 
     if current_screen == 2:
 
         # Back button
-        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
             current_button = 0
 
         # Next button
-        if next_button[0] - 75 < x < next_button[0] + 75 and next_button[1] - 50 < y < next_button[1] + 50:
+        if buttons[8][0] - 75 < x < buttons[8][0] + 75 and buttons[8][1] - 50 < y < buttons[8][1] + 50:
             current_button = 1
 
     if current_screen == 3:
 
         # Back button
-        if back_button[0] - 75 < x < back_button[0] + 75 and back_button[1] - 50 < y < back_button[1] + 50:
+        if buttons[7][0] - 75 < x < buttons[7][0] + 75 and buttons[7][1] - 50 < y < buttons[7][1] + 50:
             current_button = 0
+
+    if current_screen == 4 or current_screen == 5 or current_screen == 6 or current_screen == 7 or current_screen == 8:
+
+        # Menu Button
+        if buttons[9][0] - 50 < x < buttons[9][0] + 50 and buttons[9][1] - 25 < y < buttons[9][1] + 25:
+            current_button = 0
+
+    if current_screen == 9 or current_screen == 10:
+
+        # Yes button
+        if buttons[12][0] - 100 < x < buttons[12][0] + 100 and buttons[12][1] - 50 < y < buttons[12][1] + 50:
+            current_button = 0
+
+        # No button
+        if buttons[13][0] - 100 < x < buttons[13][0] + 100 and buttons[13][1] - 50 and buttons[13][1] + 50:
+            current_button = 1
+
+    if current_screen == 11:
+
+        # Resume button
+        if buttons[10][0] - 500 < x < buttons[10][0] + 500 and buttons[10][1] - 150 < y < buttons[10][1] + 150:
+            current_button = 0
+
+        # Exit button
+        if buttons[11][0] - 500 < x < buttons[11][0] + 500 and buttons[11][1] - 150 < y < buttons[11][1] + 150:
+            current_button = 1
 
 
 def button_click_action(screen, button):
@@ -515,36 +572,38 @@ def button_click_action(screen, button):
 
     global number_players
 
-    global state_survival, state_endless
+    global state_survival, state_endless\
+
+    global buttons
 
     if screen == 0:
 
         # Start button
         if button == 0:
-            arcade.draw_rectangle_outline(start_button[0], start_button[1],
-                                          start_button[2], start_button[3], arcade.color.YELLOW)
+            arcade.draw_rectangle_outline(buttons[0][0], buttons[0][1],
+                                          buttons[0][2], buttons[0][3], arcade.color.YELLOW)
             current_screen = 1
 
     if screen == 1:
 
         # Two player button
         if button == 0:
-            arcade.draw_rectangle_outline(two_player_mode_button[0], two_player_mode_button[1],
-                                          two_player_mode_button[2], two_player_mode_button[3],
+            arcade.draw_rectangle_outline(buttons[1][0], buttons[1][1],
+                                          buttons[1][2], buttons[1][3],
                                           arcade.color.GREEN)
             number_players = True
 
         # One player button
         if button == 1:
-            arcade.draw_rectangle_outline(one_player_mode_button[0], one_player_mode_button[1],
-                                          one_player_mode_button[2], one_player_mode_button[3],
+            arcade.draw_rectangle_outline(buttons[2][0], buttons[2][1],
+                                          buttons[2][2], buttons[2][3],
                                           arcade.color.BLUE)
             number_players = False
 
         # Normal mode button
         if button == 2:
-            arcade.draw_rectangle_outline(normal_mode_button[0], normal_mode_button[1],
-                                          normal_mode_button[2], normal_mode_button[3],
+            arcade.draw_rectangle_outline(buttons[3][0], buttons[3][1],
+                                          buttons[3][2], buttons[3][3],
                                           arcade.color.CYAN)
             state_survival = False
             state_endless = False
@@ -559,8 +618,8 @@ def button_click_action(screen, button):
 
         # Survival mode button
         if button == 3:
-            arcade.draw_rectangle_outline(survival_mode_button[0], survival_mode_button[1],
-                                          survival_mode_button[2], survival_mode_button[3],
+            arcade.draw_rectangle_outline(buttons[4][0], buttons[4][1],
+                                          buttons[4][2], buttons[4][3],
                                           arcade.color.RED)
 
             state_survival = True
@@ -576,21 +635,22 @@ def button_click_action(screen, button):
 
         # Endless mode button
         if button == 4:
-            arcade.draw_rectangle_outline(endless_mode_button[0], endless_mode_button[1],
-                                          endless_mode_button[2], endless_mode_button[3],
+            arcade.draw_rectangle_outline(buttons[5][0], buttons[5][1],
+                                          buttons[5][2], buttons[5][3],
                                           arcade.color.PURPLE)
+            current_screen = 8
 
         # How to play button
         if button == 5:
-            arcade.draw_rectangle_outline(how_to_play_button[0], how_to_play_button[1],
-                                          how_to_play_button[2], how_to_play_button[3],
+            arcade.draw_rectangle_outline(buttons[6][0], buttons[6][1],
+                                          buttons[6][2], buttons[6][3],
                                           arcade.color.YELLOW)
             current_screen = 2
 
         # Back button
         if button == 6:
-            arcade.draw_rectangle_outline(back_button[0], back_button[1],
-                                          back_button[2], back_button[3],
+            arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1],
+                                          buttons[7][2], buttons[7][3],
                                           arcade.color.RED)
             current_screen = 0
 
@@ -598,15 +658,15 @@ def button_click_action(screen, button):
 
         # Back button
         if button == 0:
-            arcade.draw_rectangle_outline(back_button[0], back_button[1],
-                                          back_button[2], back_button[3],
+            arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1],
+                                          buttons[7][2], buttons[7][3],
                                           arcade.color.RED)
             current_screen = 1
 
         # Next button
         if button == 1:
-            arcade.draw_rectangle_outline(next_button[0], next_button[1],
-                                          next_button[2], next_button[3],
+            arcade.draw_rectangle_outline(buttons[8][0], buttons[8][1],
+                                          buttons[8][2], buttons[8][3],
                                           arcade.color.ORANGE)
             current_screen = 3
 
@@ -614,9 +674,85 @@ def button_click_action(screen, button):
 
         # Back button
         if button == 0:
-            arcade.draw_rectangle_outline()
+            arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1],
+                                          buttons[7][2], buttons[7][3],
+                                          arcade.color.RED)
+            current_screen = 2
 
+    if screen == 4 or screen == 5 or screen == 6 or screen == 7 or screen == 8:
 
+        # Menu button
+        if button == 0:
+            arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1],
+                                          buttons[9][2], buttons[9][3],
+                                          arcade.color.UNIVERSITY_OF_TENNESSEE_ORANGE)
+            current_screen = 11
+
+    if screen == 9 or screen == 10:
+
+        # Yes button
+        if button == 0:
+            arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1],
+                                          buttons[12][2], buttons[12][3],
+                                          arcade.color.PINK)
+            current_screen = 1
+
+        # No button
+        if button == 1:
+            arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1],
+                                          buttons[13][2], buttons[13][3],
+                                          arcade.color.GO_GREEN)
+
+    if screen == 11:
+
+        # Resume button
+        if button == 0:
+            arcade.draw_rectangle_outline(buttons[10][0], buttons[10][1],
+                                          buttons[10][2], buttons[10][3],
+                                          arcade.color.CORDOVAN)
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+        # EMERGENCY DUNNO HOW WHAT WHO WHY WGUSDIZGBAIUDYGDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASIUHFBLASKJDHFBASLKDJFHGSALKDGIUBVSAKDUVABSKGVASKDFUGVASKDUGAHVSGDKASUHGV
+        # ASLDIGUABSLDIGUBAWLIUAWSGLIASUBGLSAIUBGLSAIUGBSALIUGBSALIGUBASLGIUBASFLGIUASBFGLIASUBFGLAISUBGLASIFUGBASLIFUGBASLIFGBUASLIFGBASDLFGIUBASLFGIUBSDLFGIUBF
+        # SALFIGUBASLGFIUBASLVIUABEWGLI8UESABGLOSEAIUBGRLAEWIUGBA3WLIUTBL498GBQ3WAL57GQ3WALI43WQL48W3QAL59BGWA3L58BWAL38BG3WAL54BGL3W8L3948BGL3WA4BGL3WAGBLW3LDDD
+        # ASRGOLIUBAROLGIQ3ABO3QA47UBTLQ3A4B3LWQABGY3WAO54BUG3WAL5RUBGTWAL3984LA3QW498YBGAWL39R5GUBLAERWUBGLWA9B8UGW3AL9IUGBYWALRIUGEUGHB3WALIRUGTB3WALIRGBURLFDF
+
+        # Exit button
+        if button == 1:
+            arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1],
+                                          buttons[11][2], buttons[11][3],
+                                          arcade.color.COSMIC_LATTE)
+            current_screen = 1
 
 
 def collision():
@@ -727,12 +863,25 @@ def ai():
 
     global ai_y, ball_y
 
-    if ball_y >= ai_y:
-        ai_y += 5
+    global state_survival, state_endless
 
-    if ball_y <= ai_y:
-        ai_y -= 5
+    if ball_y >= ai_y and state_survival and not state_endless:
+        ai_y += 6
 
+    if ball_y <= ai_y and state_survival and not state_endless:
+        ai_y -= 6
+
+    if ball_y >= ai_y and state_endless and not state_survival:
+        ai_y += 6
+
+    if ball_y <= ai_y and state_endless and not state_survival:
+        ai_y -= 6
+
+    if ball_y >= ai_y and not state_survival and not state_endless:
+        ai_y += 6
+
+    if ball_y <= ai_y and not state_survival and not state_endless:
+        ai_y -= 6
 
 # def score_caps(score_1, score_2, condition):
     # global score_cap_player_1, score_cap_player_2, score_cap_ai
@@ -752,7 +901,7 @@ def start_screen():
 
     global state_survival, state_endless
 
-    global start_button
+    global buttons
 
     is_playing = False
     state_survival = False
@@ -761,8 +910,8 @@ def start_screen():
     arcade.draw_text("P O N G", 300, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
 
     arcade.draw_rectangle_outline(510, 320, 200, 100, arcade.color.TURQUOISE)
-    arcade.draw_rectangle_outline(start_button[0], start_button[1], start_button[2],
-                                  start_button[3], arcade.color.TURQUOISE)
+    arcade.draw_rectangle_outline(buttons[0][0], buttons[0][1], buttons[0][2],
+                                  buttons[0][3], arcade.color.TURQUOISE)
     arcade.draw_text("S T A R T", 420, 300, arcade.color.TURQUOISE, 40)
 
 
@@ -771,37 +920,46 @@ def mode_screen():
 
     global state_survival, state_endless
 
+    global buttons
+
     is_playing = False
     state_survival = False
     state_endless = False
 
     # 2 player mode
-    arcade.draw_rectangle_outline(170, 480, 300, 200, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(buttons[1][0], buttons[1][1], buttons[1][2],
+                                  buttons[1][3], arcade.color.WHITE)
     arcade.draw_text("2 Players", 140, 480, arcade.color.WHITE)
 
     # 1 player mode
-    arcade.draw_rectangle_outline(170, 260, 300, 200, arcade.color.RED)
+    arcade.draw_rectangle_outline(buttons[2][0], buttons[2][1], buttons[2][2],
+                                  buttons[2][3], arcade.color.RED)
     arcade.draw_text("1 Player", 140, 260, arcade.color.RED)
 
     # Normal mode
-    arcade.draw_rectangle_outline(880, 530, 200, 100, arcade.color.ORANGE)
+    arcade.draw_rectangle_outline(buttons[3][0], buttons[3][1], buttons[3][2],
+                                  buttons[3][3], arcade.color.ORANGE)
     arcade.draw_text("Normal Mode", 805, 520, arcade.color.ORANGE, 20)
 
     # Survival mode
-    arcade.draw_rectangle_outline(660, 530, 200, 100, arcade.color.BLUE)
+    arcade.draw_rectangle_outline(buttons[4][0], buttons[4][1], buttons[4][2],
+                                  buttons[4][3], arcade.color.BLUE)
     arcade.draw_text("Survival Mode", 585, 520, arcade.color.BLUE, 20)
 
     # Endless mode
-    arcade.draw_rectangle_outline(880, 410, 200, 100, arcade.color.YELLOW)
+    arcade.draw_rectangle_outline(buttons[5][0], buttons[5][1], buttons[5][2],
+                                  buttons[5][3], arcade.color.YELLOW)
     arcade.draw_text("Endless Mode", 805, 400, arcade.color.YELLOW, 20)
 
     # How to play button
-    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.PURPLE)
+    arcade.draw_rectangle_outline(buttons[6][0], buttons[6][1], buttons[6][2],
+                                  buttons[6][3], arcade.color.PURPLE)
     arcade.draw_text("HOW TO", 855, 75, arcade.color.PURPLE, 20)
     arcade.draw_text("PLAY", 875, 50, arcade.color.PURPLE, 20)
 
     # Back button
-    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1], buttons[7][2],
+                                  buttons[7][3], arcade.color.GREEN)
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
 
@@ -809,6 +967,8 @@ def how_to_play_screen():
     global is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_playing = False
     state_survival = False
@@ -827,11 +987,13 @@ def how_to_play_screen():
     arcade.draw_text("Use the down arrow to move down", 500, 370, arcade.color.PURPLE, 20)
 
     # Back button
-    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1], buttons[7][2],
+                                  buttons[7][3], arcade.color.GREEN)
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
     # Next button
-    arcade.draw_rectangle_outline(900, 70, 150, 100, arcade.color.BLUE)
+    arcade.draw_rectangle_outline(buttons[8][0], buttons[8][1], buttons[8][2],
+                                  buttons[8][3], arcade.color.BLUE)
     arcade.draw_text("NEXT", 855, 60, arcade.color.BLUE, 30)
 
 
@@ -839,6 +1001,8 @@ def instruction_screen():
     global is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_playing = False
     state_survival = False
@@ -866,7 +1030,8 @@ def instruction_screen():
     arcade.draw_text("against an impossible ai", 650, 180, arcade.color.BLUE, 20)
 
     # Back button
-    arcade.draw_rectangle_outline(100, 70, 150, 100, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[7][0], buttons[7][1], buttons[7][2],
+                                  buttons[7][3], arcade.color.GREEN)
     arcade.draw_text("BACK", 55, 60, arcade.color.GREEN, 30)
 
 
@@ -876,6 +1041,8 @@ def two_player_screen():
     global is_ai, is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_ai = False
     is_playing = True
@@ -942,7 +1109,8 @@ def two_player_screen():
     arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
 
     # Menu
-    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1], buttons[9][2],
+                                  buttons[9][3], arcade.color.CERULEAN)
     arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
 
 
@@ -952,6 +1120,8 @@ def one_player_screen():
     global is_ai, is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_ai = True
     is_playing = True
@@ -1018,7 +1188,8 @@ def one_player_screen():
     arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
 
     # Menu
-    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1], buttons[9][2],
+                                  buttons[9][3], arcade.color.CERULEAN)
     arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
 
 
@@ -1031,6 +1202,8 @@ def survival_two_player_screen():
 
     global state_survival, state_endless
 
+    global buttons
+
     is_playing = True
     is_ai = False
     state_survival = True
@@ -1096,7 +1269,8 @@ def survival_two_player_screen():
     arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
 
     # Menu
-    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1], buttons[9][2],
+                                  buttons[9][3], arcade.color.CERULEAN)
     arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
 
 
@@ -1108,6 +1282,8 @@ def survival_one_player_screen():
     global is_ai, is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_ai = True
     state_survival = True
@@ -1174,7 +1350,8 @@ def survival_one_player_screen():
     arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
 
     # Menu
-    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1], buttons[9][2],
+                                  buttons[9][3], arcade.color.CERULEAN)
     arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
 
 
@@ -1188,6 +1365,8 @@ def endless_screen():
     global ai_y
 
     global is_ai, is_playing
+
+    global buttons
 
     is_ai = True
     state_survival = False
@@ -1255,7 +1434,8 @@ def endless_screen():
     arcade.draw_rectangle_filled(500, 540, 10, 10, arcade.color.WHITE)
 
     # Menu
-    arcade.draw_rectangle_outline(250, 555, 100, 50, arcade.color.CERULEAN)
+    arcade.draw_rectangle_outline(buttons[9][0], buttons[9][1], buttons[9][2],
+                                  buttons[9][3], arcade.color.CERULEAN)
     arcade.draw_text("MENU", 215, 545, arcade.color.CERULEAN, 20)
 
 
@@ -1263,6 +1443,8 @@ def game_over_screen():
     global is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_playing = False
     state_survival = False
@@ -1272,11 +1454,13 @@ def game_over_screen():
     arcade.draw_text("PLAY AGAIN?", 330, 400, arcade.color.SAPPHIRE, 50)
 
     # Yes button
-    arcade.draw_rectangle_outline(250, 200, 200, 100, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
+                                  buttons[12][3], arcade.color.GREEN)
     arcade.draw_text("YES", 230, 190, arcade.color.GREEN, 20)
 
     # No button
-    arcade.draw_rectangle_outline(750, 200, 200, 100, arcade.color.RED)
+    arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1], buttons[13][2],
+                                  buttons[13][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
 
@@ -1284,6 +1468,8 @@ def win_screen(winner):
     global is_playing
 
     global state_survival, state_endless
+
+    global buttons
 
     is_playing = False
     state_survival = False
@@ -1300,23 +1486,31 @@ def win_screen(winner):
         arcade.draw_text("PLAY AGAIN?", 330, 400, arcade.color.RED_DEVIL, 50)
 
     # Yes button
-    arcade.draw_rectangle_outline(250, 200, 200, 100, arcade.color.GREEN)
+    arcade.draw_rectangle_outline(buttons[12][0], buttons[12][1], buttons[12][2],
+                                  buttons[12][3], arcade.color.GREEN)
     arcade.draw_text("YES", 230, 190, arcade.color.GREEN, 20)
 
     # No button
-    arcade.draw_rectangle_outline(750, 200, 200, 100, arcade.color.RED)
+    arcade.draw_rectangle_outline(buttons[13][0], buttons[13][1], buttons[13][2],
+                                  buttons[13][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
 
 def pause_screen():
     global is_playing
 
+    global buttons
+
     is_playing = False
 
-    arcade.draw_rectangle_outline(500, 450, 1000, 300, arcade.color.GHOST_WHITE)
+    # Resume button
+    arcade.draw_rectangle_outline(buttons[10][0], buttons[10][1], buttons[10][2],
+                                  buttons[10][3], arcade.color.GHOST_WHITE)
     arcade.draw_text("RESUME", 40, 370, arcade.color.GHOST_WHITE, 200)
 
-    arcade.draw_rectangle_outline(500, 150, 1000, 300, arcade.color.GHOST_WHITE)
+    # Exit button
+    arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1], buttons[11][2],
+                                  buttons[11][3], arcade.color.GHOST_WHITE)
     arcade.draw_text("EXIT", 275, 70, arcade.color.GHOST_WHITE, 200)
 
 
