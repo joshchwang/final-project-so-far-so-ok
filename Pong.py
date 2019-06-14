@@ -1593,6 +1593,7 @@ def pause_screen():
 def music(time):
     global count_time
 
+    # Resets the music when it ends
     if time == 49100 * count_time:
         arcade.play_sound(sound_persis)
         count_time += 1
