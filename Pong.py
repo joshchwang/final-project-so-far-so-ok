@@ -1,5 +1,6 @@
 import arcade
 import random
+import winsound
 
 # Screen variables
 screen_width = 1000
@@ -7,7 +8,7 @@ screen_height = 600
 screen_title = "Pong"
 
 # States
-current_screen = 11
+current_screen = 0
 # Current screen value determines what screen the game will go into
 # 0 is start screen
 # 1 is mode screen
@@ -22,7 +23,13 @@ current_screen = 11
 # 10 is win screen
 # 11 is pause screen
 
+# The current button that is activated
 current_button = -2
+
+# Sound variables
+play_sound = False
+sound_persis = 'sound/Persis.mp3'
+sound_pong = 'sound/pong_noise.wav'
 
 # States of modes
 state_survival = False
@@ -34,10 +41,10 @@ is_win = True
 is_playing = False
 is_reset = False
 
-# False is 1 player. True is 2 players.
+# False is 1 player. True is 2 players
 number_players = bool
 
-# Used to reset and set different modes
+# Used to set the screen into different modes
 count = 0
 
 # Player 1 variables
@@ -63,7 +70,15 @@ ai_down = False
 ball_x = 500
 ball_y = 250
 
-# If ball type is False or 1 its for player 1. 2 or True is for player 2.
+# Velocity increases after hit
+ball_velocity = 1
+ball_velocity_check = False
+
+# Determines the bouncing
+ball_bounce_down = False
+ball_bounce_up = True
+
+# If ball type is False or 1 its for player 1. 2 or True is for player 2
 if random.randint(0, 1) == 1:
     ball_type = False
 else:
@@ -74,14 +89,6 @@ if ball_type:
     ball_x = 250
 else:
     ball_x = 750
-
-# Velocity increases after hit
-ball_velocity = 1
-ball_velocity_check = False
-
-# Determines the bouncing
-ball_bounce_down = False
-ball_bounce_up = True
 
 # Score
 score_player_1 = 0
@@ -104,18 +111,6 @@ rectangle_list = [8, 24, 40, 56, 72, 88, 104,
                   214, 230, 246, 262, 278, 294,
                   310, 326, 342, 358, 374, 390,
                   406, 422, 438, 454, 470, 486]
-
-# Hold variables
-hold_player_1_x = 0
-hold_player_1_y = 0
-hold_player_1_score = 0
-
-hold_player_2_x = 0
-hold_player_2_y = 0
-hold_player_2_score = 0
-
-hold_ball_x = 0
-hold_ball_y = 0
 
 # Buttons list value explanation: [x, y, w, h]
 buttons = [[510, 320, 200, 100], [170, 480, 300, 200],
@@ -161,9 +156,6 @@ def on_update(delta_time):
     global is_win, is_playing, is_reset
 
     global state_survival, state_endless
-
-    global hold_player_1_x, hold_player_1_y, hold_player_1_score, hold_player_2_x, hold_player_2_y, \
-        hold_player_2_score, hold_ball_x, hold_ball_y
 
     # Resetting everything to their original booleans / positions
     if is_reset:
@@ -221,17 +213,6 @@ def on_update(delta_time):
         score_high_score = 0
 
         shift_pos = 0
-
-        hold_player_1_x = 0
-        hold_player_1_y = 0
-        hold_player_1_score = 0
-
-        hold_player_2_x = 0
-        hold_player_2_y = 0
-        hold_player_2_score = 0
-
-        hold_ball_x = 0
-        hold_ball_y = 0
 
         is_reset = False
 
@@ -761,6 +742,7 @@ def button_click_action(screen, button):
             arcade.draw_rectangle_outline(buttons[11][0], buttons[11][1],
                                           buttons[11][2], buttons[11][3],
                                           arcade.color.PINK)
+            current_screen = 1
 
         # No button
         if button == 1:
@@ -788,7 +770,9 @@ def collision():
 
     global is_ai, ai_x, ai_y, score_ai
 
-    global state_endless
+    global state_survival, state_endless
+
+    global play_sound
 
     # Ball collision with divider
     if ball_y + 1 > 490:
@@ -803,19 +787,62 @@ def collision():
         ball_bounce_up = True
 
     # Ball collision with player 1
-    if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y):
+    if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
+            and not state_survival and not state_endless:
         ball_type = True
         ball_bounce_up = False
         ball_bounce_down = True
         ball_velocity_check = True
         ball_velocity += 0.1
 
-    if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50):
+    if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
+            and not state_survival and not state_endless:
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
         ball_velocity_check = True
         ball_velocity += 0.1
+
+    # Ball collision with player 1 survival
+    if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
+            and state_survival and not state_endless:
+        ball_type = True
+        ball_bounce_up = False
+        ball_bounce_down = True
+        ball_velocity_check = True
+        ball_velocity += 0.1
+
+    if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
+            and state_survival and not state_endless:
+        ball_type = True
+        ball_bounce_down = False
+        ball_bounce_up = True
+        ball_velocity_check = True
+        ball_velocity += 0.1
+
+    # Ball collision with player 1 endless
+    if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
+            and not state_survival and state_endless:
+        ball_type = True
+        ball_bounce_up = False
+        ball_bounce_down = True
+        ball_velocity_check = True
+        ball_velocity += 0.1
+
+    if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
+            and not state_survival and state_endless:
+        ball_type = True
+        ball_bounce_down = False
+        ball_bounce_up = True
+        ball_velocity_check = True
+        ball_velocity += 0.1
+
+    if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y + 50) \
+            and not state_survival and state_endless:
+        play_sound = True
+        if play_sound:
+            winsound.PlaySound(sound_pong, winsound.SND_FILENAME)
+            play_sound = False
 
     # Ball collision with player 2
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y) and not is_ai:
@@ -1037,6 +1064,7 @@ def instruction_screen():
     state_endless = False
 
     arcade.draw_text("THE DIFFERENT MODES", 50, 500, arcade.color.BRONZE, 70)
+
     arcade.draw_text("1 Player Mode:", 50, 430, arcade.color.PINK, 20)
 
     arcade.draw_text("This mode pits the", 50, 400, arcade.color.PINK, 20)
@@ -1046,6 +1074,12 @@ def instruction_screen():
 
     arcade.draw_text("This mode pits two players", 50, 210, arcade.color.PURPLE, 20)
     arcade.draw_text("against one another", 50, 180, arcade.color.PURPLE, 20)
+
+    arcade.draw_text("Normal Mode:", 350, 350, arcade.color.BITTER_LEMON, 20)
+
+    arcade.draw_text("This mode pits two players", 350, 320, arcade.color.BITTER_LEMON, 20)
+    arcade.draw_text("against each other or one", 350, 290, arcade.color.BITTER_LEMON, 20)
+    arcade.draw_text("player against an ai", 350, 260, arcade.color.BITTER_LEMON, 20)
 
     arcade.draw_text("Survival Mode:", 650, 430, arcade.color.RED, 20)
 
@@ -1468,15 +1502,26 @@ def endless_screen():
 
 
 def game_over_screen():
-    global is_playing
+    global is_playing, shift_pos
 
     global state_survival, state_endless
 
     global buttons, is_reset
 
+    global score_high_score
+
     is_playing = False
-    state_survival = False
-    state_endless = False
+
+    if state_endless:
+        if score_high_score < 10:
+            arcade.draw_text(str(score_high_score), 460, 200, arcade.color.AO, 100)
+
+        if score_high_score >= 100:
+            arcade.draw_text(str(score_high_score), 400, 200, arcade.color.AO, 100)
+            shift_pos = 30
+
+        if score_high_score >= 10:
+            arcade.draw_text(str(score_high_score), 430 - shift_pos, 200, arcade.color.AO, 100)
 
     arcade.draw_text("YOU LOSE", 230, 500, arcade.color.CANDY_APPLE_RED, 100)
     arcade.draw_text("PLAY AGAIN?", 330, 400, arcade.color.SAPPHIRE, 50)
@@ -1491,19 +1536,18 @@ def game_over_screen():
                                   buttons[12][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
-    is_reset = True
-
 
 def win_screen(winner):
     global is_playing
 
-    global state_survival, state_endless
-
     global buttons, is_reset
+
+    global state_survival, state_endless
 
     is_playing = False
     state_survival = False
     state_endless = False
+
 
     # Player 1 win code
     if not winner:
@@ -1532,12 +1576,6 @@ def pause_screen():
     global is_playing
 
     global buttons
-
-    global hold_ball_x, hold_ball_y, ball_x, ball_y
-
-    global hold_player_1_x, hold_player_1_y, hold_player_1_score, player_1_x, player_1_y, score_player_1
-
-    global hold_player_2_x, hold_player_2_y, hold_player_2_score, player_2_x, player_2_y, score_player_2
 
     is_playing = False
 
