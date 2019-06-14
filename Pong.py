@@ -1,6 +1,5 @@
 import arcade
 import random
-import winsound
 
 # Screen variables
 screen_width = 1000
@@ -28,8 +27,8 @@ current_button = -2
 
 # Sound variables
 play_sound = False
-sound_persis = 'sound/Persis.mp3'
-sound_pong = 'sound/pong_noise.wav'
+sound_persis = 'sound/persis.wav'
+sound_bounce = 'sound/pong_noise.wav'
 
 # States of modes
 state_survival = False
@@ -136,6 +135,15 @@ buttons = [[510, 320, 200, 100], [170, 480, 300, 200],
 # 11 yes button
 # 12 no button
 
+# Delta time == 0.01 milliseconds
+# 1 second = 0.01 x 100
+# persis = 491 seconds
+# 491 x 100
+# = 49100
+# so when delta time == 49100, restart persis
+count_time = 0
+time_check = 0
+
 
 def on_update(delta_time):
     global player_1_up_pressed, player_1_down_pressed, player_1_y, player_1_x
@@ -156,6 +164,11 @@ def on_update(delta_time):
     global is_win, is_playing, is_reset
 
     global state_survival, state_endless
+
+    global time_check
+
+    # Background music reset check
+    time_check += 1
 
     # Resetting everything to their original booleans / positions
     if is_reset:
@@ -618,7 +631,7 @@ def button_click_action(screen, button):
 
     global number_players
 
-    global state_survival, state_endless\
+    global state_survival, state_endless
 
     global buttons
 
@@ -836,13 +849,6 @@ def collision():
         ball_bounce_up = True
         ball_velocity_check = True
         ball_velocity += 0.1
-
-    if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y + 50) \
-            and not state_survival and state_endless:
-        play_sound = True
-        if play_sound:
-            winsound.PlaySound(sound_pong, winsound.SND_FILENAME)
-            play_sound = False
 
     # Ball collision with player 2
     if (player_2_x - 10 <= ball_x + 1 <= player_2_x + 10) and (player_2_y - 50 <= ball_y <= player_2_y) and not is_ai:
@@ -1548,7 +1554,6 @@ def win_screen(winner):
     state_survival = False
     state_endless = False
 
-
     # Player 1 win code
     if not winner:
         arcade.draw_text("PLAYER 1 WINS", 80, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
@@ -1585,7 +1590,16 @@ def pause_screen():
     arcade.draw_text("EXIT", 275, 240, arcade.color.GHOST_WHITE, 200)
 
 
+def music(time):
+    global count_time
+
+    if time == 49100 * count_time:
+        arcade.play_sound(sound_persis)
+        count_time += 1
+
+
 def setup():
+    global time_check
 
     arcade.open_window(screen_width, screen_height, screen_title)
     arcade.set_background_color(arcade.color.BLACK)
@@ -1596,6 +1610,8 @@ def setup():
     window.on_key_press = on_key_press
     window.on_key_release = on_key_release
     window.on_mouse_press = on_mouse_press
+
+    music(time_check)
 
     arcade.run()
 
