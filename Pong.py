@@ -2,9 +2,9 @@ import arcade
 import random
 
 # Screen variables
-screen_width = 1000
-screen_height = 600
-screen_title = "Pong"
+p_screen_width = 1000
+p_screen_height = 600
+p_screen_title = "Pong"
 
 # States
 current_screen = 0
@@ -26,18 +26,18 @@ current_screen = 0
 current_button = -2
 
 # Sound variables
-play_sound = False
-sound_persis = 'sound/persis.wav'
+p_play_sound = False
+p_sound_persis = 'sound/persis.wav'
 
 # States of modes
-state_survival = False
-state_endless = False
+p_state_survival = False
+p_state_endless = False
 
 # Constant check conditions
-player_win = False
-is_win = True
-is_playing = False
-is_reset = False
+p_player_win = False
+p_is_win = True
+p_is_playing = False
+p_is_reset = False
 
 # False is 1 player. True is 2 players
 number_players = bool
@@ -164,13 +164,13 @@ def on_update(delta_time):
 
     global is_ai, ai_x, ai_y, ai_up, ai_down
 
-    global current_screen, player_win
+    global current_screen, p_player_win
 
     global count, shift_pos
 
-    global is_win, is_playing, is_reset
+    global p_is_win, p_is_playing, p_is_reset
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global time_check
 
@@ -178,13 +178,13 @@ def on_update(delta_time):
     time_check += 1
 
     # Resetting everything to their original booleans / positions
-    if is_reset:
+    if p_is_reset:
         count = 0
-        state_survival = False
-        state_endless = False
-        player_win = False
-        is_win = True
-        is_playing = False
+        p_state_survival = False
+        p_state_endless = False
+        p_player_win = False
+        p_is_win = True
+        p_is_playing = False
 
         player_1_x = 50
         player_1_y = 250
@@ -234,48 +234,48 @@ def on_update(delta_time):
 
         shift_pos = 0
 
-        is_reset = False
+        p_is_reset = False
 
     # Player 1 movement
-    if player_1_up_pressed and player_1_y + 50 <= 490 and is_playing:
+    if player_1_up_pressed and player_1_y + 50 <= 490 and p_is_playing:
         player_1_y += 5
-    if player_1_down_pressed and player_1_y - 50 >= 0 and is_playing:
+    if player_1_down_pressed and player_1_y - 50 >= 0 and p_is_playing:
         player_1_y -= 5
 
     # Player 2 movement
-    if player_2_up_pressed and player_2_y + 50 <= 490 and not is_ai and is_playing:
+    if player_2_up_pressed and player_2_y + 50 <= 490 and not is_ai and p_is_playing:
         player_2_y += 5
-    if player_2_down_pressed and player_2_y - 50 >= 0 and not is_ai and is_playing:
+    if player_2_down_pressed and player_2_y - 50 >= 0 and not is_ai and p_is_playing:
         player_2_y -= 5
 
-    if ai_y + 50 >= 500 and is_ai and is_playing:
+    if ai_y + 50 >= 500 and is_ai and p_is_playing:
         ai_y = 445
-    if ai_y - 50 <= 0 and is_ai and is_playing:
+    if ai_y - 50 <= 0 and is_ai and p_is_playing:
         ai_y = 50
 
     # Ball bouncing off of the divider and the bottom
-    if ball_bounce_up and is_playing:
+    if ball_bounce_up and p_is_playing:
         ball_y += 5 + ball_velocity
-    if ball_bounce_down and is_playing:
+    if ball_bounce_down and p_is_playing:
         ball_y -= 5 + ball_velocity
 
     # Ball bouncing off of the players
-    if ball_type and is_playing:
+    if ball_type and p_is_playing:
         ball_x += 5 + ball_velocity
-    if not ball_type and is_playing:
+    if not ball_type and p_is_playing:
         ball_x -= 5 + ball_velocity
 
     # Increasing ball velocity
-    if ball_velocity_check and is_playing:
+    if ball_velocity_check and p_is_playing:
         ball_velocity_check += 1
         ball_velocity_check = False
 
     # Same ball velocity
-    if not ball_velocity_check and state_endless and is_playing:
+    if not ball_velocity_check and p_state_endless and p_is_playing:
         ball_velocity_check = 1
 
     # Check if the ball bounces off screen player 1
-    if ball_x < 0 and not is_ai and not state_survival and not state_endless and is_playing:
+    if ball_x < 0 and not is_ai and not p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -285,13 +285,13 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_2 += 1
 
-        if score_player_2 == score_cap_player_2 and is_win:
+        if score_player_2 == score_cap_player_2 and p_is_win:
             current_screen = 10
-            player_win = True
-            is_win = False
+            p_player_win = True
+            p_is_win = False
 
     # Checking if the ball bounces off screen player 2
-    if ball_x > 1000 and not is_ai and not state_survival and not state_endless and is_playing:
+    if ball_x > 1000 and not is_ai and not p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -301,13 +301,13 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_1 += 1
 
-        if score_player_1 == score_cap_player_1 and is_win:
+        if score_player_1 == score_cap_player_1 and p_is_win:
             current_screen = 10
-            player_win = False
-            is_win = False
+            p_player_win = False
+            p_is_win = False
 
     # Checking if the ball bounces off screen player 1
-    if ball_x < 0 and is_ai and not state_survival and not state_endless and is_playing:
+    if ball_x < 0 and is_ai and not p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -317,12 +317,12 @@ def on_update(delta_time):
         ball_velocity = 1
         score_ai += 1
 
-        if score_ai == score_cap_ai and is_win:
+        if score_ai == score_cap_ai and p_is_win:
             current_screen = 9
-            is_win = False
+            p_is_win = False
 
     # Checking if the ball bounces off screen AI
-    if ball_x > 1000 and is_ai and not state_survival and not state_endless and is_playing:
+    if ball_x > 1000 and is_ai and not p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -334,10 +334,10 @@ def on_update(delta_time):
 
         if score_player_1 == score_cap_player_1:
             current_screen = 10
-            player_win = False
+            p_player_win = False
 
     # Checking if the ball bounces off screen player 1 survival
-    if ball_x < 0 and not is_ai and state_survival and not state_endless and is_playing:
+    if ball_x < 0 and not is_ai and p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -347,13 +347,13 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_1 -= 1
 
-        if score_player_1 == 0 and is_win:
+        if score_player_1 == 0 and p_is_win:
             current_screen = 10
-            player_win = True
-            is_win = False
+            p_player_win = True
+            p_is_win = False
 
     # Checking if the ball bounces off screen player 2 survival
-    if ball_x > 1000 and not is_ai and state_survival and not state_endless and is_playing:
+    if ball_x > 1000 and not is_ai and p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -363,13 +363,13 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_2 -= 1
 
-        if score_player_2 == 0 and is_win:
+        if score_player_2 == 0 and p_is_win:
             current_screen = 10
-            player_win = False
-            is_win = False
+            p_player_win = False
+            p_is_win = False
 
     # Checking if the ball bounces off screen player 1 survival
-    if ball_x < 0 and is_ai and state_survival and not state_endless and is_playing:
+    if ball_x < 0 and is_ai and p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -379,12 +379,12 @@ def on_update(delta_time):
         ball_velocity = 1
         score_player_1 -= 1
 
-        if score_player_1 == 0 and is_win:
+        if score_player_1 == 0 and p_is_win:
             current_screen = 9
-            is_win = False
+            p_is_win = False
 
     # Checking if the ball bounces off screen AI survival
-    if ball_x > 1000 and is_ai and state_survival and not state_endless and is_playing:
+    if ball_x > 1000 and is_ai and p_state_survival and not p_state_endless and p_is_playing:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -394,23 +394,23 @@ def on_update(delta_time):
         ball_velocity = 1
         score_ai -= 1
 
-        if score_ai == 0 and is_win:
+        if score_ai == 0 and p_is_win:
             current_screen = 10
-            player_win = False
-            is_win = False
+            p_player_win = False
+            p_is_win = False
 
-    if state_survival and is_ai and count == 0 and not state_endless and is_playing:
+    if p_state_survival and is_ai and count == 0 and not p_state_endless and p_is_playing:
         score_player_1 = 3
         score_ai = 3
         count = 1
 
-    if state_survival and not is_ai and count == 0 and not state_endless and is_playing:
+    if p_state_survival and not is_ai and count == 0 and not p_state_endless and p_is_playing:
         score_player_1 = 3
         score_player_2 = 3
         count = 1
 
     # Checking if the ball bounces off screen player 1 endless
-    if ball_x < 0 and is_ai and state_endless and not state_survival and is_playing:
+    if ball_x < 0 and is_ai and p_state_endless and not p_state_survival and p_is_playing:
         ball_x = 250
         ball_y = 250
         ball_bounce_up = False
@@ -425,7 +425,7 @@ def on_update(delta_time):
         current_screen = 9
 
     # Checking if the ball bounces off screen AI endless
-    if ball_x > 1000 and is_ai and state_endless and not state_survival and is_playing:
+    if ball_x > 1000 and is_ai and p_state_endless and not p_state_survival and p_is_playing:
         ball_x = 750
         ball_y = 250
         ball_bounce_up = False
@@ -436,7 +436,7 @@ def on_update(delta_time):
 
         score_player_1 += 1
 
-    if state_endless and not state_survival and is_ai and count == 0 and is_playing:
+    if p_state_endless and not p_state_survival and is_ai and count == 0 and p_is_playing:
         score_player_1 = 0
         score_ai = 0
         count = 3
@@ -492,7 +492,7 @@ def on_draw():
         game_over_screen()
 
     if current_screen == 10:
-        win_screen(player_win)
+        win_screen(p_player_win)
 
     if current_screen == 11:
         pause_screen()
@@ -515,18 +515,18 @@ def on_key_press(key, modifiers):
 
     global is_ai
 
-    global is_playing
+    global p_is_playing
 
     # Player 1 key input
-    if key == arcade.key.W and is_playing:
+    if key == arcade.key.W and p_is_playing:
         player_1_up_pressed = True
-    if key == arcade.key.S and is_playing:
+    if key == arcade.key.S and p_is_playing:
         player_1_down_pressed = True
 
     # Player 2 key input
-    if key == arcade.key.UP and not is_ai and is_playing:
+    if key == arcade.key.UP and not is_ai and p_is_playing:
         player_2_up_pressed = True
-    if key == arcade.key.DOWN and not is_ai and is_playing:
+    if key == arcade.key.DOWN and not is_ai and p_is_playing:
         player_2_down_pressed = True
 
 
@@ -545,18 +545,18 @@ def on_key_release(key, modifiers):
 
     global is_ai
 
-    global is_playing
+    global p_is_playing
 
     # Player 1 key output
-    if key == arcade.key.W and is_playing:
+    if key == arcade.key.W and p_is_playing:
         player_1_up_pressed = False
-    if key == arcade.key.S and is_playing:
+    if key == arcade.key.S and p_is_playing:
         player_1_down_pressed = False
 
     # Player 2 key output
-    if key == arcade.key.UP and not is_ai and is_playing:
+    if key == arcade.key.UP and not is_ai and p_is_playing:
         player_2_up_pressed = False
-    if key == arcade.key.DOWN and not is_ai and is_playing:
+    if key == arcade.key.DOWN and not is_ai and p_is_playing:
         player_2_down_pressed = False
 
 
@@ -681,7 +681,7 @@ def button_click_action(screen, button):
 
     global number_players
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
@@ -715,8 +715,8 @@ def button_click_action(screen, button):
             arcade.draw_rectangle_outline(buttons[3][0], buttons[3][1],
                                           buttons[3][2], buttons[3][3],
                                           arcade.color.CYAN)
-            state_survival = False
-            state_endless = False
+            p_state_survival = False
+            p_state_endless = False
 
             # 2 player mode
             if number_players:
@@ -732,8 +732,8 @@ def button_click_action(screen, button):
                                           buttons[4][2], buttons[4][3],
                                           arcade.color.RED)
 
-            state_survival = True
-            state_endless = False
+            p_state_survival = True
+            p_state_endless = False
 
             # 2 player mode
             if number_players:
@@ -838,9 +838,9 @@ def collision():
 
     global is_ai, ai_x, ai_y, score_ai
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
-    global play_sound
+    global p_play_sound
 
     # Ball collision with divider
     if ball_y + 1 > 490:
@@ -856,7 +856,7 @@ def collision():
 
     # Ball collision with player 1
     if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
-            and not state_survival and not state_endless:
+            and not p_state_survival and not p_state_endless:
         ball_type = True
         ball_bounce_up = False
         ball_bounce_down = True
@@ -864,7 +864,7 @@ def collision():
         ball_velocity += 0.1
 
     if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
-            and not state_survival and not state_endless:
+            and not p_state_survival and not p_state_endless:
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
@@ -873,7 +873,7 @@ def collision():
 
     # Ball collision with player 1 survival
     if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
-            and state_survival and not state_endless:
+            and p_state_survival and not p_state_endless:
         ball_type = True
         ball_bounce_up = False
         ball_bounce_down = True
@@ -881,7 +881,7 @@ def collision():
         ball_velocity += 0.1
 
     if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
-            and state_survival and not state_endless:
+            and p_state_survival and not p_state_endless:
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
@@ -890,7 +890,7 @@ def collision():
 
     # Ball collision with player 1 endless
     if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
-            and not state_survival and state_endless:
+            and not p_state_survival and p_state_endless:
         ball_type = True
         ball_bounce_up = False
         ball_bounce_down = True
@@ -898,7 +898,7 @@ def collision():
         ball_velocity += 0.1
 
     if (player_1_x - 10 <= ball_x - 1 <= player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
-            and not state_survival and state_endless:
+            and not p_state_survival and p_state_endless:
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
@@ -937,7 +937,7 @@ def collision():
 
     # Ball collision with player 1 endless mode
     if (player_1_x - 10 <= ball_x <= player_1_x + 10) and (player_1_y - 50 <= ball_y <= player_1_y) \
-            and state_endless and is_ai:
+            and p_state_endless and is_ai:
         ball_type = True
         ball_bounce_up = False
         ball_bounce_down = True
@@ -945,7 +945,7 @@ def collision():
         score_player_1 += 1
 
     if (player_1_x - 10 <= ball_x - 1 < player_1_x + 10) and (player_1_y <= ball_y <= player_1_y + 50) \
-            and state_endless and is_ai:
+            and p_state_endless and is_ai:
         ball_type = True
         ball_bounce_down = False
         ball_bounce_up = True
@@ -965,9 +965,9 @@ def collision():
         ball_bounce_down = False
         ball_velocity_check = True
 
-    if ai_y + 50 >= 500 and is_ai and state_endless and not state_survival:
+    if ai_y + 50 >= 500 and is_ai and p_state_endless and not p_state_survival:
         ai_y = 445
-    if ai_y - 50 <= 0 and is_ai and state_endless and not state_survival:
+    if ai_y - 50 <= 0 and is_ai and p_state_endless and not p_state_survival:
         ai_y = 50
 
 
@@ -980,24 +980,24 @@ def ai():
 
     global ai_y, ball_y
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
-    if ball_y >= ai_y and state_survival and not state_endless:
+    if ball_y >= ai_y and p_state_survival and not p_state_endless:
         ai_y += 6
 
-    if ball_y <= ai_y and state_survival and not state_endless:
+    if ball_y <= ai_y and p_state_survival and not p_state_endless:
         ai_y -= 6
 
-    if ball_y >= ai_y and state_endless and not state_survival:
+    if ball_y >= ai_y and p_state_endless and not p_state_survival:
         ai_y += 6
 
-    if ball_y <= ai_y and state_endless and not state_survival:
+    if ball_y <= ai_y and p_state_endless and not p_state_survival:
         ai_y -= 6
 
-    if ball_y >= ai_y and not state_survival and not state_endless:
+    if ball_y >= ai_y and not p_state_survival and not p_state_endless:
         ai_y += 6
 
-    if ball_y <= ai_y and not state_survival and not state_endless:
+    if ball_y <= ai_y and not p_state_survival and not p_state_endless:
         ai_y -= 6
 
 
@@ -1009,15 +1009,15 @@ def start_screen():
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
-    is_playing = False
-    state_survival = False
-    state_endless = False
+    p_is_playing = False
+    p_state_survival = False
+    p_state_endless = False
 
     arcade.draw_text("P O N G", 300, 500, arcade.color.PURPLE_MOUNTAIN_MAJESTY, 100)
 
@@ -1041,15 +1041,15 @@ def mode_screen():
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
-    global buttons, is_reset
+    global buttons, p_is_reset
 
-    is_playing = False
-    state_survival = False
-    state_endless = False
+    p_is_playing = False
+    p_state_survival = False
+    p_state_endless = False
 
     # 2 player mode
     arcade.draw_rectangle_outline(buttons[1][0], buttons[1][1], buttons[1][2],
@@ -1096,7 +1096,7 @@ def mode_screen():
     # The ball
     arcade.draw_rectangle_outline(600, 350, 10, 10, arcade.color.VIVID_VIOLET)
 
-    is_reset = True
+    p_is_reset = True
 
 
 def how_to_play_screen():
@@ -1107,15 +1107,15 @@ def how_to_play_screen():
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
-    is_playing = False
-    state_survival = False
-    state_endless = False
+    p_is_playing = False
+    p_state_survival = False
+    p_state_endless = False
 
     arcade.draw_text("HOW TO PLAY", 100, 500, arcade.color.BRONZE, 100)
 
@@ -1148,15 +1148,15 @@ def instruction_screen():
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
-    is_playing = False
-    state_survival = False
-    state_endless = False
+    p_is_playing = False
+    p_state_survival = False
+    p_state_endless = False
 
     arcade.draw_text("THE DIFFERENT MODES", 50, 500, arcade.color.BRONZE, 70)
 
@@ -1202,16 +1202,16 @@ def two_player_screen():
 
     global shift_pos
 
-    global is_ai, is_playing
+    global is_ai, p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
     is_ai = False
-    is_playing = True
-    state_survival = False
-    state_endless = False
+    p_is_playing = True
+    p_state_survival = False
+    p_state_endless = False
 
     # Player 1
     arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -1288,16 +1288,16 @@ def one_player_screen():
 
     global shift_pos
 
-    global is_ai, is_playing
+    global is_ai, p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
     is_ai = True
-    is_playing = True
-    state_survival = False
-    state_endless = False
+    p_is_playing = True
+    p_state_survival = False
+    p_state_endless = False
 
     # Player 1
     arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -1376,16 +1376,16 @@ def survival_two_player_screen():
 
     global shift_pos
 
-    global is_ai, is_playing
+    global is_ai, p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
-    is_playing = True
+    p_is_playing = True
     is_ai = False
-    state_survival = True
-    state_endless = False
+    p_state_survival = True
+    p_state_endless = False
 
     # Player 1
     arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -1465,16 +1465,16 @@ def survival_one_player_screen():
 
     global shift_pos
 
-    global is_ai, is_playing
+    global is_ai, p_is_playing
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global buttons
 
     is_ai = True
-    state_survival = True
-    state_endless = False
-    is_playing = True
+    p_state_survival = True
+    p_state_endless = False
+    p_is_playing = True
 
     # Player 1
     arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -1555,18 +1555,18 @@ def endless_screen():
 
     global shift_pos
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
     global ai_y
 
-    global is_ai, is_playing
+    global is_ai, p_is_playing
 
     global buttons
 
     is_ai = True
-    state_survival = False
-    state_endless = True
-    is_playing = True
+    p_state_survival = False
+    p_state_endless = True
+    p_is_playing = True
 
     # Player 1
     arcade.draw_rectangle_outline(player_1_x, player_1_y, 10, 100, arcade.color.WHITE)
@@ -1642,17 +1642,17 @@ def game_over_screen():
     :return:
     """
 
-    global is_playing, shift_pos
+    global p_is_playing, shift_pos
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
-    global buttons, is_reset
+    global buttons, p_is_reset
 
     global score_high_score
 
-    is_playing = False
+    p_is_playing = False
 
-    if state_endless:
+    if p_state_endless:
         if score_high_score < 10:
             arcade.draw_text(str(score_high_score), 460, 200, arcade.color.AO, 100)
 
@@ -1686,15 +1686,15 @@ def win_screen(winner):
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
-    global buttons, is_reset
+    global buttons, p_is_reset
 
-    global state_survival, state_endless
+    global p_state_survival, p_state_endless
 
-    is_playing = False
-    state_survival = False
-    state_endless = False
+    p_is_playing = False
+    p_state_survival = False
+    p_state_endless = False
 
     # Player 1 win code
     if not winner:
@@ -1716,7 +1716,7 @@ def win_screen(winner):
                                   buttons[12][3], arcade.color.RED)
     arcade.draw_text("NO", 735, 190, arcade.color.RED, 20)
 
-    is_reset = True
+    p_is_reset = True
 
 
 def pause_screen():
@@ -1727,11 +1727,11 @@ def pause_screen():
     :return:
     """
 
-    global is_playing
+    global p_is_playing
 
     global buttons
 
-    is_playing = False
+    p_is_playing = False
 
     # Exit button
     arcade.draw_rectangle_outline(buttons[10][0], buttons[10][1], buttons[10][2],
@@ -1755,7 +1755,7 @@ def music(time):
 
     # Resets the music when it ends
     if time == 49100 * count_time:
-        arcade.play_sound(sound_persis)
+        arcade.play_sound(p_sound_persis)
         count_time += 1
 
 
@@ -1770,7 +1770,7 @@ def setup():
 
     global time_check
 
-    arcade.open_window(screen_width, screen_height, screen_title)
+    arcade.open_window(p_screen_width, p_screen_height, p_screen_title)
     arcade.set_background_color(arcade.color.BLACK)
     arcade.schedule(on_update, 1/60)
 
