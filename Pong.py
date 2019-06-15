@@ -28,7 +28,6 @@ current_button = -2
 # Sound variables
 play_sound = False
 sound_persis = 'sound/persis.wav'
-sound_bounce = 'sound/pong_noise.wav'
 
 # States of modes
 state_survival = False
