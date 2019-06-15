@@ -146,6 +146,14 @@ time_check = 0
 
 
 def on_update(delta_time):
+    """
+    Updates the entirety of the code
+    and insures it running
+
+    :param delta_time:
+    :return:
+    """
+
     global player_1_up_pressed, player_1_down_pressed, player_1_y, player_1_x
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y, player_2_x
@@ -438,6 +446,12 @@ def on_update(delta_time):
 
 
 def on_draw():
+    """
+    Draws everything onto screens.
+
+    :return:
+    """
+
     global rectangle_list
 
     global ball_y
@@ -488,6 +502,14 @@ def on_draw():
 
 
 def on_key_press(key, modifiers):
+    """
+    Takes key inputs.
+
+    :param key:
+    :param modifiers:
+    :return:
+    """
+
     global player_1_up_pressed, player_1_down_pressed
 
     global player_2_up_pressed, player_2_down_pressed
@@ -510,6 +532,14 @@ def on_key_press(key, modifiers):
 
 
 def on_key_release(key, modifiers):
+    """
+    Runs after the release of the key.
+
+    :param key:
+    :param modifiers:
+    :return:
+    """
+
     global player_1_up_pressed, player_1_down_pressed
 
     global player_2_up_pressed, player_2_down_pressed
@@ -532,6 +562,16 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
+    """
+    Takes input for mouse click
+
+    :param x:
+    :param y:
+    :param button:
+    :param modifiers:
+    :return:
+    """
+
     global current_screen, current_button
 
     global buttons
@@ -627,6 +667,17 @@ def on_mouse_press(x, y, button, modifiers):
 
 
 def button_click_action(screen, button):
+    """
+    After a mouse clicks on a button,
+    this function activates and takes
+    an input, which will change the game
+    according to what each button does.
+
+    :param screen:
+    :param button:
+    :return:
+    """
+
     global current_screen
 
     global number_players
@@ -775,6 +826,11 @@ def button_click_action(screen, button):
 
 
 def collision():
+    """
+    Checks the collision of everything.
+    :return:
+    """
+
     global player_1_x, player_1_y, score_player_1
 
     global player_2_x, player_2_y
@@ -917,6 +973,12 @@ def collision():
 
 
 def ai():
+    """
+    The AI code for everything.
+
+    :return:
+    """
+
     global ai_y, ball_y
 
     global state_survival, state_endless
@@ -941,6 +1003,13 @@ def ai():
 
 
 def start_screen():
+    """
+    Holds all the code for
+    the start screen.
+
+    :return:
+    """
+
     global is_playing
 
     global state_survival, state_endless
@@ -966,6 +1035,13 @@ def start_screen():
 
 
 def mode_screen():
+    """
+    Holds the code for the
+    mode selection screen.
+
+    :return:
+    """
+
     global is_playing
 
     global state_survival, state_endless
@@ -1025,6 +1101,13 @@ def mode_screen():
 
 
 def how_to_play_screen():
+    """
+    Holds the code for the
+    how to play screen.
+
+    :return:
+    """
+
     global is_playing
 
     global state_survival, state_endless
@@ -1059,6 +1142,13 @@ def how_to_play_screen():
 
 
 def instruction_screen():
+    """
+    Holds the code for the
+    instruction screen.
+
+    :return:
+    """
+
     global is_playing
 
     global state_survival, state_endless
@@ -1104,6 +1194,13 @@ def instruction_screen():
 
 
 def two_player_screen():
+    """
+    Holds the code for a two
+    player game.
+
+    :return:
+    """
+
     global shift_pos
 
     global is_ai, is_playing
@@ -1183,6 +1280,13 @@ def two_player_screen():
 
 
 def one_player_screen():
+    """
+    Holds the code for a one
+    player game against an ai.
+
+    :return:
+    """
+
     global shift_pos
 
     global is_ai, is_playing
@@ -1262,6 +1366,13 @@ def one_player_screen():
 
 
 def survival_two_player_screen():
+    """
+    Holds the code for a two
+    player survival game.
+
+    :return:
+    """
+
     global score_player_1, score_player_2
 
     global shift_pos
@@ -1343,6 +1454,14 @@ def survival_two_player_screen():
 
 
 def survival_one_player_screen():
+    """
+    Holds the code for a one
+    player survival game
+    against an ai.
+
+    :return:
+    """
+
     global score_player_1, score_ai
 
     global shift_pos
@@ -1424,6 +1543,15 @@ def survival_one_player_screen():
 
 
 def endless_screen():
+    """
+    Holds the code for an
+    endless game against an
+    impossible ai, therefore
+    making it endless.
+
+    :return:
+    """
+
     global score_player_1, score_ai
 
     global shift_pos
@@ -1508,6 +1636,13 @@ def endless_screen():
 
 
 def game_over_screen():
+    """
+    Holds the code to draw
+    the game over screen.
+
+    :return:
+    """
+
     global is_playing, shift_pos
 
     global state_survival, state_endless
@@ -1544,6 +1679,14 @@ def game_over_screen():
 
 
 def win_screen(winner):
+    """
+    Holds the code for
+    drawing the win screen.
+
+    :param winner:
+    :return:
+    """
+
     global is_playing
 
     global buttons, is_reset
@@ -1578,6 +1721,13 @@ def win_screen(winner):
 
 
 def pause_screen():
+    """
+    Holds the code to draw
+    the pause screen.
+
+    :return:
+    """
+
     global is_playing
 
     global buttons
@@ -1591,6 +1741,17 @@ def pause_screen():
 
 
 def music(time):
+    """
+    Holds the code in order
+    to run background music.
+
+    Be warned, I'm told
+    it's quite loud.
+
+    :param time:
+    :return:
+    """
+
     global count_time
 
     # Resets the music when it ends
@@ -1600,6 +1761,14 @@ def music(time):
 
 
 def setup():
+    """
+    Holds the code that
+    enables the game to
+    function and run.
+
+    :return:
+    """
+
     global time_check
 
     arcade.open_window(screen_width, screen_height, screen_title)
