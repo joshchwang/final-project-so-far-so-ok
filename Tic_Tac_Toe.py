@@ -472,6 +472,9 @@ def on_draw():
 
     arcade.start_render()
 
+    arcade.draw_rectangle_outline(300, 785, 50, 25, arcade.color.CERULEAN)
+    arcade.draw_text("M E N U", 278, 780, arcade.color.CERULEAN, 10)
+
     # Drawing the separation divider lines
     arcade.draw_line(200, 0, 200, 600, arcade.color.WHITE, 5)
     arcade.draw_line(400, 0, 400, 600, arcade.color.WHITE, 5)
