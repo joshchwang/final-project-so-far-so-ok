@@ -637,7 +637,7 @@ def on_update(delta_time):
         count = 3
 
     # Resetting everything to their original booleans / positions
-    reset(p_is_reset)
+    p_reset(p_is_reset)
 
     # Checking collision
     collision()
@@ -1989,7 +1989,7 @@ def music(time):
         count_time += 1
 
 
-def reset(am_reset):
+def p_reset(am_reset):
     """
     Resets everything to their
     original positions.
