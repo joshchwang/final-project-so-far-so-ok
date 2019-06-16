@@ -1,6 +1,8 @@
 import arcade
 import random
 
+# Pong variables
+
 # Screen variables
 p_screen_width = 1000
 p_screen_height = 600
@@ -104,20 +106,27 @@ score_high_score = 0
 shift_pos = 0
 
 # Dotted line position list
-rectangle_list = [8, 24, 40, 56, 72, 88, 104,
-                  120, 136, 152, 166, 182, 198,
-                  214, 230, 246, 262, 278, 294,
-                  310, 326, 342, 358, 374, 390,
-                  406, 422, 438, 454, 470, 486]
+rectangle_list = [
+                  8, 24, 40, 56,
+                  72, 88, 104, 120,
+                  136, 152, 166, 182,
+                  198, 214, 230, 246,
+                  262, 278, 294, 310,
+                  326, 342, 358, 374,
+                  390, 406, 422, 438,
+                  454, 470, 486
+]
 
 # Buttons list value explanation: [x, y, w, h]
-buttons = [[510, 320, 200, 100], [170, 480, 300, 200],
+buttons = [
+           [510, 320, 200, 100], [170, 480, 300, 200],
            [170, 260, 300, 200], [880, 530, 200, 100],
            [660, 530, 200, 100], [880, 410, 200, 100],
            [900, 70, 150, 100], [100, 70, 150, 100],
            [900, 70, 150, 100], [250, 555, 100, 50],
            [500, 300, 1000, 600], [250, 200, 200, 100],
-           [750, 200, 200, 100]]
+           [750, 200, 200, 100]
+]
 
 # Button 2D list list
 # 0 start button
@@ -144,6 +153,250 @@ count_time = 0
 time_check = 0
 
 
+# Tic Tac Toe variables
+ttt_screen_width = 600
+ttt_screen_height = 800
+ttt_screen_title = "TicTacToe"
+
+
+# Player 1 variables
+ttt_player_1_top_left = False
+ttt_player_1_top_middle = False
+ttt_player_1_top_right = False
+
+ttt_player_1_middle_left = False
+ttt_player_1_middle_middle = False
+ttt_player_1_middle_right = False
+
+ttt_player_1_bottom_left = False
+ttt_player_1_bottom_middle = False
+ttt_player_1_bottom_right = False
+
+ttt_player_1_score = 0
+
+ttt_game_win_player_1 = False
+
+ttt_player_1_big_score = 0
+
+ttt_player_1_wins = False
+
+ttt_player_1_game_win = False
+
+# Player 1 win cases
+ttt_win_player_1_bottom_row = False
+ttt_win_player_1_middle_row = False
+ttt_win_player_1_top_row = False
+
+ttt_win_player_1_left_column = False
+ttt_win_player_1_middle_column = False
+ttt_win_player_1_right_column = False
+
+ttt_win_player_1_diagonal_downward = False
+ttt_win_player_1_diagonal_upward = False
+
+
+# Player 2 variables
+ttt_player_2_top_left = False
+ttt_player_2_top_middle = False
+ttt_player_2_top_right = False
+
+ttt_player_2_middle_left = False
+ttt_player_2_middle_middle = False
+ttt_player_2_middle_right = False
+
+ttt_player_2_bottom_left = False
+ttt_player_2_bottom_middle = False
+ttt_player_2_bottom_right = False
+
+ttt_player_2_score = 0
+
+ttt_game_win_player_2 = False
+
+ttt_player_2_big_score = 0
+
+ttt_player_2_wins = False
+
+ttt_player_2_game_win = False
+
+# Player 2 win cases
+ttt_win_player_2_bottom_row = False
+ttt_win_player_2_middle_row = False
+ttt_win_player_2_top_row = False
+
+ttt_win_player_2_left_column = False
+ttt_win_player_2_middle_column = False
+ttt_win_player_2_right_column = False
+
+ttt_win_player_2_diagonal_downward = False
+ttt_win_player_2_diagonal_upward = False
+
+
+# Variables to determine which player has what box
+# A value of 1 means that player 1 holds the space
+# A value of 2 means that player 2 hold the space
+ttt_taken_bottom_left = 0
+ttt_taken_bottom_middle = 0
+ttt_taken_bottom_right = 0
+
+ttt_taken_middle_left = 0
+ttt_taken_middle_middle = 0
+ttt_taken_middle_right = 0
+
+ttt_taken_top_left = 0
+ttt_taken_top_middle = 0
+ttt_taken_top_right = 0
+
+
+ttt_win_condition = True
+ttt_point_won = False
+ttt_is_reset = False
+ttt_max_score = 5
+
+current_screen = 0
+
+if random.randint(2, 3) == 2:
+    ttt_player_1_turn = True
+    ttt_player_2_turn = False
+else:
+    ttt_player_1_turn = False
+    ttt_player_2_turn = True
+
+
+# 3D list containing all the positions
+# Includes 'O', 'X', box, and line positions
+ttt_positions = [
+    # O positions
+    [
+        # Bottom left
+        [100, 100, 100],
+
+        # Bottom middle
+        [300, 100, 100],
+
+        # Bottom right
+        [500, 100, 100],
+
+        # Middle left
+        [100, 300, 100],
+
+        # Middle middle
+        [300, 300, 100],
+
+        # Middle bottom
+        [500, 300, 100],
+
+        # Top left
+        [100, 500, 100],
+
+        # Top middle
+        [300, 500, 100],
+
+        # Top right
+        [500, 500, 100]
+
+    ],
+
+    # X positions
+    [
+        # Bottom left
+        [0, 0, 200, 200],
+        [0, 200, 200, 0],
+
+        # Bottom middle
+        [200, 0, 400, 200],
+        [200, 200, 400, 0],
+
+        # Bottom right
+        [400, 0, 600, 200],
+        [400, 200, 600, 0],
+
+        # Middle left
+        [0, 200, 200, 400],
+        [0, 400, 200, 200],
+
+        # Middle middle
+        [200, 200, 400, 400],
+        [200, 400, 400, 200],
+
+        # Middle right
+        [400, 200, 600, 400],
+        [400, 400, 600, 200],
+
+        # Top left
+        [0, 400, 200, 600],
+        [0, 600, 200, 400],
+
+        # Top middle
+        [200, 400, 400, 600],
+        [200, 600, 400, 400],
+
+        # Top right
+        [400, 400, 600, 600],
+        [400, 600, 600, 400]
+
+    ],
+
+    # Box positions
+    [
+        # Bottom left
+        [100, 100, 200, 200],
+
+        # Bottom middle
+        [300, 100, 200, 200],
+
+        # Bottom right
+        [500, 100, 200, 200],
+
+        # Middle left
+        [100, 300, 200, 200],
+
+        # Middle middle
+        [300, 300, 200, 200],
+
+        # Middle bottom
+        [500, 300, 200, 200],
+
+        # Top left
+        [100, 500, 200, 200],
+
+        # Top middle
+        [300, 500, 200, 200],
+
+        # Top right
+        [500, 500, 200, 200]
+
+    ],
+
+    # Line positions
+    [
+        # Bottom row
+        [0, 100, 600, 100],
+
+        # Middle row
+        [0, 300, 600, 300],
+
+        # Top row
+        [0, 500, 600, 500],
+
+        # Left column
+        [100, 0, 100, 600],
+
+        # Middle column
+        [300, 0, 300, 600],
+
+        # Right column
+        [500, 0, 500, 600],
+
+        # Downwards diagonal
+        [0, 600, 600, 0],
+
+        # Upwards diagonal
+        [0, 0, 600, 600]
+
+    ]
+]
+
+
 def on_update(delta_time):
     """
     Updates the entirety of the code
@@ -153,6 +406,7 @@ def on_update(delta_time):
     :return:
     """
 
+    # Pong globals
     global player_1_up_pressed, player_1_down_pressed, player_1_y, player_1_x
 
     global player_2_up_pressed, player_2_down_pressed, player_2_y, player_2_x
@@ -176,65 +430,6 @@ def on_update(delta_time):
 
     # Background music reset check
     time_check += 1
-
-    # Resetting everything to their original booleans / positions
-    if p_is_reset:
-        count = 0
-        p_state_survival = False
-        p_state_endless = False
-        p_player_win = False
-        p_is_win = True
-        p_is_playing = False
-
-        player_1_x = 50
-        player_1_y = 250
-        player_1_up_pressed = False
-        player_1_down_pressed = False
-
-        player_2_x = 950
-        player_2_y = 250
-        player_2_up_pressed = False
-        player_2_down_pressed = False
-
-        is_ai = True
-        ai_x = 950
-        ai_y = 250
-        ai_up = False
-        ai_down = False
-
-        ball_x = 500
-        ball_y = 250
-
-        if random.randint(0, 1) == 1:
-            ball_type = False
-        else:
-            ball_type = True
-
-        if ball_type:
-            ball_x = 250
-        else:
-            ball_x = 750
-
-        ball_velocity = 1
-        ball_velocity_check = False
-
-        ball_bounce_down = False
-        ball_bounce_up = True
-
-        score_player_1 = 0
-        score_player_2 = 0
-        score_ai = 0
-        score_endless = 0
-        score_lives_player_1 = 0
-        score_lives_player_2 = 0
-        score_cap_player_1 = 5
-        score_cap_player_2 = 5
-        score_cap_ai = 5
-        score_high_score = 0
-
-        shift_pos = 0
-
-        p_is_reset = False
 
     # Player 1 movement
     if player_1_up_pressed and player_1_y + 50 <= 490 and p_is_playing:
@@ -441,12 +636,47 @@ def on_update(delta_time):
         score_ai = 0
         count = 3
 
+    # Resetting everything to their original booleans / positions
+    reset(p_is_reset)
+
+    # Checking collision
     collision()
+
+    # Tic Tac Toe globals
+    global ttt_player_1_top_left, ttt_player_1_top_middle, ttt_player_1_top_right
+    global ttt_player_1_middle_left, ttt_player_1_middle_middle, ttt_player_1_middle_right
+    global ttt_player_1_bottom_left, ttt_player_1_bottom_middle, ttt_player_1_bottom_right
+
+    global ttt_win_player_1_bottom_row, ttt_win_player_1_middle_row, ttt_win_player_1_top_row
+    global ttt_win_player_1_left_column, ttt_win_player_1_middle_column, ttt_win_player_1_right_column
+    global ttt_win_player_1_diagonal_downward, ttt_win_player_1_diagonal_upward
+
+    global ttt_game_win_player_1, ttt_player_1_score, ttt_player_1_turn, ttt_player_1_big_score, \
+        ttt_player_1_wins, ttt_player_1_game_win
+
+    global ttt_player_2_top_left, ttt_player_2_top_middle, ttt_player_2_top_right
+    global ttt_player_2_middle_left, ttt_player_2_middle_middle, ttt_player_2_middle_right
+    global ttt_player_2_bottom_left, ttt_player_2_bottom_middle, ttt_player_2_bottom_right
+
+    global ttt_win_player_2_bottom_row, ttt_win_player_2_middle_row, ttt_win_player_2_top_row
+    global ttt_win_player_2_left_column, ttt_win_player_2_middle_column, ttt_win_player_2_right_column
+    global ttt_win_player_2_diagonal_downward, ttt_win_player_2_diagonal_upward
+
+    global ttt_game_win_player_2, ttt_player_2_score, ttt_player_2_turn, ttt_player_2_big_score, \
+        ttt_player_2_wins, ttt_player_2_game_win
+
+    global ttt_taken_top_left, ttt_taken_top_middle, ttt_taken_top_right
+    global ttt_taken_middle_left, ttt_taken_middle_middle, ttt_taken_middle_right
+    global ttt_taken_bottom_left, ttt_taken_bottom_middle, ttt_taken_bottom_right
+
+    global ttt_win_condition, ttt_point_won, ttt_is_reset, ttt_max_score, current_screen
 
 
 def on_draw():
     """
     Draws everything onto screens.
+    Only runs certain code depending
+    on the value of current_screen.
 
     :return:
     """
@@ -1757,6 +1987,91 @@ def music(time):
     if time == 49100 * count_time:
         arcade.play_sound(p_sound_persis)
         count_time += 1
+
+
+def reset(am_reset):
+    """
+    Resets everything to their
+    original positions.
+    (Referring to game aspects)
+
+    :param am_reset:
+    :return:
+    """
+
+    global p_is_reset, count, shift_pos
+
+    global p_state_survival, p_state_endless, p_player_win, p_is_win, p_is_playing
+
+    global player_1_x, player_1_y, player_1_up_pressed, player_1_down_pressed
+
+    global player_2_x, player_2_y, player_2_up_pressed, player_2_down_pressed
+
+    global is_ai, ai_x, ai_y, ai_up, ai_down
+
+    global ball_x, ball_y, ball_type, ball_velocity, ball_velocity_check, ball_bounce_up, ball_bounce_down
+
+    global score_player_1, score_player_2, score_ai, score_endless, score_lives_player_1, score_lives_player_2
+
+    global score_cap_player_1, score_cap_player_2, score_cap_ai, score_high_score
+
+    if am_reset:
+        count = 0
+        p_state_survival = False
+        p_state_endless = False
+        p_player_win = False
+        p_is_win = True
+        p_is_playing = False
+
+        player_1_x = 50
+        player_1_y = 250
+        player_1_up_pressed = False
+        player_1_down_pressed = False
+
+        player_2_x = 950
+        player_2_y = 250
+        player_2_up_pressed = False
+        player_2_down_pressed = False
+
+        is_ai = True
+        ai_x = 950
+        ai_y = 250
+        ai_up = False
+        ai_down = False
+
+        ball_x = 500
+        ball_y = 250
+
+        if random.randint(0, 1) == 1:
+            ball_type = False
+        else:
+            ball_type = True
+
+        if ball_type:
+            ball_x = 250
+        else:
+            ball_x = 750
+
+        ball_velocity = 1
+        ball_velocity_check = False
+
+        ball_bounce_down = False
+        ball_bounce_up = True
+
+        score_player_1 = 0
+        score_player_2 = 0
+        score_ai = 0
+        score_endless = 0
+        score_lives_player_1 = 0
+        score_lives_player_2 = 0
+        score_cap_player_1 = 5
+        score_cap_player_2 = 5
+        score_cap_ai = 5
+        score_high_score = 0
+
+        shift_pos = 0
+
+        p_is_reset = False
 
 
 def setup():

@@ -273,102 +273,7 @@ def on_update(delta_time):
 
     global ttt_win_condition, ttt_point_won, ttt_is_reset, ttt_max_score, current_screen
 
-    if ttt_is_reset:
-        # Player 1 variables
-        ttt_player_1_top_left = False
-        ttt_player_1_top_middle = False
-        ttt_player_1_top_right = False
-
-        ttt_player_1_middle_left = False
-        ttt_player_1_middle_middle = False
-        ttt_player_1_middle_right = False
-
-        ttt_player_1_bottom_left = False
-        ttt_player_1_bottom_middle = False
-        ttt_player_1_bottom_right = False
-
-        # Player 1 win cases
-        ttt_win_player_1_bottom_row = False
-        ttt_win_player_1_middle_row = False
-        ttt_win_player_1_top_row = False
-
-        ttt_win_player_1_left_column = False
-        ttt_win_player_1_middle_column = False
-        ttt_win_player_1_right_column = False
-
-        ttt_win_player_1_diagonal_downward = False
-        ttt_win_player_1_diagonal_upward = False
-
-        # Player 2 variables
-        ttt_player_2_top_left = False
-        ttt_player_2_top_middle = False
-        ttt_player_2_top_right = False
-
-        ttt_player_2_middle_left = False
-        ttt_player_2_middle_middle = False
-        ttt_player_2_middle_right = False
-
-        ttt_player_2_bottom_left = False
-        ttt_player_2_bottom_middle = False
-        ttt_player_2_bottom_right = False
-
-        # Player 2 win cases
-        ttt_win_player_2_bottom_row = False
-        ttt_win_player_2_middle_row = False
-        ttt_win_player_2_top_row = False
-
-        ttt_win_player_2_left_column = False
-        ttt_win_player_2_middle_column = False
-        ttt_win_player_2_right_column = False
-
-        ttt_win_player_2_diagonal_downward = False
-        ttt_win_player_2_diagonal_upward = False
-
-        # Variables to determine which player has what box
-        # A value of 1 means that player 1 holds the space
-        # A value of 2 means that player 2 hold the space
-        ttt_taken_bottom_left = 0
-        ttt_taken_bottom_middle = 0
-        ttt_taken_bottom_right = 0
-
-        ttt_taken_middle_left = 0
-        ttt_taken_middle_middle = 0
-        ttt_taken_middle_right = 0
-
-        ttt_taken_top_left = 0
-        ttt_taken_top_middle = 0
-        ttt_taken_top_right = 0
-
-        ttt_game_win_player_1 = False
-        ttt_game_win_player_2 = False
-        ttt_win_condition = True
-        ttt_point_won = False
-
-        if ttt_player_1_score == ttt_max_score:
-            ttt_player_1_big_score += 1
-            ttt_player_1_score = 0
-            ttt_player_2_score = 0
-
-        if ttt_player_2_score == ttt_max_score:
-            ttt_player_2_big_score += 1
-            ttt_player_1_score = 0
-            ttt_player_2_score = 0
-
-        if ttt_player_1_big_score == 5:
-            ttt_player_1_game_win = True
-
-        if ttt_player_2_big_score == 5:
-            ttt_player_2_game_win = True
-
-        if ttt_player_1_wins:
-            ttt_player_1_turn = False
-            ttt_player_2_turn = True
-
-        if ttt_player_2_wins:
-            ttt_player_1_turn = True
-            ttt_player_2_turn = False
-
-        ttt_is_reset = False
+    ttt_reset(ttt_is_reset)
 
     if ttt_player_1_game_win:
         current_screen = 12
@@ -1169,6 +1074,142 @@ def on_mouse_press(x, y, button, modifiers):
 
     if 0 < x < 600 and 0 < y < 600 and ttt_point_won:
         ttt_is_reset = True
+
+
+def ttt_reset(resetting):
+    global ttt_player_1_top_left, ttt_player_1_top_middle, ttt_player_1_top_right
+    global ttt_player_1_middle_left, ttt_player_1_middle_middle, ttt_player_1_middle_right
+    global ttt_player_1_bottom_left, ttt_player_1_bottom_middle, ttt_player_1_bottom_right
+
+    global ttt_win_player_1_bottom_row, ttt_win_player_1_middle_row, ttt_win_player_1_top_row
+    global ttt_win_player_1_left_column, ttt_win_player_1_middle_column, ttt_win_player_1_right_column
+    global ttt_win_player_1_diagonal_downward, ttt_win_player_1_diagonal_upward
+
+    global ttt_player_2_top_left, ttt_player_2_top_middle, ttt_player_2_top_right
+    global ttt_player_2_middle_left, ttt_player_2_middle_middle, ttt_player_2_middle_right
+    global ttt_player_2_bottom_left, ttt_player_2_bottom_middle, ttt_player_2_bottom_right
+
+    global ttt_win_player_2_bottom_row, ttt_win_player_2_middle_row, ttt_win_player_2_top_row
+    global ttt_win_player_2_left_column, ttt_win_player_2_middle_column, ttt_win_player_2_right_column
+    global ttt_win_player_2_diagonal_downward, ttt_win_player_2_diagonal_upward
+
+    global ttt_taken_bottom_left, ttt_taken_bottom_middle, ttt_taken_bottom_right
+    global ttt_taken_middle_left, ttt_taken_middle_middle, ttt_taken_middle_right
+    global ttt_taken_top_left, ttt_taken_top_middle, ttt_taken_top_right
+
+    global ttt_game_win_player_1, ttt_game_win_player_2, ttt_win_condition, ttt_point_won
+
+    global ttt_player_1_score, ttt_max_score, ttt_player_1_big_score
+    global ttt_player_2_score, ttt_player_2_big_score
+
+    global ttt_player_1_game_win, ttt_player_2_game_win
+    global ttt_player_1_turn, ttt_player_2_turn
+
+    global ttt_is_reset
+
+    if resetting:
+        # Player 1 variables
+        ttt_player_1_top_left = False
+        ttt_player_1_top_middle = False
+        ttt_player_1_top_right = False
+
+        ttt_player_1_middle_left = False
+        ttt_player_1_middle_middle = False
+        ttt_player_1_middle_right = False
+
+        ttt_player_1_bottom_left = False
+        ttt_player_1_bottom_middle = False
+        ttt_player_1_bottom_right = False
+
+        # Player 1 win cases
+        ttt_win_player_1_bottom_row = False
+        ttt_win_player_1_middle_row = False
+        ttt_win_player_1_top_row = False
+
+        ttt_win_player_1_left_column = False
+        ttt_win_player_1_middle_column = False
+        ttt_win_player_1_right_column = False
+
+        ttt_win_player_1_diagonal_downward = False
+        ttt_win_player_1_diagonal_upward = False
+
+        # Player 2 variables
+        ttt_player_2_top_left = False
+        ttt_player_2_top_middle = False
+        ttt_player_2_top_right = False
+
+        ttt_player_2_middle_left = False
+        ttt_player_2_middle_middle = False
+        ttt_player_2_middle_right = False
+
+        ttt_player_2_bottom_left = False
+        ttt_player_2_bottom_middle = False
+        ttt_player_2_bottom_right = False
+
+        # Player 2 win cases
+        ttt_win_player_2_bottom_row = False
+        ttt_win_player_2_middle_row = False
+        ttt_win_player_2_top_row = False
+
+        ttt_win_player_2_left_column = False
+        ttt_win_player_2_middle_column = False
+        ttt_win_player_2_right_column = False
+
+        ttt_win_player_2_diagonal_downward = False
+        ttt_win_player_2_diagonal_upward = False
+
+        # Variables to determine which player has what box
+        # A value of 1 means that player 1 holds the space
+        # A value of 2 means that player 2 hold the space
+        ttt_taken_bottom_left = 0
+        ttt_taken_bottom_middle = 0
+        ttt_taken_bottom_right = 0
+
+        ttt_taken_middle_left = 0
+        ttt_taken_middle_middle = 0
+        ttt_taken_middle_right = 0
+
+        ttt_taken_top_left = 0
+        ttt_taken_top_middle = 0
+        ttt_taken_top_right = 0
+
+        ttt_game_win_player_1 = False
+        ttt_game_win_player_2 = False
+        ttt_win_condition = True
+        ttt_point_won = False
+
+        if ttt_player_1_score == ttt_max_score:
+            ttt_player_1_big_score += 1
+            ttt_player_1_score = 0
+            ttt_player_2_score = 0
+
+        if ttt_player_2_score == ttt_max_score:
+            ttt_player_2_big_score += 1
+            ttt_player_1_score = 0
+            ttt_player_2_score = 0
+
+        if ttt_player_1_big_score == 5:
+            ttt_player_1_game_win = True
+
+        if ttt_player_2_big_score == 5:
+            ttt_player_2_game_win = True
+
+        who_won_player_1 = False
+        who_won_player_2 = False
+
+        if ttt_player_1_wins and who_won_player_1 and not who_won_player_2:
+            ttt_player_1_turn = False
+            ttt_player_2_turn = True
+            who_won_player_1 = True
+            who_won_player_2 = False
+
+        if ttt_player_2_wins and who_won_player_2 and not who_won_player_1:
+            ttt_player_1_turn = True
+            ttt_player_2_turn = False
+            who_won_player_2 = True
+            who_won_player_1 = False
+
+        ttt_is_reset = False
 
 
 def setup():
