@@ -15,7 +15,7 @@ Scoring in this game is determined through scoring on the opponent and ending up
 surviving.
 
 
-###Screen Mock ups
+## Screen Mock ups
 
 Ball Movement Sketch
 ![Image of ball movement sketches](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/ball_movement.jpg)
