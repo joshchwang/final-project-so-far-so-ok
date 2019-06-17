@@ -147,7 +147,7 @@ buttons = [
 # 12 no button
 
 
-# Delta time == 0.01 milliseconds
+# Delta time == 1 milliseconds
 # 1 second = 0.01 x 100
 # persis = 491 seconds
 # 491 x 100
