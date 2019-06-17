@@ -16,4 +16,4 @@ surviving.
 
 
 ##Screen Mock ups
-![https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/ball_movement.jpg]
+![Image of ball movement sketches](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/ball_movement.jpg)
