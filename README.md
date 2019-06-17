@@ -16,4 +16,15 @@ surviving.
 
 
 ##Screen Mock ups
+Ball Movement Sketch
 ![Image of ball movement sketches](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/ball_movement.jpg)
+
+
+Notes
+![Image of notes](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/notes.jpg)
+
+Rough Sketch
+![Image of rough sketching](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/rough_sketch.jpg)
+
+Good sketches and notes
+![Image of good sketches and notes](https://github.com/StRobertCHSCS/final-project-so-far-so-ok/blob/master/images/good_sketches_and_notes.jpg)
