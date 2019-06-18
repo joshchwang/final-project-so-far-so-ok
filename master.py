@@ -162,8 +162,8 @@ def on_update(delta_time):
     Updates the entirety of the code
     and insures it running
 
-    :param delta_time:
-    :return:
+    :param delta_time: int
+    :return: None
     """
 
     # Pong globals
@@ -409,7 +409,7 @@ def on_draw():
     Only runs certain code depending
     on the value of current_screen.
 
-    :return:
+    :return: None
     """
 
     global rectangle_list
@@ -465,9 +465,9 @@ def on_key_press(key, modifiers):
     """
     Takes key inputs.
 
-    :param key:
-    :param modifiers:
-    :return:
+    :param key: int
+    :param modifiers: int
+    :return: None
     """
 
     global player_1_up_pressed, player_1_down_pressed
@@ -493,9 +493,9 @@ def on_key_release(key, modifiers):
     """
     Runs after the release of the key.
 
-    :param key:
-    :param modifiers:
-    :return:
+    :param key: int
+    :param modifiers: int
+    :return: None
     """
 
     global player_1_up_pressed, player_1_down_pressed
@@ -521,11 +521,11 @@ def on_mouse_press(x, y, button, modifiers):
     """
     Takes input for mouse click
 
-    :param x:
-    :param y:
-    :param button:
-    :param modifiers:
-    :return:
+    :param x: int
+    :param y: int
+    :param button: int
+    :param modifiers: int
+    :return: None
     """
 
     global current_screen, current_button
@@ -629,9 +629,9 @@ def button_click_action(screen, button):
     an input, which will change the game
     according to what each button does.
 
-    :param screen:
-    :param button:
-    :return:
+    :param screen: int
+    :param button: int
+    :return: None
     """
 
     global current_screen
@@ -784,7 +784,8 @@ def button_click_action(screen, button):
 def collision():
     """
     Checks the collision of everything.
-    :return:
+
+    :return: None
     """
 
     global player_1_x, player_1_y, score_player_1
@@ -932,7 +933,7 @@ def ai():
     """
     The AI code for everything.
 
-    :return:
+    :return: None
     """
 
     global ai_y, ball_y
@@ -963,7 +964,7 @@ def start_screen():
     Holds all the code for
     the start screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing
@@ -995,7 +996,7 @@ def mode_screen():
     Holds the code for the
     mode selection screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing
@@ -1061,7 +1062,7 @@ def how_to_play_screen():
     Holds the code for the
     how to play screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing
@@ -1102,7 +1103,7 @@ def instruction_screen():
     Holds the code for the
     instruction screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing
@@ -1154,7 +1155,7 @@ def two_player_screen():
     Holds the code for a two
     player game.
 
-    :return:
+    :return: None
     """
 
     global shift_pos
@@ -1240,7 +1241,7 @@ def one_player_screen():
     Holds the code for a one
     player game against an ai.
 
-    :return:
+    :return: None
     """
 
     global shift_pos
@@ -1326,7 +1327,7 @@ def survival_two_player_screen():
     Holds the code for a two
     player survival game.
 
-    :return:
+    :return: None
     """
 
     global score_player_1, score_player_2
@@ -1415,7 +1416,7 @@ def survival_one_player_screen():
     player survival game
     against an ai.
 
-    :return:
+    :return: None
     """
 
     global score_player_1, score_ai
@@ -1505,7 +1506,7 @@ def endless_screen():
     impossible ai, therefore
     making it endless.
 
-    :return:
+    :return: None
     """
 
     global score_player_1, score_ai
@@ -1596,7 +1597,7 @@ def game_over_screen():
     Holds the code to draw
     the game over screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing, shift_pos
@@ -1639,8 +1640,8 @@ def win_screen(winner):
     Holds the code for
     drawing the win screen.
 
-    :param winner:
-    :return:
+    :param winner: bool
+    :return: None
     """
 
     global is_playing
@@ -1681,7 +1682,7 @@ def pause_screen():
     Holds the code to draw
     the pause screen.
 
-    :return:
+    :return: None
     """
 
     global is_playing
@@ -1702,8 +1703,8 @@ def reset(am_reset):
     original positions.
     (Referring to game aspects)
 
-    :param am_reset:
-    :return:
+    :param am_reset: bool
+    :return: None
     """
 
     global is_reset, count, shift_pos
@@ -1789,8 +1790,8 @@ def music(time):
     Be warned, I'm told
     it's quite loud.
 
-    :param time:
-    :return:
+    :param time: int
+    :return: None
     """
 
     global count_time
@@ -1807,7 +1808,7 @@ def setup():
     enables the game to
     function and run.
 
-    :return:
+    :return: None
     """
 
     global time_check
