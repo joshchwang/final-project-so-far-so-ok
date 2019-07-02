@@ -1,29 +1,14 @@
 import arcade
 import random
 
-screen_width = 600
-screen_height = 800
-
-blocks = [
-    # I block - cyan
-    [
-        # Upright
-        [40, 160],
-
-        # Turned
-        [160, 40]
-    ],
-
-    # O block - golden yellow
-    [
-        # Doesn't need more then one given value
-        # Because it's a 4 x 4 block
-        [160, 160]
-    ],
-
-    # T block -
-
-]
+width = 20
+height = 20
+margin = 2
+row_count = 24
+column_count = 10
+grid = []
+screen_width = (width + margin) * column_count + margin + 200
+screen_height = (height + margin) * row_count + margin
 
 
 def on_update(delta_time):
@@ -33,18 +18,32 @@ def on_update(delta_time):
 def on_draw():
     arcade.start_render()
 
-    # Divider between the future blocks and the game
-    arcade.draw_rectangle_outline(400, 400, 10, 800, arcade.color.WHITE)
+    for row in range(row_count):
+        for column in range(column_count):
+            if grid[row][column] == 0:
+                color = arcade.color.WHITE
+            elif grid[row][column] == 1:
+                color = arcade.color.BLACK
+            elif grid[row][column] == 2:
+                color = arcade.color.CYAN
+            elif grid[row][column] == 3:
+                color = arcade.color.SUNGLOW
+            elif grid[row][column] == 4:
+                color = arcade.color.PURPLE_MOUNTAIN_MAJESTY
+            elif grid[row][column] == 5:
+                color = arcade.color.GREEN
+            elif grid[row][column] == 6:
+                color = arcade.color.BOSTON_UNIVERSITY_RED
+            elif grid[row][column] == 7:
+                color = arcade.color.CERULEAN_BLUE
+            elif grid[row][column] == 8:
+                color = arcade.color.UNIVERSITY_OF_TENNESSEE_ORANGE
+            arcade.draw_rectangle_outline((margin + width) * column + margin + width / 2,
+                                          (margin + height) * row + margin + height / 2,
+                                          width, height, color)
 
-    # Top Divider between points and whatnot and the game
-    arcade.draw_rectangle_outline(195, 720, 400, 10, arcade.color.WHITE)
-
-    # The next box
-    arcade.draw_rectangle_outline(503, 650, 160, 160, arcade.color.WHITE)
-    arcade.draw_rectangle_outline(503, 650, 150, 150, arcade.color.WHITE)
-    arcade.draw_text("N E X T", 430, 745, arcade.color.WHITE, 40)
-
-    arcade.draw_rectangle_outline(20, 80, 40, 160, arcade.color.GOLDEN_YELLOW)
+    arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 90, 90, arcade.color.WHITE)
+    arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 75, 75, arcade.color.WHITE)
 
 
 def on_key_press(key, modifiers):
@@ -70,6 +69,19 @@ def setup():
     window.on_key_press = on_key_press
     window.on_key_release = on_key_release
     window.on_mouse_press = on_mouse_press
+
+    # create a 10 x 10 2D list of numbers
+
+    # --- Populate grid the grid
+    # Loop for each row
+    for row in range(row_count):
+        # For each row, create a list that will
+        # represent an entire row
+        grid.append([])
+        # Loop for each column
+        for column in range(column_count):
+            # Add a the number zero to the current row
+            grid[row].append(0)
 
     arcade.run()
 

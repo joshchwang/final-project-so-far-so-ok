@@ -1,4 +1,5 @@
-# Pong
+# My Collection of Small Games
+## Pong
 Welcome to my take of the classic PONG.
 
 ### Objective of PONG
