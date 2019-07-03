@@ -1,5 +1,4 @@
 import arcade
-import random
 
 width = 20
 height = 20
@@ -20,10 +19,11 @@ def on_draw():
 
     for row in range(row_count):
         for column in range(column_count):
+            color = arcade.color.BLACK
             if grid[row][column] == 0:
-                color = arcade.color.WHITE
-            elif grid[row][column] == 1:
                 color = arcade.color.BLACK
+            elif grid[row][column] == 1:
+                color = arcade.color.WHITE
             elif grid[row][column] == 2:
                 color = arcade.color.CYAN
             elif grid[row][column] == 3:
@@ -56,6 +56,85 @@ def on_key_release(key, modifiers):
 
 def on_mouse_press(x, y, button, modifiers):
     pass
+
+
+def block_i(row, column):
+    grid[row][column] = 2
+    grid[row + 1][column] = 2
+    grid[row + 2][column] = 2
+    grid[row + 3][column] = 2
+
+
+def block_o(row, column):
+    grid[row][column] = 3
+    grid[row - 1][column] = 3
+    grid[row][column + 1] = 3
+    grid[row - 1][column + 1] = 3
+
+
+def block_t(row, column):
+    grid[row][column] = 4
+    grid[row][column - 1] = 4
+    grid[row][column + 1] = 4
+    grid[row + 1][column] = 4
+
+
+def block_s(row, column):
+    grid[row][column] = 5
+    grid[row + 1][column] = 5
+    grid[row][column - 1] = 5
+    grid[row + 1][column + 1] = 5
+
+
+def block_z(row, column):
+    grid[row][column] = 6
+    grid[row + 1][column] = 6
+    grid[row][column + 1] = 6
+    grid[row + 1][column - 1] = 6
+
+
+def block_j(row, column):
+    grid[row][column] = 7
+    grid[row + 1][column] = 7
+    grid[row + 2][column] = 7
+    grid[row][column - 1] = 7
+
+
+def block_l(row, column):
+    grid[row][column] = 8
+    grid[row + 1][column] = 8
+    grid[row + 2][column] = 8
+    grid[row][column + 1] = 8
+
+
+def blocks(row, column, block):
+    # 'I' Block
+    if block == 0:
+        block_i(row, column)
+
+    # 'O' Block
+    if block == 1:
+        block_o(row, column)
+
+    # 'T' Block
+    if block == 2:
+        block_t(row, column)
+
+    # 'S' Block
+    if block == 3:
+        block_s(row, column)
+
+    # 'Z' Block
+    if block == 4:
+        block_z(row, column)
+
+    # 'J' Block
+    if block == 5:
+        block_j(row, column)
+
+    # 'L' Block
+    if block == 6:
+        block_l(row, column)
 
 
 def setup():
