@@ -17,31 +17,31 @@ screen_height = (height + margin) * row_count + margin
 # 3 - On its left side
 inversions = 0
 
-pressed_right = False
-pressed_left = False
-pressed_down = False
+pressed_turn_right = False
+pressed_turn_left = False
+pressed_turn_down = False
 
 
 def on_update(delta_time):
-    global pressed_down, pressed_right, pressed_left
+    global pressed_turn_down, pressed_turn_right, pressed_turn_left
 
     global inversions
 
-    if pressed_right:
+    if pressed_turn_right:
         if inversions == 3:
             inversions = 0
         else:
             inversions += 1
 
-        pressed_right = False
+        pressed_turn_right = False
         print(inversions)
 
-    if pressed_left:
+    if pressed_turn_left:
         if inversions == 0:
             inversions = 3
         else:
             inversions -= 1
-        pressed_left = False
+        pressed_turn_left = False
         print(inversions)
 
 
@@ -76,33 +76,33 @@ def on_draw():
     arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 90, 90, arcade.color.WHITE)
     arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 75, 75, arcade.color.WHITE)
 
-    blocks(5, 5, inversions, 2)
+    blocks(5, 5, inversions, 6)
 
 
 def on_key_press(key, modifiers):
-    global pressed_down, pressed_right, pressed_left
+    global pressed_turn_down, pressed_turn_right, pressed_turn_left
 
     if key == arcade.key.A or key == arcade.key.LEFT:
-        pressed_left = True
+        pressed_turn_left = True
 
     if key == arcade.key.D or key == arcade.key.RIGHT:
-        pressed_right = True
+        pressed_turn_right = True
 
     if key == arcade.key.S or key == arcade.key.DOWN:
-        pressed_down = True
+        pressed_turn_down = True
 
 
 def on_key_release(key, modifiers):
-    global pressed_down, pressed_right, pressed_left
+    global pressed_turn_down, pressed_turn_right, pressed_turn_left
 
     if key == arcade.key.A or key == arcade.key.LEFT:
-        pressed_left = False
+        pressed_turn_left = False
 
     if key == arcade.key.D or key == arcade.key.RIGHT:
-        pressed_right = False
+        pressed_turn_right = False
 
     if key == arcade.key.S or key == arcade.key.DOWN:
-        pressed_down = False
+        pressed_turn_down = False
 
 
 def on_mouse_press(x, y, button, modifiers):
@@ -110,10 +110,9 @@ def on_mouse_press(x, y, button, modifiers):
 
 
 def block_i(row, column, invert):
-
     # Upright or inverted
     if invert == 0 or invert == 2:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion state into neutral cells
         grid[row][column - 2] = 0
         grid[row][column - 1] = 0
         grid[row][column + 1] = 0
@@ -126,7 +125,7 @@ def block_i(row, column, invert):
 
     # Left or right
     if invert == 1 or invert == 3:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion state into neutral cells
         grid[row - 1][column] = 0
         grid[row + 1][column] = 0
         grid[row + 2][column] = 0
@@ -146,10 +145,9 @@ def block_o(row, column):
 
 
 def block_t(row, column, invert):
-
     # Upright
     if invert == 0:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion states into neutral cells
         grid[row - 1][column] = 0
 
         # Drawing the inversion state
@@ -160,7 +158,7 @@ def block_t(row, column, invert):
 
     # On its right side
     if invert == 1:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion states into neutral cells
         grid[row][column - 1] = 0
 
         # Drawing the inversion state
@@ -171,7 +169,7 @@ def block_t(row, column, invert):
 
     # Inverted
     if invert == 2:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion states into neutral cells
         grid[row + 1][column] = 0
 
         # Drawing the inversion state
@@ -182,7 +180,7 @@ def block_t(row, column, invert):
 
     # On its left side
     if invert == 3:
-        # Drawing the other inversion state into a neutral cell
+        # Drawing the other inversion states into neutral cells
         grid[row][column + 1] = 0
 
         # Drawing the inversion state
@@ -192,33 +190,170 @@ def block_t(row, column, invert):
         grid[row][column - 1] = 4
 
 
-
 def block_s(row, column, invert):
-    grid[row][column] = 5
-    grid[row + 1][column] = 5
-    grid[row][column - 1] = 5
-    grid[row + 1][column + 1] = 5
+    # Upright or inverted
+    if invert == 0 or invert == 2:
+        # Drawing the other inversion state into neutral cells
+        grid[row + 1][column] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row - 1][column - 1] = 5
+        grid[row - 1][column] = 5
+        grid[row][column] = 5
+        grid[row][column + 1] = 5
+
+    if invert == 1 or invert == 3:
+        # Drawing the other inversion state into neutral cells
+        grid[row - 1][column - 1] = 0
+        grid[row - 1][column] = 0
+
+        # Drawing the inversion state
+        grid[row + 1][column] = 5
+        grid[row][column] = 5
+        grid[row][column + 1] = 5
+        grid[row - 1][column + 1] = 5
 
 
 def block_z(row, column, invert):
-    grid[row][column] = 6
-    grid[row + 1][column] = 6
-    grid[row][column + 1] = 6
-    grid[row + 1][column - 1] = 6
+    # Upright or inverted
+    if invert == 0 or invert == 2:
+        # Drawing the other inversion state into neutral cells
+        grid[row][column + 1] = 0
+        grid[row + 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row][column - 1] = 6
+        grid[row][column] = 6
+        grid[row - 1][column] = 6
+        grid[row - 1][column + 1] = 6
+
+    if invert == 1 or invert == 3:
+        # Drawing the other inversion state into neutral cells
+        grid[row][column - 1] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row - 1][column] = 6
+        grid[row][column] = 6
+        grid[row][column + 1] = 6
+        grid[row + 1][column + 1] = 6
 
 
 def block_j(row, column, invert):
-    grid[row][column] = 7
-    grid[row + 1][column] = 7
-    grid[row + 2][column] = 7
-    grid[row][column - 1] = 7
+    # Upright
+    if invert == 0:
+        # Drawing the other inversion states into neutral cells
+        grid[row + 1][column - 1] = 0
+        grid[row][column - 1] = 0
+        grid[row][column + 1] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row - 1][column - 1] = 7
+        grid[row - 1][column] = 7
+        grid[row][column] = 7
+        grid[row + 1][column] = 7
+
+    # On its right side
+    if invert == 1:
+        # Drawing the other inversion states into neutral cells
+        grid[row - 1][column - 1] = 0
+        grid[row - 1][column] = 0
+        grid[row + 1][column] = 0
+        grid[row + 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row + 1][column - 1] = 7
+        grid[row][column - 1] = 7
+        grid[row][column] = 7
+        grid[row][column + 1] = 7
+
+    # Inverted
+    if invert == 2:
+        # Drawing the other inversion states into neutral cells
+        grid[row + 1][column - 1] = 0
+        grid[row][column - 1] = 0
+        grid[row][column + 1] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row - 1][column] = 7
+        grid[row][column] = 7
+        grid[row + 1][column] = 7
+        grid[row + 1][column + 1] = 7
+
+    # On its left side
+    if invert == 3:
+        # Drawing the other inversion states into neutral cells
+        grid[row - 1][column - 1] = 0
+        grid[row - 1][column] = 0
+        grid[row + 1][column] = 0
+        grid[row + 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row][column - 1] = 7
+        grid[row][column] = 7
+        grid[row][column + 1] = 7
+        grid[row - 1][column + 1] = 7
 
 
 def block_l(row, column, invert):
-    grid[row][column] = 8
-    grid[row + 1][column] = 8
-    grid[row + 2][column] = 8
-    grid[row][column + 1] = 8
+    # Upright
+    if invert == 0:
+        # Drawing the other inversion states into neutral cells
+        grid[row - 1][column - 1] = 0
+        grid[row][column - 1] = 0
+        grid[row][column + 1] = 0
+        grid[row + 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row + 1][column] = 8
+        grid[row][column] = 8
+        grid[row - 1][column] = 8
+        grid[row - 1][column + 1] = 8
+
+    # On its right side
+    if invert == 1:
+        # Drawing the other inversion states into neutral cells
+        grid[row + 1][column - 1] = 0
+        grid[row + 1][column] = 0
+        grid[row - 1][column] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row - 1][column - 1] = 8
+        grid[row][column - 1] = 8
+        grid[row][column] = 8
+        grid[row][column + 1] = 8
+
+    # Inverted
+    if invert == 2:
+        # Drawing the other inversion states into neutral cells
+        grid[row - 1][column - 1] = 0
+        grid[row][column - 1] = 0
+        grid[row][column + 1] = 0
+        grid[row + 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row + 1][column - 1] = 8
+        grid[row + 1][column] = 8
+        grid[row][column] = 8
+        grid[row - 1][column] = 8
+
+    # On its left side
+    if invert == 3:
+        # Drawing the other inversion states into neutral cells
+        grid[row + 1][column - 1] = 0
+        grid[row + 1][column] = 0
+        grid[row - 1][column] = 0
+        grid[row - 1][column + 1] = 0
+
+        # Drawing the inversion state
+        grid[row][column - 1] = 8
+        grid[row][column] = 8
+        grid[row][column + 1] = 8
+        grid[row + 1][column + 1] = 8
 
 
 def blocks(row, column, invert, block):
