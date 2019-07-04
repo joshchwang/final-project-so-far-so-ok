@@ -1,4 +1,5 @@
 import arcade
+import random
 
 width = 20
 height = 20
@@ -17,13 +18,23 @@ screen_height = (height + margin) * row_count + margin
 # 3 - On its left side
 inversions = 0
 
+is_block_selected = False
+x_pos_block = 0
+y_pos_block = 0
+
+
 pressed_turn_right = False
 pressed_turn_left = False
 pressed_turn_down = False
 
+pressed_move_right = False
+pressed_move_left = False
+pressed_move_down = False
+
 
 def on_update(delta_time):
     global pressed_turn_down, pressed_turn_right, pressed_turn_left
+    global pressed_move_down, pressed_move_right, pressed_move_left
 
     global inversions
 
@@ -76,37 +87,108 @@ def on_draw():
     arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 90, 90, arcade.color.WHITE)
     arcade.draw_rectangle_outline(screen_width - 100, screen_height - 120, 75, 75, arcade.color.WHITE)
 
-    blocks(5, 5, inversions, 6)
+    blocks(21, 5, inversions, 0)
 
 
 def on_key_press(key, modifiers):
     global pressed_turn_down, pressed_turn_right, pressed_turn_left
+    global pressed_move_down, pressed_move_right, pressed_move_left
 
-    if key == arcade.key.A or key == arcade.key.LEFT:
+    # Turning the block
+    if key == arcade.key.A:
         pressed_turn_left = True
 
-    if key == arcade.key.D or key == arcade.key.RIGHT:
+    if key == arcade.key.D:
         pressed_turn_right = True
 
-    if key == arcade.key.S or key == arcade.key.DOWN:
+    if key == arcade.key.S:
         pressed_turn_down = True
+
+    # Moving the block
+    if key == arcade.key.LEFT:
+        pressed_move_left = True
+
+    if key == arcade.key.RIGHT:
+        pressed_move_right = True
+
+    if key == arcade.key.DOWN:
+        pressed_move_down = True
 
 
 def on_key_release(key, modifiers):
     global pressed_turn_down, pressed_turn_right, pressed_turn_left
+    global pressed_move_down, pressed_move_right, pressed_move_left
 
-    if key == arcade.key.A or key == arcade.key.LEFT:
+    # Turning the block
+    if key == arcade.key.A:
         pressed_turn_left = False
 
-    if key == arcade.key.D or key == arcade.key.RIGHT:
+    if key == arcade.key.D:
         pressed_turn_right = False
 
-    if key == arcade.key.S or key == arcade.key.DOWN:
+    if key == arcade.key.S:
         pressed_turn_down = False
+
+    # Moving the block
+    if key == arcade.key.LEFT:
+        pressed_move_left = False
+
+    if key == arcade.key.RIGHT:
+        pressed_move_right = False
+
+    if key == arcade.key.DOWN:
+        pressed_move_down = False
 
 
 def on_mouse_press(x, y, button, modifiers):
     pass
+
+
+def collision(row, column, block, invert):
+    global is_block_selected
+
+    # 'I' Block
+    if block == 0:
+        if invert == 0 or invert == 2:
+            if grid[row - 2][column] <= 0:
+                grid[row][column] = grid[row + 1][column]
+                is_block_selected = False
+        if invert == 1 or invert == 3:
+            if grid[row - 1][column - 2] <= 0:
+                is_block_selected = False
+
+    # 'O' Block
+    if block == 1:
+        if row - 2 <= 0:
+            row += 1
+            is_block_selected = False
+
+    # 'T' Block
+    if block == 2:
+        if invert == 0:
+            if row - 1 <= 0:
+                is_block_selected = False
+        if invert == 1:
+            if row - 2 <= 0:
+                row += 1
+                is_block_selected = False
+        if invert == 2:
+            if row - 2 <= 0:
+                row += 1
+                is_block_selected = False
+        if invert == 3:
+            if row - 2 <= 0:
+                row += 1
+                is_block_selected = False
+
+    # S' Block
+    if block == 3:
+        if invert == 0 or invert == 2:
+            if row - 2 <= 0:
+                row = 0
+                is_block_selected = False
+        if invert == 1 or invert == 3:
+            pass
 
 
 def block_i(row, column, invert):
