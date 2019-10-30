@@ -1831,4 +1831,5 @@ def setup():
     arcade.run()
 
 
-setup()
+if __name__ == "__main__":
+    setup()
