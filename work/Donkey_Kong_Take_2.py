@@ -1,9 +1,23 @@
 import arcade
 
-# Screen Variables
+# Screen
 screen_width = 500
 screen_height = 700
 screen_title = "Donkey Kong"
+
+m_p_x = 65
+m_p_y = 55
+m_p_p_u = False
+m_p_p_d = False
+m_p_p_l = False
+m_p_p_r = False
+m_p_t_l = False
+m_p_t_p = False
+m_p_a = True
+
+def mario():
+    arcade.draw_rectangle_outline(m_p_x, m_p_y, 10, 10, arcade.color.RED)
+
 
 def on_update(delta_time: float):
     """ Updates every 1/60 a second.
