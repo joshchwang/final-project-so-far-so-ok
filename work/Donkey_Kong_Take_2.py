@@ -5,18 +5,22 @@ screen_width = 500
 screen_height = 700
 screen_title = "Donkey Kong"
 
-m_p_x = 65
-m_p_y = 55
-m_p_p_u = False
-m_p_p_d = False
-m_p_p_l = False
-m_p_p_r = False
-m_p_t_l = False
-m_p_t_p = False
-m_p_a = True
+mario_pos_x = 65          # X pos
+mario_pos_y = 55          # Y pos
+mario_pressed_up = False     # Up press
+mario_pressed_down = False     # Down press
+mario_pressed_left = False     # Left press
+mario_pressed_right = False     # Right press
+mario_touching_ladder = False     # Touching ladder
+mario_touching_platform = False     # Touching platform
+mario_alive = True        # is alive
 
 def mario():
-    arcade.draw_rectangle_outline(m_p_x, m_p_y, 10, 10, arcade.color.RED)
+    arcade.draw_rectangle_outline(mario_pos_x, mario_pos_y, 25, 25, arcade.color.RED)
+
+
+def luigi():
+    arcade.draw_rectangle_outline
 
 
 def on_update(delta_time: float):
@@ -33,7 +37,7 @@ def on_update(delta_time: float):
 def on_draw():
     """ Draws.
     """
-    pass
+    mario()
 
 
 def collision():
